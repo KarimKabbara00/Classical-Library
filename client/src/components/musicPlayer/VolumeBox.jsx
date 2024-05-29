@@ -1,0 +1,42 @@
+import React, { useState } from "react";
+import "../../css/musicPlayer.css"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Stack from '@mui/material/Stack';
+import Slider from '@mui/material/Slider';
+import { animated, useSpring } from "@react-spring/web"
+
+function VolumeBox(props) {
+
+    // need to pass to parent due to unrendering and rerendering
+    function changeVolume(event, newVal) {
+        props.changeVolume(newVal);
+    }
+
+    const anim = useSpring({
+        from: props.test ? { transform: 'translateX(-200%)' } : { transform: 'translateX(0%)' },
+        to: props.test ? { transform: 'translateX(0%)' } : { transform: 'translateX(-200%)' },
+        config: { tension: 200, friction: 20 },
+    });
+
+    return (
+        <animated.div style={anim} onMouseEnter={props.toggleVolumeBox} onMouseLeave={props.toggleVolumeBox} className="volumeBox">
+            <div>
+                <FontAwesomeIcon icon={props.volumeIcon} />
+            </div>
+            <div>
+                <Stack sx={{ height: 75 }} spacing={1} direction="row">
+                    <Slider
+                        onChange={changeVolume}
+                        aria-label="Volume"
+                        orientation="vertical"
+                        value={props.volume}
+                        className="slider"
+                    />
+                </Stack>
+            </div>
+
+        </animated.div>
+    )
+}
+
+export default VolumeBox;
