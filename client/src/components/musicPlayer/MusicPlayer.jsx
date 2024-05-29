@@ -4,29 +4,7 @@ import { faPlay, faPause, faBackward, faForward, faVolumeXmark, faVolumeLow, faV
 import "../../css/musicPlayer.css"
 import VolumeBox from "./VolumeBox";
 
-function MusicPlayer() {
-
-    // <div>
-    //     <audio controls>
-    //         <source src="http://localhost:3001/music" type="audio/mpeg" />
-    //     </audio>
-    // </div>
-
-    // function play() {
-    //     setAudioState("PLAY");
-    //     audioObject.play()
-    // }
-
-    // function pause() {
-    //     setAudioState("PLAY");
-    //     audioObject.pause()
-    // }
-
-    // function stop() { // no stop function, so pause and set time to 0
-    //     setAudioState("PLAY");
-    //     audioObject.pause()
-    //     audioObject.currentTime = 0;
-    // }
+function MusicPlayer(props) {
 
     /* ---------------------- Volume Box Control ---------------------- */
     const [musicBoxHovered, setMusicBoxHovered] = useState(false);
@@ -94,22 +72,15 @@ function MusicPlayer() {
     function changePpIcon() {
         setPpPressed(prev => !prev);
         !ppPressed ? setPpIcon(faPlay) : setPpIcon(faPause);
+        playOrPauseMusic()
     }
     /* ---------------------- FontAwesome Icon Control ---------------------- */
 
-    // const [audioState, setAudioState] = useState("STOP")
-    // const [audioObject, setAudioObject] = useState(new Audio("http://localhost:3001/music"))
-
-
-    {/* <div onClick={play}>
-                play
-            </div>
-            <div onClick={pause}>
-                pause
-            </div>
-            <div onClick={stop}>
-                stop
-            </div> */}
+    const [audioPlaying, setAudioPlaying] = useState(true);
+    function playOrPauseMusic() {
+        setAudioPlaying(prev => !prev)
+        !audioPlaying ? props.audioObject.play() : props.audioObject.pause()
+    }
 
     return (
         <div onMouseEnter={toggleVolumeBox} onMouseLeave={toggleVolumeBox}>

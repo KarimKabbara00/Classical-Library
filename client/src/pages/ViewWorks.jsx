@@ -7,7 +7,7 @@ import WorkHeader from "../components/viewWorks/WorkHeader";
 import WorkCard from "../components/viewWorks/WorkCard";
 import FilterWorks from "../components/viewWorks/FilterWorks";
 
-function ViewWorks() {
+function ViewWorks(props) {
 
     const location = useLocation();
     const { id, genre } = location.state;
@@ -15,7 +15,7 @@ function ViewWorks() {
     const [allWorks, setAllWorks] = useState([])        // "immutable" works array
     const [shownWorks, setShownWorks] = useState([])    // these change based on the search bar. These are the works that are shown
     const [composer, setComposer] = useState("")
-    
+
 
     useEffect(() => {
         axios.get(`http://localhost:3001/viewWorks?id=${id}&genre=${genre}`)
@@ -63,10 +63,20 @@ function ViewWorks() {
     return (
         <div className="worksBody">
             <div className="workTitle">{genre} works by <span style={{ color: "brown" }}>{composer}</span></div>
-            <FilterWorks filterWorks={filterWorks}/>
+            <FilterWorks filterWorks={filterWorks} />
             <WorkHeader sort={sortWorks} />
             {shownWorks.map((work, index) => {
-                return <WorkCard key={index} title={work.title} genre={work.genre} />
+                return <WorkCard
+                    key={index}
+                    title={work.title}
+                    genre={work.genre}
+                    currentSong={props.currentSong}
+                    setCurrentSong={props.setCurrentSong}
+                    showMusicPlayer={props.showMusicPlayer}
+                    setShowMusicPlayer={props.setShowMusicPlayer}
+                    audioObject={props.audioObject}
+                    setAudioObject={props.setAudioObject}
+                />
             })}
 
         </div>

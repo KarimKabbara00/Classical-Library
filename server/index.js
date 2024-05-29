@@ -6,6 +6,7 @@ import * as dotenv from "dotenv";
 import cors from "cors";
 import https from "https";
 import fs from "fs";
+import ytdl from "ytdl-core";
 
 // import .env module and grab kv pairs
 dotenv.config();
@@ -165,14 +166,23 @@ app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
 });
 
-app.get("/music*", async (req, res) => {
+app.get("/music", async (req, res) => {
 
-  let url = "https://rr2---sn-q4fl6n6d.googlevideo.com/videoplayback?expire=1716866981&ei=RftUZoOwDM-Dlu8P1JWomAQ&ip=71.237.86.117&id=o-AO31x_30-zgg0CKBPuMTSDO8fWTyTRmLRCTbUSr62Pez&itag=18&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&bui=AWRWj2RKD4iJiZxBs0w8xJpQ4R-cVtbufA-103N4_UHyKrmC5ThM2tWrw87W0_LBekbtZQngxmL_Ao_j&spc=UWF9f6zfhZqugizmh4Vc573JYdAUq5QF_Br-eTDdJ-vWoBE8f5iAPRS6LB0e&vprv=1&svpuc=1&mime=video%2Fmp4&ns=HEY3AD3HhjtwuRJju3kkkIoQ&rqh=1&cnr=14&ratebypass=yes&dur=823.913&lmt=1687290819542976&c=WEB&sefc=1&txp=6219224&n=Y1ehO0VkgdHDF0uv8&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRQIgAZ9CuKXbaT9pQL54XDx7SrxFnNDgP4AvflVHr9R2CScCIQCEfm9Kl600P4hyUTzYYcM-B0vicxaFswXEY-KV3nSbbA%3D%3D&redirect_counter=1&cm2rm=sn-qxosy7l&req_id=95a89f475242a3ee&cms_redirect=yes&cmsv=e&mh=xM&mm=34&mn=sn-q4fl6n6d&ms=ltu&mt=1716845080&mv=m&mvi=2&pl=17&lsparams=mh,mm,mn,ms,mv,mvi,pl&lsig=AHWaYeowRQIgHBw5B-_GKOkAKhlE1oIDUbtmDhE-9zgYu_QLJNTRbUUCIQDKd9FqNCX3dBotkQTiyCo0LuXEVPoDWs2wJC2g63419g%3D%3D";
+  // let url = "https://rr4---sn-qxoedn7k.googlevideo.com/videoplayback?expire=1716968027&ei=-4VWZtHzC5nFybgP7JefqAw&ip=71.237.86.117&id=o-AHFmAxTbiXDHAQ_gof32Gidj674rA658RuOGLrN0_-Ks&itag=18&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=xM&mm=31%2C29&mn=sn-qxoedn7k%2Csn-qxo7rn7r&ms=au%2Crdu&mv=m&mvi=4&pl=17&initcwndbps=370000&bui=AWRWj2StAUwikkpjIAwyJCDb4p21ddxoaH6IxKnHqJq8LjAe_EI3gd44rE_wcMhOhhBGUKDNnYVJWHxu&spc=UWF9f86VGIkwJstvMaPJQnOmyFmawJ9QimHclq5UhR4GgBMEh9YM8cEw4ikI&vprv=1&svpuc=1&mime=video%2Fmp4&ns=RXH0-E1xyBbB8FM5jzfSYwwQ&rqh=1&cnr=14&ratebypass=yes&dur=823.913&lmt=1687290819542976&mt=1716946125&fvip=2&c=WEB&sefc=1&txp=6219224&n=JWInjICbCbmr_TGLx&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Ccnr%2Cratebypass%2Cdur%2Clmt&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AHWaYeowRQIgK5obgF75fMMkV2o_o3uqdILpjhzdy4aZOezgxoWSiscCIQC4dYDFaLwt9gx3d7YBBfSqwzH1tClTwItLsfc-ulicVg%3D%3D&sig=AJfQdSswRgIhALbF0CLbwBIVRXgeDA5goa1W-P1pGWXTsbv2hgLiIAzsAiEApn03CWGrCYafTr1vjvdSfVR8YZu_sUnp0B0oTH9qBVA%3D";
 
-  https.get(url, (response) => {
-    res.setHeader("Content-Type", "audio/mpeg");
-    response.pipe(res);
-  })
+  // https.get(url, (response) => {
+  //   res.setHeader("Content-Type", "audio/mpeg");
+  //       res.setHeader('Accept-Ranges', 'bytes');
+  //   response.pipe(res);
+  // })
+
+  let videoUrl = "https://www.youtube.com/watch?v=vyDpyXsyOkE";
+  const info = await ytdl.getInfo(videoUrl);
+  const audioFormat = ytdl.chooseFormat(info.formats, { quality: 'highestaudio' });
+  res.setHeader('Content-Type', 'audio/mpeg');
+  res.setHeader('Content-Disposition', `attachment; filename="audio.mp3"`);
+
+  ytdl(videoUrl, { format: audioFormat }).pipe(res);
 
 })
 

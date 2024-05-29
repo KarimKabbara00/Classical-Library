@@ -41,7 +41,7 @@ function Home(props) {
 
     return (
         <div className="searchAndButtons">
-            <MusicPlayer />
+            
             <SearchBar onQuery={onQuery} error={error} />
             <div className="buttonParent">
                 <Button buttonType="Shuffle" buttonText="Shuffle Composers" buttonAction={randomComposer} />
