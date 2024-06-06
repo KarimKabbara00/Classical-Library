@@ -33,13 +33,11 @@ app.use(cors());
 
 /* ---- Home Page ----*/
 app.get("/", async (req, res) => {
-  res.status(200).send("Homepage Loaded")
+  res.status(200).send("Homepage Loaded");
 });
-
 
 /* ---- Search Page ----*/
 app.post("/search*", async (req, res) => {
-
   // get input from form
   var query = req.query.q;
 
@@ -48,17 +46,16 @@ app.post("/search*", async (req, res) => {
 
   // if shuffle isnt passed, its either a query search, or all
   if (isShuffle === false) {
-
-    console.log(query)
     // if all, set to empty string to grab all
     query = query === "all" ? "" : query;
 
     // make api call for composers with similar names. Empty string query grabs all
     const response = await axios.get(`https://api.openopus.org/composer/list/search/${query}.json`);
-    const success = response.data.status.success
-    const errorMessage = response.data.status.error
+    const success = response.data.status.success;
+    const errorMessage = response.data.status.error;
 
-    if (success === "true") { // if search is successful
+    if (success === "true") {
+      // if search is successful
       // pull list of composers
       const composersArray = response.data.composers;
 
@@ -72,41 +69,17 @@ app.post("/search*", async (req, res) => {
         });
       });
 
+      await sleep(2000);
       res.status(200).send({
         query: query,
         searchResult: composerInfo,
       });
-    }
-    else { // if search fails, stay on home page
+    } else {
+      // if search fails, stay on home page
       const errMsg = response.data.status.error === "Too short search term" ? "Search term too short" : response.data.status.error;
-      console.log(errMsg)
       res.status(400).send({
         query: query,
-        searchResult: errMsg
-      })
-    }
-  }
-  else if (isShuffle === true) { // if random
-    // grab all composers
-    const response = await axios.get("https://api.openopus.org/composer/list/search/.json");
-    const success = response.data.status.success;
-    const allComposers = response.data.composers;
-
-    if (success) {
-      // grab random index based on number of all composers returned
-      const rand = Math.floor(Math.random() * (allComposers.length + 1));
-
-      // get info about random composer
-      const randComposer = await axios.get(`https://api.openopus.org/genre/list/composer/${rand}.json`);
-      res.render("viewComposer.ejs", {
-        composerData: randComposer.data.composer,
-        genreData: randComposer.data.genres
-      });
-    }
-    else { // if search fails, stay on home page
-      res.render("index.ejs", {
-        prefix: "Error finding random composer",
-        query: query,
+        searchResult: errMsg,
       });
     }
   }
@@ -135,8 +108,9 @@ app.get("/viewComposer*", async (req, res) => {
   // hopefully gpt answers with "YYYY-MM-DD\nYYYY-MM-DD"
   const description = openAIDescriptionResponse.choices[0].message.content;
   const dates = openAIDateResponse.choices[0].message.content.split("\n");
-  const timeline = openAITimelineResponse.choices[0].message.content.split("\n").filter(el => el !== "");
+  const timeline = openAITimelineResponse.choices[0].message.content.split("\n").filter((el) => el !== "");
 
+  await sleep(2000);
   res.status(200).send({
     composerData: compResponse.data.composer,
     genreData: compResponse.data.genres,
@@ -153,12 +127,12 @@ app.get("/viewWorks*", async (req, res) => {
   var genre = req.query.genre;
 
   const response = await axios.get(`https://api.openopus.org/work/list/composer/${id}/${genre}.json`);
-  console.log(`https://api.openopus.org/work/list/composer/${id}/${genre}.json`)
-  console.log(response.data)
 
+  await sleep(2000);
   res.status(200).send({
     works: response.data.works,
-    composer: response.data.composer.complete_name
+    composer: response.data.composer.complete_name,
+    portrait: response.data.composer.portrait,
   });
 });
 
@@ -168,23 +142,14 @@ app.listen(port, () => {
 
 app.get("/music", async (req, res) => {
 
-  // let url = "https://rr4---sn-qxoedn7k.googlevideo.com/videoplayback?expire=1716968027&ei=-4VWZtHzC5nFybgP7JefqAw&ip=71.237.86.117&id=o-AHFmAxTbiXDHAQ_gof32Gidj674rA658RuOGLrN0_-Ks&itag=18&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=xM&mm=31%2C29&mn=sn-qxoedn7k%2Csn-qxo7rn7r&ms=au%2Crdu&mv=m&mvi=4&pl=17&initcwndbps=370000&bui=AWRWj2StAUwikkpjIAwyJCDb4p21ddxoaH6IxKnHqJq8LjAe_EI3gd44rE_wcMhOhhBGUKDNnYVJWHxu&spc=UWF9f86VGIkwJstvMaPJQnOmyFmawJ9QimHclq5UhR4GgBMEh9YM8cEw4ikI&vprv=1&svpuc=1&mime=video%2Fmp4&ns=RXH0-E1xyBbB8FM5jzfSYwwQ&rqh=1&cnr=14&ratebypass=yes&dur=823.913&lmt=1687290819542976&mt=1716946125&fvip=2&c=WEB&sefc=1&txp=6219224&n=JWInjICbCbmr_TGLx&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Ccnr%2Cratebypass%2Cdur%2Clmt&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AHWaYeowRQIgK5obgF75fMMkV2o_o3uqdILpjhzdy4aZOezgxoWSiscCIQC4dYDFaLwt9gx3d7YBBfSqwzH1tClTwItLsfc-ulicVg%3D%3D&sig=AJfQdSswRgIhALbF0CLbwBIVRXgeDA5goa1W-P1pGWXTsbv2hgLiIAzsAiEApn03CWGrCYafTr1vjvdSfVR8YZu_sUnp0B0oTH9qBVA%3D";
-
-  // https.get(url, (response) => {
-  //   res.setHeader("Content-Type", "audio/mpeg");
-  //       res.setHeader('Accept-Ranges', 'bytes');
-  //   response.pipe(res);
-  // })
-
   let videoUrl = "https://www.youtube.com/watch?v=vyDpyXsyOkE";
   const info = await ytdl.getInfo(videoUrl);
-  const audioFormat = ytdl.chooseFormat(info.formats, { quality: 'highestaudio' });
-  res.setHeader('Content-Type', 'audio/mpeg');
-  res.setHeader('Content-Disposition', `attachment; filename="audio.mp3"`);
+  const audioFormat = ytdl.chooseFormat(info.formats, { quality: "highestaudio" });
+  res.setHeader("Content-Type", "audio/mpeg");
+  res.setHeader("Content-Disposition", `attachment; filename="audio.mp3"`);
 
   ytdl(videoUrl, { format: audioFormat }).pipe(res);
-
-})
+});
 
 /* ---- Helper Functions ---- */
 async function askGPT(query) {
@@ -192,10 +157,16 @@ async function askGPT(query) {
     messages: [
       {
         role: "user",
-        content: query
-      }
+        content: query,
+      },
     ],
     model: "gpt-4o",
   });
   return openAIResponse;
-};
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}

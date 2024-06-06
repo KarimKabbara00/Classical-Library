@@ -18,7 +18,7 @@ function ExploreWorks(props) {
         <div className="exploreCard">
             <div className="exploreButton" onClick={changeArrowSVG}>
                 <span>Explore Works</span>
-                <img id="arrow-img" src={arrowSVG} width="25px" />
+                <img alt="explore-arrow" src={arrowSVG} width="25px" />
             </div>
 
             <div className="exploreGenres">

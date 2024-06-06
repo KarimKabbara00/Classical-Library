@@ -1,11 +1,15 @@
+.mainApp {
+  height: 100%;
+}
+
 .navBar {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #a52a2a;
   padding: 0.5rem 0rem;
   z-index: 100;
-  position: relative;
 }
 
 .navTitle {
@@ -28,6 +32,7 @@
   padding: 0rem 0.4rem;
   border: 1px solid brown;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .navButton:hover {
@@ -35,6 +40,7 @@
   border: 1px solid #808080;
   border-radius: 10px;
   outline: 1px solid #ccc;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .footer {
@@ -49,7 +55,7 @@
 
 .footerDetails {
   display: flex;
-  gap: 0rem 2rem;
+  gap: 0rem 1rem;
   color: white;
   font-size: 1.2rem;
   align-items: center;
@@ -59,6 +65,17 @@
 .footerSVG {
   margin-top: 0.3rem;
   cursor: pointer;
+  border: 1px solid brown;
+  border-radius: 10px;
+  padding: 0.25rem;
+}
+
+.footerSVG:hover {
+  background-color: rgba(128, 128, 128, 0.5);
+  border: 1px solid #808080;
+  border-radius: 10px;
+  outline: 1px solid #ccc;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 

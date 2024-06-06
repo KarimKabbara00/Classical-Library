@@ -8,12 +8,12 @@ function Card(props) {
     }
 
     return (
-        <a onClick={goToComposerPage} className="searchResultLink">
+        <span onClick={goToComposerPage} className="searchResultLink">
             <div className="searchResultItem">
-                <img className="searchResultImage" src={props.compPortrait} width="100px" />
+                <img className="searchResultImage" alt="composer portrait" src={props.compPortrait} width="100px" />
                 <span className="searchResultName">{props.compName}</span>
             </div>
-        </a>
+        </span>
     )
 
 }

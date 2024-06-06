@@ -8,7 +8,7 @@ function GenreCard(props) {
     }
 
     return (
-        <a onClick={viewWorksByGenre} className="genreCard">{props.genre}</a>
+        <span onClick={viewWorksByGenre} className="genreCard">{props.genre}</span>
     )
 }
 

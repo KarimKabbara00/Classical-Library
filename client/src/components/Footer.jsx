@@ -8,9 +8,9 @@ function Footer() {
         <div className="footer">
             <div className="footerDetails">
                 <span>&copy; Karim Kabbara 2024</span>
-                <a href="https://www.linkedin.com/in/karim-kabbara/" target="_blank" rel="noopener noreferrer"><img className="footerSVG" src={linkedIn} width="25px" /></a>
-                <a href="https://github.com/KarimKabbara00/Classical-Library" target="_blank" rel="noopener noreferrer"><img className="footerSVG" src={github} width="25px" /></a>
-                <a href="https://karimkabbara00.github.io/" target="_blank" rel="noopener noreferrer"><img className="footerSVG" src={portfolio} width="25px" /></a>
+                <a href="https://www.linkedin.com/in/karim-kabbara/" target="_blank" rel="noopener noreferrer"><img alt="linkedIn" className="footerSVG" src={linkedIn} width="25px" /></a>
+                <a href="https://github.com/KarimKabbara00/Classical-Library" target="_blank" rel="noopener noreferrer"><img alt="github" className="footerSVG" src={github} width="25px" /></a>
+                <a href="https://karimkabbara00.github.io/" target="_blank" rel="noopener noreferrer"><img alt="portfolio" className="footerSVG" src={portfolio} width="25px" /></a>
             </div>
         </div>
     )

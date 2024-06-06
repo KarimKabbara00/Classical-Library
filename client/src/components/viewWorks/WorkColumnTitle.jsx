@@ -10,8 +10,9 @@ function WorkColumnTitle(props) {
     const [arrowSVG, setArrowSVG] = useState(arrowRight);
 
     function changeSVGIcon() {
-        setArrowPressed(!arrowPressed)
-        !arrowPressed ? setArrowSVG(arrowDown) : setArrowSVG(arrowUp)
+        setArrowPressed(!arrowPressed);
+        !arrowPressed ? setArrowSVG(arrowDown) : setArrowSVG(arrowUp);
+        props.sortWorks();
     }
 
     return (

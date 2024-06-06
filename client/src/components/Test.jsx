@@ -1,52 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { useSprings, animated } from '@react-spring/web';
+import React, { useState } from 'react';
 
-const UpDownImageAnimation = () => {
-  const [toggle, setToggle] = useState(false);
+const FillableDiv = () => {
+  const [fillColor, setFillColor] = useState('transparent');
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [fillWidth, setFillWidth] = useState(0);
 
-  const upConfig = { tension: 200, friction: 20 }; // Faster config
-  const downConfig = { tension: 100, friction: 30 }; // Slower config
+  const handleMouseDown = () => {
+    setIsMouseDown(true);
+  };
 
-  const images = [
-    "https://via.placeholder.com/150",
-    "https://via.placeholder.com/150",
-    "https://via.placeholder.com/150"
-  ];
+  const handleMouseUp = () => {
+    setIsMouseDown(false);
+  };
 
-  const springs = useSprings(
-    images.length,
-    images.map((_, i) => ({
-      to: { transform: toggle ? 'translateY(0%)' : 'translateY(100%)' },
-      from: { transform: 'translateY(0%)' },
-      config: toggle ? upConfig : downConfig,
-      delay: i * 300 // Stagger the animations by 300ms
-    }))
-  );
+  const handleMouseMove = (event) => {
+    if (isMouseDown) {
+      const div = event.target;
+      const rect = div.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const fillPercentage = (mouseX / rect.width) * 100;
+      setFillWidth(fillPercentage);
+      div.style.background = `linear-gradient(to right, ${fillColor} ${fillPercentage}%, transparent ${fillPercentage}%)`;
+    }
+  };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setToggle(prev => !prev);
-    }, 2000); // Toggle every 2 seconds
-    return () => clearInterval(interval);
-  }, []);
+  const handleColorChange = (event) => {
+    setFillColor(event.target.value);
+  };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
-      {springs.map((props, index) => (
-        <animated.img
-          key={index}
-          src={images[index]}
-          alt={`Animated ${index + 1}`}
-          style={{
-            width: '150px',
-            height: '150px',
-            margin: '10px',
-            ...props,
-          }}
-        />
-      ))}
+    <div
+      className="fillable-div"
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseMove={handleMouseMove}
+    >
+      <input type="color" value={fillColor} onChange={handleColorChange} />
     </div>
   );
 };
 
-export default UpDownImageAnimation;
+export default FillableDiv;

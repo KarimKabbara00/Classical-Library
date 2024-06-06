@@ -1,39 +1,56 @@
 import React, { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components//Footer";
-import Home from "./pages/Home"
-import About from "./pages/About"
-import SearchResults from "./pages/SearchResults"
-import ViewComposer from "./pages/ViewComposer"
+import Home from "./pages/Home";
+import About from "./pages/About";
+import SearchResults from "./pages/SearchResults";
+import ViewComposer from "./pages/ViewComposer";
 import MusicPlayer from "./components/musicPlayer/MusicPlayer";
 import ViewWorks from "./pages/ViewWorks";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./css/main.css";
+import FillableDiv from "./components/Test";
 
 function App() {
-
-  // this state is passed across all components! // UNDO THIS!
-  const [loading, setLoading] = useState(false);
-
-  const [currentSong, setCurrentSong] = useState(null);
-  const [showMusicPlayer, setShowMusicPlayer] = useState(false);
+  /* -------------------------------- Music Player -------------------------------- */
+  const [currentSong, setCurrentSong] = useState({ title: "", composer: "", portrait: "" });
   const [audioObject, setAudioObject] = useState(null);
+  const [volume, setVolume] = useState(50); // volume in top level to keep state on unrender
+  const [showMusicPlayer, setShowMusicPlayer] = useState(false); // render or unrender music player
+  const [animInOut, setAnimInOut] = useState(true); // hide or show music player before render/unrender
+  function showOrHideMusicPlayer(showOrHide) {
+    setAnimInOut(showOrHide); // true shows it, false hides it
+    if (showOrHide === true) {
+      setShowMusicPlayer(true);
+    } else {
+      // hide
+      setTimeout(() => {
+        setShowMusicPlayer(false);
+        setCurrentSong({ title: "", composer: "", portrait: "" });
+        setAudioObject(null); // destroy object
+      }, 200);
+    }
+  }
+  /* -------------------------------- Music Player -------------------------------- */
 
   return (
-    <div>
-      <Header />
-      {showMusicPlayer && <MusicPlayer audioObject={audioObject}/>}
+    <div className="mainApp">
+      {showMusicPlayer && <MusicPlayer audioObject={audioObject} setAudioObject={setAudioObject} volume={volume} setVolume={setVolume} currentSong={currentSong} setCurrentSong={setCurrentSong} animInOut={animInOut} showOrHideMusicPlayer={showOrHideMusicPlayer} />}
       <BrowserRouter>
+        <Header />
         <Routes>
-          <Route path="/" element={<Home loading={loading} setLoading={setLoading} />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/search" element={<SearchResults loading={loading} setLoading={setLoading} />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/search" element={<SearchResults />} />
           <Route path="/viewComposer" element={<ViewComposer />} />
-          <Route path="/viewWorks" element={<ViewWorks audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} showMusicPlayer={showMusicPlayer} setShowMusicPlayer={setShowMusicPlayer} />} />
+          <Route
+            path="/viewWorks"
+            element={<ViewWorks audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} showOrHideMusicPlayer={showOrHideMusicPlayer} animInOut={animInOut} />}
+          />
+          <Route path="/about" element={<About />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
-      <Footer />
     </div>
-
   );
 }
 

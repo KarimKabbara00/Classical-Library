@@ -1,45 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%;">
 
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.svg" type="image/svg+xml" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="Web site created using create-react-app" />
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-  <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-  <title>React App</title>
+  <!-- <link rel="icon" href="../src/images/8thNote.svg" sizes="any" type="image/svg+xml"> -->
+  <title>Classical Library</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&family=Questrial&display=swap" rel="stylesheet">
   <style>
-    body.preload * {
-      animation-duration: 0s !important;
-      -webkit-animation-duration: 0s !important;
-      transition: background-color 0s, opacity 0s, color 0s, width 0s, height 0s, padding 0s, margin 0s !important;
+    * {
+      font-family: "Questrial", sans-serif;
+      font-style: normal;
     }
   </style>
-  <script>
-    setTimeout(function () {
-      document.body.className = "";
-    }, 500);
-  </script>
 </head>
 
-<body class="preload">
+<body class="preload" style="height: 100%;">
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
+  <div style="height: 100vh;" id="root"></div>
 </body>
 
 </html>
