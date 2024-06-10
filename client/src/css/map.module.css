@@ -16,15 +16,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 4rem;
     gap: 1rem 0rem;
     opacity: 0;
-    height: 88vh;
 }
 
 .mapBody {
-    height: 700px;
-    width: 80%;
+    height: 89vh;
+    width: 100%;
+    overflow: hidden;
 }
 
 .mapHeader {
@@ -34,44 +33,48 @@
     position: relative;
 }
 
-.infoIcon {
-    padding-top: 0.5rem;
+.infoParent {
+    width: 2.5rem;
+    height: 2.5rem;
+    position: absolute;
+    z-index: 10;
+    left: 15%;
+    top: 1.9%;
+    background-color: white;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.infoParent:hover {
+    background-color: #e2e2e2;
     cursor: pointer;
 }
 
-.infoIcon:hover+.infoWords {
+.infoParent:hover>.infoWords {
     opacity: 1;
+    visibility: visible;
 }
 
 .infoWords {
     opacity: 0;
-    transition: opacity 200ms ease-in-out;
+    visibility: hidden;
+    transition: all 200ms ease-in-out;
+    cursor: text;
     position: absolute;
     top: 0;
     bottom: 0;
-    margin-top: auto;
-    margin-bottom: auto;
+    left: 30%;
     margin-left: 2rem;
     font-size: 0.8rem;
     width: 28.25rem;
-    max-height: 1rem;
-    border: 0.1rem solid brown;
-    border-radius: 10px;
+    border-radius: 2px;
     background-color: white;
-    padding: 0.5rem 0.75rem 2rem 0.75rem;
+    padding: 0.45rem 0.2rem 1.9rem 0.7rem;
     z-index: 10;
-}
-
-.infoWords::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: -0.4rem;
-    transform: translateY(-50%);
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-    border-right: 5px solid #a52a2a;
-    /* Change the color as needed */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nameBox {

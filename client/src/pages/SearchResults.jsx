@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import classNames from "classnames";
-import FilterWorks from "../components/shared/FilterWorks";
+import FilterItems from "../components/shared/FilterItems";
 import Card from "../components/searchResults/Card";
 import Loading from "../components/Loading";
 import styles from "../css/searchResult.module.css";
@@ -121,8 +121,14 @@ function SearchResults() {
     [styles.applyFadeIn]: !showLoading,
   });
 
+  // screen height when loading or not
+  const dynamicHeight = {
+    minHeight: "90vh",
+    height: showLoading ? "90vh" : ""
+  };
+
   return (
-    <div className={styles.searchResMainBody}>
+    <div className={styles.searchResMainBody} style={dynamicHeight}>
       <div className={loadingStyling}>
         <Loading />
       </div>
@@ -138,15 +144,15 @@ function SearchResults() {
           )}
         </div>
         <div className={styles.searchResultBody}>
-          <FilterWorks filterFunction={filterComposers} />
+          <FilterItems filterItems={filterComposers} />
           <div className={styles.searchResultGrid}>
-            {
-              shownResults.map((composer) => {
-                return (
-                  <Card key={composer.id} compID={composer.id} compPortrait={composer.portrait} compName={composer.name} goToComp={goToComp} />
-                );
-              })
-            }
+            {shownResults.length === 0 ? (
+              <div className={styles.noResults}>No Results Found</div>
+            ) : (
+              shownResults.map((composer) => (
+                <Card key={composer.id} compID={composer.id} compPortrait={composer.portrait} compName={composer.name} goToComp={goToComp} />
+              ))
+            )}
           </div>
         </div>
       </div>}

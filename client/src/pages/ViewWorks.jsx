@@ -4,14 +4,15 @@ import axios from "axios";
 import classNames from "classnames";
 import WorkHeader from "../components/viewWorks/WorkHeader";
 import WorkCard from "../components/viewWorks/WorkCard";
-import FilterWorks from "../components/shared/FilterWorks";
+import FilterItems from "../components/shared/FilterItems";
 import Loading from "../components/Loading";
 import styles from "../css/viewWorks.module.css";
 import loadingStyles from "../css/loading.module.css";
 
 function ViewWorks(props) {
   const location = useLocation();
-  const { id, genre } = location.state;
+  var compID = location.state.id;
+  var genre = location.state.genre;
   const [allWorks, setAllWorks] = useState([]); // "immutable" works array
   const [shownWorks, setShownWorks] = useState([]); // these change based on the search bar. These are the works that are shown
   const [composer, setComposer] = useState("");
@@ -19,8 +20,10 @@ function ViewWorks(props) {
 
   const [showLoading, setShowLoading] = useState(true);
   useEffect(() => {
+    // if coming directly to this page, grab the ID from the url
+    compID = !compID ? window.location.href.split("id=")[1].split("&")[0] : compID;
     axios
-      .get(`http://localhost:3001/viewWorks?id=${id}&genre=${genre}`)
+      .get(`http://localhost:3001/viewWorks?id=${compID}&genre=${genre}`)
       .then(function (res) {
         setAllWorks(res.data.works);
         setShownWorks(res.data.works);
@@ -31,7 +34,7 @@ function ViewWorks(props) {
       .catch(function (err) {
         console.log(err);
       });
-  }, [id, genre]);
+  }, [compID, genre]);
 
   function filterWorks(filter) {
     if (!filter) {
@@ -75,8 +78,14 @@ function ViewWorks(props) {
     [styles.applyFadeIn]: !showLoading,
   });
 
+  // screen height when loading or not
+  const dynamicHeight = {
+    minHeight: "90vh",
+    height: showLoading ? "90vh" : ""
+  };
+
   return (
-    <div className={styles.worksMainBody}>
+    <div style={dynamicHeight}>
       <div className={loadingStyling}>
         <Loading />
       </div>
@@ -85,7 +94,7 @@ function ViewWorks(props) {
         <div className={styles.workTitle}>
           {genre} works by <span style={{ color: "brown" }}>{composer}</span>
         </div>
-        <FilterWorks filterWorks={filterWorks} />
+        <FilterItems filterItems={filterWorks} />
         <WorkHeader sortWorks={sortWorks} />
         {shownWorks.map((work, index) => {
           return (

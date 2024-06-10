@@ -13,14 +13,13 @@
 }
 
 .searchResMainBody {
-  height: 100vh;
-  overflow-y: scroll;
   display: flex;
   justify-content: center;
 }
 
 .searchResultParent {
   opacity: 0;
+  min-width: 83vw;
 }
 
 .searchResultTitle {
@@ -48,18 +47,22 @@
   display: grid;
   gap: 0rem 3rem;
   grid-template-columns: repeat(3, 1fr);
+  min-width: 80%;
 }
 
-.letterHeader {
+.noResults {
+  color: brown;
+  grid-column: 1 / -1; /*Span all cols*/
+  justify-self: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+/* .letterHeader {
   position: relative;
   width: inherit;
   border-bottom: 1px solid brown;
-}
-
-.searchResultLink {
-  text-decoration: none;
-  color: black;
-}
+} */
 
 .searchResultItem {
   display: flex;
@@ -90,32 +93,17 @@
   font-size: 1.5rem;
 }
 
-@media (max-width: 574px) {
-  .searchResultTitle {
-    font-size: 1.8rem;
-  }
-
-  .searchResultItem {
-    min-width: 25rem;
-    max-width: 25rem;
-  }
-
-  .searchResultName {
-    font-size: 1.55rem;
-  }
+.searchResultLink {
+  text-decoration: none;
+  color: black;
 }
 
-@media (max-width: 519px) {
-  .searchResultTitle {
-    font-size: 1.75rem;
+@media (max-width: 1280px) {
+  .searchResultGrid {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .searchResultItem {
-    min-width: 22rem;
-    max-width: 22rem;
-  }
-
-  .searchResultName {
-    font-size: 1.25rem;
+    width: 20rem;
   }
 }

@@ -6,8 +6,8 @@ import GenreCard from "./GenreCard";
 
 function ExploreWorks(props) {
 
-    const [arrowPressed, setArrowPressed] = useState(false);
-    const [arrowSVG, setArrowSVG] = useState(arrowRight);
+    const [arrowPressed, setArrowPressed] = useState(true);
+    const [arrowSVG, setArrowSVG] = useState(arrowDown);
 
     function changeArrowSVG() {
         setArrowPressed(!arrowPressed);

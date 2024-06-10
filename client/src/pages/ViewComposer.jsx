@@ -20,7 +20,9 @@ function ViewComposer() {
   var compID = location.state;
 
   useEffect(() => {
-    compID = !compID ? window.location.href.split("id=")[1] : compID; // if coming directly to this page, grab the ID from the url
+    // if coming directly to this page, grab the ID from the url
+    compID = !compID ? window.location.href.split("id=")[1] : compID;
+
     axios
       .get(`http://localhost:3001/viewComposer?id=${compID}`)
       .then(function (res) {
@@ -57,8 +59,13 @@ function ViewComposer() {
     [styles.applyFadeIn]: !showLoading,
   });
 
+  // screen height when loading or not
+  const dynamicHeight = {
+    height: showLoading ? "90vh" : "125vh"
+  };
+
   return (
-    <div style={{ height: "100vh" }}>
+    <div style={dynamicHeight}>
       <div className={loadingStyling}>
         <Loading />
       </div>

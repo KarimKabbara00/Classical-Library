@@ -12,15 +12,10 @@
   animation: fadeIn 500ms forwards 1;
 }
 
-.worksMainBody {
-  height: 100vh;
-  overflow-y: scroll;
-}
-
 .worksBody {
   display: flex;
   flex-direction: column;
-  margin-bottom: 5rem;
+  margin-bottom: 3rem;
   margin-top: 4rem;
   width: fit-content;
   margin-left: auto;

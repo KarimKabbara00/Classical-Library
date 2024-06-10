@@ -10,10 +10,10 @@ import styles from "../css/map.module.css"
 
 function Map() {
     const mapStyles = {
-        height: "93%",
+        height: "100%",
         width: "100%",
-        border: "2px solid black",
-        borderRadius: "10px"
+        // border: "2px solid black",
+        // borderRadius: "10px"
     };
 
     const defaultCenter = {
@@ -24,15 +24,16 @@ function Map() {
     const [pinData, setPinData] = useState([]);
     const [showLoading, setShowLoading] = useState(true);
     useEffect(() => {
-        axios.get("http://localhost:3001/api/mapMarkers")
-            .then(function (res) {
-                setPinData(res.data);
-                setShowLoading(false);
-            })
-            .catch(function (err) {
-                console.log(err)
-                setShowLoading(false);
-            });
+        setShowLoading(false);
+        // axios.get("http://localhost:3001/api/mapMarkers")
+        //     .then(function (res) {
+        //         setPinData(res.data);
+        //         setShowLoading(false);
+        //     })
+        //     .catch(function (err) {
+        //         console.log(err)
+        //         setShowLoading(false);
+        //     });
     }, [])
 
     // slide up or down loading
@@ -48,22 +49,18 @@ function Map() {
     });
 
     return (
-        <div style={{ height: "88vh" }}>
+        <div>
             <div className={loadingStyling}>
                 <Loading />
             </div>
             {!showLoading && <div className={contentStyling}>
-
-                <div className={styles.mapHeader}>
-                    <h1>Composer Map</h1>
-                    <div><Info /></div>
-                </div>
                 <div className={styles.mapBody}>
                     <LoadScript googleMapsApiKey="AIzaSyBMejuj6SyQbxx90HYBXAVCkeKj7YRoY2U">
                         <GoogleMap mapContainerStyle={mapStyles} zoom={2} center={defaultCenter}>
                             {pinData.map((pin, index) => {
                                 return <CustomMarker key={index} pinID={pin.composerID} pinName={pin.composerName} pinLat={pin.latitude} pinLng={pin.longitude} />
                             })}
+                            <div><Info /></div>
                         </GoogleMap>
                     </LoadScript>
                 </div>
