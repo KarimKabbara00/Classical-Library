@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../css/musicPlayer.css";
+import styles from "../../css/musicPlayer.module.css";
 
 function ProgressBar(props) {
 
@@ -35,7 +35,7 @@ function ProgressBar(props) {
     }
   };
 
-  return <div className="progressBar" style={progressBarFillStyle} onMouseDown={calcPercentage} onMouseUp={mouseReleased} onMouseMove={handleMouseMove}></div>
+  return <div className={styles.progressBar} style={progressBarFillStyle} onMouseDown={calcPercentage} onMouseUp={mouseReleased} onMouseMove={handleMouseMove}></div>
 }
 
 export default ProgressBar;

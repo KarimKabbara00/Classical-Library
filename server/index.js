@@ -4,15 +4,25 @@ import axios from "axios";
 import OpenAI from "openai";
 import * as dotenv from "dotenv";
 import cors from "cors";
-import https from "https";
-import fs from "fs";
 import ytdl from "ytdl-core";
+import pg from "pg";
+
 
 // import .env module and grab kv pairs
 dotenv.config();
 
 const app = express();
 const port = 3001;
+
+const db = new pg.Client({
+  user: "postgres",
+  host: "localhost",
+  database: "Classical_Library",
+  password: process.env.POSTGRES_PASSWORD,
+  port: 5432,
+});
+
+db.connect();
 
 /* ---- Middleware ---- */
 var logger = function (req, res, next) {
@@ -150,6 +160,14 @@ app.get("/music", async (req, res) => {
 
   ytdl(videoUrl, { format: audioFormat }).pipe(res);
 });
+
+/* Exposed API Endpoints */
+app.get("/api/mapMarkers", async (req, res) => {
+  const result = await db.query('Select * FROM public."Markers"');
+  const rows = result.rows;
+  await sleep(2000);
+  res.status(200).send(rows);
+})
 
 /* ---- Helper Functions ---- */
 async function askGPT(query) {

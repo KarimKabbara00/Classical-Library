@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../../css/viewWorks.css";
+import styles from "../../css/viewWorks.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay, faSpinner, faCircleStop } from "@fortawesome/free-solid-svg-icons";
 
@@ -46,10 +46,10 @@ function WorkCard(props) {
 
   return (
     <div id="workCardsList">
-      <div className="workCard" name="workCard">
+      <div className={styles.workCard} name="workCard">
         <span>{props.title}</span>
         <span>{props.genre}</span>
-        <div onClick={handleFetchAudio} className="playButton">
+        <div onClick={handleFetchAudio} className={styles.playButton}>
           <FontAwesomeIcon icon={svgIcon} className={svgIcon === faSpinner ? "fa-spin" : ""} style={{ color: "#a52a2a", fontSize: "2rem" }} />
         </div>
       </div>

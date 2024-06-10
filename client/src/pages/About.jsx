@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import "../css/about.css"
+import React, { useState } from "react";
+import styles from "../css/about.module.css"
 import arrowRight from "../images/arrow-right.svg"
 import arrowDown from "../images/arrow-down.svg"
 
@@ -23,7 +23,7 @@ function About() {
         animation: "hideSection 500ms 1",
     };
 
-    function changeArrowSVG(event){
+    function changeArrowSVG(event) {
         const name = event.target.getAttribute("name");
         if (name === "aboutMe") {
             setArrow1Pressed(!arrow1Pressed);
@@ -37,40 +37,40 @@ function About() {
         }
     }
 
-    return (<div className="mainBody">
-
-        <div className="sectionGroup">
-            <div name="aboutMe" className="sectionTitle" onClick={changeArrowSVG}>
-                <span name="aboutMe">About Me</span>
-                <img name="aboutMe" src={arrow1SVG} width="25px" alt="aboutMe" />
+    return (
+        <div className={styles.mainBody} style={{ height: "100vh" }}>
+            <div className={styles.sectionGroup}>
+                <div name="aboutMe" className={styles.sectionTitle} onClick={changeArrowSVG}>
+                    <span name="aboutMe">About Me</span>
+                    <img name="aboutMe" src={arrow1SVG} width="25px" alt="aboutMe" />
+                </div>
+                <span style={arrow1Pressed ? showCSS : hideCSS} className={styles.sectionDesc}>Just a dude that likes classical music.</span>
             </div>
-            <span style={arrow1Pressed ? showCSS : hideCSS} className="sectionDesc">Just a dude that likes classical music.</span>
-        </div>
 
-        <div className="sectionGroup">
-            <div name="apiUsage" className="sectionTitle" onClick={changeArrowSVG}>
-                <span name="apiUsage">API Usage</span>
-                <img name="apiUsage" src={arrow2SVG} width="25px" alt="apiUsage"/>
+            <div className={styles.sectionGroup}>
+                <div name="apiUsage" className={styles.sectionTitle} onClick={changeArrowSVG}>
+                    <span name="apiUsage">API Usage</span>
+                    <img name="apiUsage" src={arrow2SVG} width="25px" alt="apiUsage" />
+                </div>
+                <span style={arrow2Pressed ? showCSS : hideCSS} className={styles.sectionDesc}>
+                    <ul>
+                        <li>OpenOpus</li>
+                        <li>OpenAI's ChatGPT</li>
+                    </ul>
+                </span>
             </div>
-            <span style={arrow2Pressed ? showCSS : hideCSS} className="sectionDesc">
-                <ul>
-                    <li>OpenOpus</li>
-                    <li>OpenAI's ChatGPT</li>
-                </ul>
-            </span>
-        </div>
 
-        <div className="sectionGroup">
-            <div name="dataRel" className="sectionTitle" onClick={changeArrowSVG}>
-                <span name="dataRel">Data Reliability</span>
-                <img name="dataRel" src={arrow3SVG} width="25px" alt="dataRel"/>
+            <div className={styles.sectionGroup}>
+                <div name="dataRel" className={styles.sectionTitle} onClick={changeArrowSVG}>
+                    <span name="dataRel">Data Reliability</span>
+                    <img name="dataRel" src={arrow3SVG} width="25px" alt="dataRel" />
+                </div>
+                <span style={arrow3Pressed ? showCSS : hideCSS} className={styles.sectionDesc}>
+                    OpenAI's ChatGPT is used to generate a description for any given composer. You will notice that the description will
+                    differ each time the page is loaded. Please remember that generative AI can make mistakes and that the data could be inaccurate.
+                </span>
             </div>
-            <span style={arrow3Pressed ? showCSS : hideCSS} className="sectionDesc">
-                OpenAI's ChatGPT is used to generate a description for any given composer. You will notice that the description will
-                differ each time the page is loaded. Please remember that generative AI can make mistakes and that the data could be inaccurate.
-            </span>
-        </div>
-    </div>)
+        </div>)
 }
 
 

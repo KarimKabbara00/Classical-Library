@@ -1,5 +1,5 @@
 import React from "react";
-import "../../css/searchResult.css"
+import styles from "../../css/searchResult.module.css"
 
 function Card(props) {
 
@@ -8,10 +8,10 @@ function Card(props) {
     }
 
     return (
-        <span onClick={goToComposerPage} className="searchResultLink">
-            <div className="searchResultItem">
-                <img className="searchResultImage" alt="composer portrait" src={props.compPortrait} width="100px" />
-                <span className="searchResultName">{props.compName}</span>
+        <span onClick={goToComposerPage} className={styles.searchResultLink}>
+            <div className={styles.searchResultItem}>
+                <img className={styles.searchResultImage} alt="composer portrait" src={props.compPortrait} width="100px" />
+                <span className={styles.searchResultName}>{props.compName}</span>
             </div>
         </span>
     )

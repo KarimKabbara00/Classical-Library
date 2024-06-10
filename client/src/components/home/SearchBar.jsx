@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Dropdown from "./Dropdown";
 import composerList from "../../composerList";
-import "../../css/homepage.css";
+import styles from "../../css/homepage.module.css"
 
 function SearchBar(props) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,11 +26,11 @@ function SearchBar(props) {
   return (
     <div>
       <form method="POST" onSubmit={onQuery} autoComplete="off" id="inputForm">
-        <div className="searchBarBody">
-          <label className="searchBarTitle" htmlFor="queryComposer">
+        <div className={styles.searchBarBody}>
+          <label className={styles.searchBarTitle} htmlFor="queryComposer">
             Search for a composer...
           </label>
-          <input onChange={handleChange} className="searchBarEntry" type="text" name="searchBar" value={searchTerm} required /> {/* id="queryComposer" */}
+          <input onChange={handleChange} className={styles.searchBarEntry} type="text" name="searchBar" value={searchTerm} required /> {/* id="queryComposer" */}
           {optionsExist && props.inputFocused && <Dropdown options={dropdownList} />}
         </div>
       </form>

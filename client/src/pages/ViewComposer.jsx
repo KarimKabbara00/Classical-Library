@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import classNames from "classnames";
 import ComposerImage from "../components/viewComposer/ComposerImage";
 import ComposerDescription from "../components/viewComposer/ComposerDescription";
 import ComposerName from "../components/viewComposer/ComposerName";
@@ -8,8 +9,8 @@ import ComposerFacts from "../components/viewComposer/ComposerFacts";
 import ExploreWorks from "../components/viewComposer/ExploreWorks";
 import Timeline from "../components/viewComposer/Timeline";
 import Loading from "../components/Loading";
-import "../css/viewComposer.css";
-import "../css/loading.css";
+import styles from "../css/viewComposer.module.css";
+import loadingStyles from "../css/loading.module.css";
 
 function ViewComposer() {
   const location = useLocation();
@@ -44,26 +45,32 @@ function ViewComposer() {
     navigate(`../viewWorks?id=${allData.composerData.id}&genre=${genre}`, { state: { id: allData.composerData.id, genre: genre } });
   }
 
-  // fade in content when done loading
-  const fadeIn = !showLoading ? { animation: "fadeIn 500ms forwards 1" } : { animation: "none" };
-
   // slide up or down loading
-  const upOrDown = showLoading ? { animation: "slideDown 300ms forwards 1" } : { animation: "slideUp 300ms forwards 1" };
+  const loadingStyling = classNames({
+    [loadingStyles.loadingParent]: true,
+    [loadingStyles.applySlideDown]: showLoading,
+    [loadingStyles.applySlideUp]: !showLoading,
+  });
+
+  const contentStyling = classNames({
+    [styles.viewComposerMainBody]: true,
+    [styles.applyFadeIn]: !showLoading,
+  });
 
   return (
-    <div>
-      <div style={upOrDown} className="loadingParent">
+    <div style={{ height: "100vh" }}>
+      <div className={loadingStyling}>
         <Loading />
       </div>
 
-      {!showLoading && <div style={fadeIn} className="viewComposerMainBody">
-        <div className="left">
-          <div className="composerBody">
-            <div className="composerHeader">
+      {!showLoading && <div className={contentStyling}>
+        <div className={styles.left}>
+          <div className={styles.composerBody}>
+            <div className={styles.composerHeader}>
               <ComposerName complete_name={allData.composerData.complete_name} />
               <ComposerFacts born={allData.born} died={allData.died} epoch={allData.composerData.epoch} />
             </div>
-            <div className="composerImageAndDescription">
+            <div className={styles.composerImageAndDescription}>
               <ComposerImage portrait={allData.composerData.portrait} />
               <ComposerDescription description={allData.description} />
             </div>
@@ -71,7 +78,7 @@ function ViewComposer() {
           <ExploreWorks genres={allData.genreData} viewWorksByGenre={viewWorksByGenre} />
         </div>
 
-        <div className="right">
+        <div className={styles.right}>
           <Timeline events={allData.timeline} />
         </div>
       </div>}

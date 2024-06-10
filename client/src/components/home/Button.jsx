@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../css/homepage.css"
+import styles from "../../css/homepage.module.css"
 import allWhite from "../../images/all-white.svg"
 import allBrown from "../../images/all-brown.svg"
 import shuffleWhite from "../../images/shuffle-white.svg"
@@ -16,7 +16,7 @@ function Button(props) {
 
     function changeSVGHover() {
         setIsHovered(!isHovered);
-        isHovered ? setSVGIcon(svgs[0]) : setSVGIcon(svgs[1]);
+        !isHovered ? setSVGIcon(svgs[1]) : setSVGIcon(svgs[0]);
     }
 
     function grabAllComposers() {
@@ -25,7 +25,7 @@ function Button(props) {
 
     return (
         <form method="POST" autoComplete="off">
-            <button type="button" className="button" onMouseEnter={changeSVGHover} onMouseLeave={changeSVGHover} onClick={grabAllComposers}><img className="buttonImage" alt={props.buttonText} src={svgIcon} width="20px" />{props.buttonText}</button>
+            <button type="button" className={styles.button} onMouseEnter={changeSVGHover} onMouseLeave={changeSVGHover} onClick={grabAllComposers}><img className={styles.buttonImage} alt={props.buttonText} src={svgIcon} width="20px" />{props.buttonText}</button>
         </form>
     )
 

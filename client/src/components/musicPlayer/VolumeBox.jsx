@@ -1,5 +1,5 @@
 import React from "react";
-import "../../css/musicPlayer.css";
+import styles from "../../css/musicPlayer.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Stack from "@mui/material/Stack";
 import Slider from "@mui/material/Slider";
@@ -18,13 +18,13 @@ function VolumeBox(props) {
   });
 
   return (
-    <animated.div style={anim} onMouseEnter={props.toggleVolumeBox} onMouseLeave={props.toggleVolumeBox} className="volumeBox">
+    <animated.div style={anim} onMouseEnter={props.toggleVolumeBox} onMouseLeave={props.toggleVolumeBox} className={styles.volumeBox}>
       <div>
         <FontAwesomeIcon icon={props.volumeIcon} />
       </div>
       <div>
         <Stack sx={{ height: 75 }} spacing={1} direction="row">
-          <Slider onChange={changeVolume} aria-label="Volume" orientation="vertical" value={props.volume} className="slider" />
+          <Slider onChange={changeVolume} aria-label="Volume" orientation="vertical" value={props.volume} className={styles.slider} />
         </Stack>
       </div>
     </animated.div>

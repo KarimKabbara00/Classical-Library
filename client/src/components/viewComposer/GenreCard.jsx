@@ -1,5 +1,5 @@
 import React from "react";
-import "../../css/viewComposer.css";
+import styles from "../../css/viewComposer.module.css";
 
 function GenreCard(props) {
 
@@ -8,7 +8,7 @@ function GenreCard(props) {
     }
 
     return (
-        <span onClick={viewWorksByGenre} className="genreCard">{props.genre}</span>
+        <span onClick={viewWorksByGenre} className={styles.genreCard}>{props.genre}</span>
     )
 }
 

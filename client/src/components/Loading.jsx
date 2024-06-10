@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../css/loading.css";
+import styles from "../css/loading.module.css";
 import eighthNote from "../images/8thNote.svg";
 import { animated, useSprings } from "@react-spring/web";
 
@@ -28,11 +28,11 @@ function Loading(props) {
   }, []);
 
   return (
-    <div className="loading">
-      <span id="loadingTitle" className="loadingTitle">
+    <div className={styles.loading}>
+      <span id="loadingTitle" className={styles.loadingTitle}>
         Grabbing all the data...
       </span>
-      <div className="loadingGraphic">
+      <div className={styles.loadingGraphic}>
         <animated.img style={{ ...anims[0] }} id="note1" src={eighthNote} width="50px" />
         <animated.img style={{ ...anims[1] }} id="note2" src={eighthNote} width="50px" />
         <animated.img style={{ ...anims[2] }} id="note3" src={eighthNote} width="50px" />

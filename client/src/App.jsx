@@ -3,13 +3,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components//Footer";
 import Home from "./pages/Home";
+import Map from "./pages/Map";
 import About from "./pages/About";
 import SearchResults from "./pages/SearchResults";
 import ViewComposer from "./pages/ViewComposer";
 import MusicPlayer from "./components/musicPlayer/MusicPlayer";
 import ViewWorks from "./pages/ViewWorks";
-import "./css/main.css";
-import FillableDiv from "./components/Test";
+import styles from "./css/main.module.css";
 
 function App() {
   /* -------------------------------- Music Player -------------------------------- */
@@ -34,12 +34,13 @@ function App() {
   /* -------------------------------- Music Player -------------------------------- */
 
   return (
-    <div className="mainApp">
+    <div className={styles.mainApp}>
       {showMusicPlayer && <MusicPlayer audioObject={audioObject} setAudioObject={setAudioObject} volume={volume} setVolume={setVolume} currentSong={currentSong} setCurrentSong={setCurrentSong} animInOut={animInOut} showOrHideMusicPlayer={showOrHideMusicPlayer} />}
       <BrowserRouter>
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/map" element={<Map />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/viewComposer" element={<ViewComposer />} />
           <Route

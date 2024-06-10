@@ -1,10 +1,11 @@
 import React from "react"
-import "../../css/homepage.css"
+import styles from "../../css/homepage.module.css"
+
 
 function QueryError(props) {
     return (
-        <div className="errorMessage">
-            <span className="query">{props.errorMessage}</span>
+        <div className={styles.errorMessage}>
+            <span className={styles.query}>{props.errorMessage}</span>
         </div>
     )
 }

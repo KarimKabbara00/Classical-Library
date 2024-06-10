@@ -1,9 +1,9 @@
 import React from "react";
-import "../../css/viewComposer.css";
+import styles from "../../css/viewComposer.module.css";
 
 function ComposerDescription(props) {
     return (
-        <span className="composerDescription">{props.description}</span>
+        <span className={styles.composerDescription}>{props.description}</span>
     )
 }
 

@@ -1,9 +1,9 @@
 import React from "react";
-import "../../css/viewComposer.css";
+import styles from "../../css/viewComposer.module.css";
 
 function ComposerFacts(props) {
     return (
-        <span className="composerFacts">
+        <span className={styles.composerFacts}>
             <b>Born: </b>{props.born} |&nbsp;
             <b>Died: </b>{props.died} |&nbsp;
             <b>Epoch: </b>{props.epoch}

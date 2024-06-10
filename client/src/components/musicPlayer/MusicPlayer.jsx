@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faBackward, faForward, faVolumeXmark, faVolumeLow, faVolumeHigh, faX } from "@fortawesome/free-solid-svg-icons";
-import "../../css/musicPlayer.css";
+import styles from "../../css/musicPlayer.module.css";
 import VolumeBox from "./VolumeBox";
 import ProgressBar from "./ProgressBar";
 import { animated, useSpring } from "@react-spring/web";
@@ -190,33 +190,33 @@ function MusicPlayer(props) {
   });
 
   return (
-    <animated.div style={anim} className="musicPlayerBody" onMouseEnter={toggleVolBoxShown} onMouseLeave={toggleVolBoxShown}>
-      <div className="musicPlayer">
-        <div className="musicPlayerBox">
-          <div className="composerPortrait">
+    <animated.div style={anim} className={styles.musicPlayerBody} onMouseEnter={toggleVolBoxShown} onMouseLeave={toggleVolBoxShown}>
+      <div className={styles.musicPlayer}>
+        <div className={styles.musicPlayerBox}>
+          <div className={styles.composerPortrait}>
             <img src={props.currentSong.portrait} alt="composer portrait" width="95px" />
           </div>
-          <div className="songInfo">
-            <div className="songHeader">
-              <div className="songTitle" style={{ justifyContent: animateTitle ? "flex-start" : "center" }}>
-                <div className="songTitleAnim" style={currentCarouselStyling}>
+          <div className={styles.songInfo}>
+            <div className={styles.songHeader}>
+              <div className={styles.songTitle} style={{ justifyContent: animateTitle ? "flex-start" : "center" }}>
+                <div className={styles.songTitleAnim} style={currentCarouselStyling}>
                   {props.currentSong.title}
                 </div>
                 {animateTitle && ( // only render a second title if the text is long enough
-                  <div className="songTitleAnim" style={currentCarouselStyling}>
+                  <div className={styles.songTitleAnim} style={currentCarouselStyling}>
                     {props.currentSong.title}
                   </div>
                 )}
               </div>
-              <div className="songArtist">{props.currentSong.composer}</div>
+              <div className={styles.songArtist}>{props.currentSong.composer}</div>
             </div>
-            <div className="songPlayer">
-              <div className="songDuration">
-                <div className="songTime">{timeElapsed}</div>
+            <div className={styles.songPlayer}>
+              <div className={styles.songDuration}>
+                <div className={styles.songTime}>{timeElapsed}</div>
                 <ProgressBar progressPercentage={progressPercentage} setProgressPercentage={setProgressPercentage} updateTime={updateTime} />
-                <div className="songTime">{remainingTime}</div>
+                <div className={styles.songTime}>{remainingTime}</div>
               </div>
-              <div className="controls">
+              <div className={styles.controls}>
                 <FontAwesomeIcon onMouseEnter={changeRewindColor} onMouseLeave={changeRewindColor} onClick={rewind10} icon={faBackward} style={rewindStyle} />
                 <FontAwesomeIcon onMouseEnter={changePpColor} onMouseLeave={changePpColor} onClick={changePpIcon} icon={ppIcon} style={ppStyle} />
                 <FontAwesomeIcon onMouseEnter={changeForwardColor} onMouseLeave={changeForwardColor} onClick={fastforward10} icon={faForward} style={forwardStyle} />

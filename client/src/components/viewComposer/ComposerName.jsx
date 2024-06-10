@@ -1,9 +1,9 @@
 import React from "react";
-import "../../css/viewComposer.css";
+import styles from "../../css/viewComposer.module.css";
 
 function ComposerName(props) {
     return (
-        <span className="composerName">{props.complete_name}</span>
+        <span className={styles.composerName}>{props.complete_name}</span>
     )
 }
 

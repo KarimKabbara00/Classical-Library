@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../css/viewComposer.css";
+import styles from "../../css/viewComposer.module.css";
 import arrowRight from "../../images/arrow-right.svg"
 import arrowDown from "../../images/arrow-down.svg"
 import GenreCard from "./GenreCard";
@@ -15,13 +15,13 @@ function ExploreWorks(props) {
     }
 
     return (
-        <div className="exploreCard">
-            <div className="exploreButton" onClick={changeArrowSVG}>
+        <div className={styles.exploreCard}>
+            <div className={styles.exploreButton} onClick={changeArrowSVG}>
                 <span>Explore Works</span>
                 <img alt="explore-arrow" src={arrowSVG} width="25px" />
             </div>
 
-            <div className="exploreGenres">
+            <div className={styles.exploreGenres}>
                 {arrowPressed && props.genres.map((genre, index) => {
                     return <GenreCard viewWorksByGenre={props.viewWorksByGenre} key={index} genre={genre} />
                 })}

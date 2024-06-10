@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import classNames from "classnames";
 import WorkHeader from "../components/viewWorks/WorkHeader";
 import WorkCard from "../components/viewWorks/WorkCard";
-import FilterWorks from "../components/viewWorks/FilterWorks";
+import FilterWorks from "../components/shared/FilterWorks";
 import Loading from "../components/Loading";
-import "../css/viewWorks.css";
-import "../css/loading.css";
+import styles from "../css/viewWorks.module.css";
+import loadingStyles from "../css/loading.module.css";
 
 function ViewWorks(props) {
   const location = useLocation();
@@ -54,24 +55,34 @@ function ViewWorks(props) {
     }
   }
 
-  function sortWorks() {
-    console.log("sorting!");
+  function sortWorks(column, ascending) {
+    ascending = ascending ? -1 : 1;
+    const sortedWorks = [...shownWorks].sort(function (a, b) { // [...shownWorks] creates a copy so react can rerender
+      return ascending * a[column].localeCompare(b[column]);
+    })
+    setShownWorks(sortedWorks);
   }
 
-  // fade in content when done loading
-  const fadeIn = !showLoading ? { animation: "fadeIn 500ms forwards 1" } : { animation: "none" };
-
   // slide up or down loading
-  const upOrDown = showLoading ? { animation: "slideDown 300ms forwards 1" } : { animation: "slideUp 300ms forwards 1" };
+  const loadingStyling = classNames({
+    [loadingStyles.loadingParent]: true,
+    [loadingStyles.applySlideDown]: showLoading,
+    [loadingStyles.applySlideUp]: !showLoading,
+  });
+
+  const contentStyling = classNames({
+    [styles.worksBody]: true,
+    [styles.applyFadeIn]: !showLoading,
+  });
 
   return (
-    <div>
-      <div style={upOrDown} className="loadingParent">
+    <div className={styles.worksMainBody}>
+      <div className={loadingStyling}>
         <Loading />
       </div>
 
-      {!showLoading && <div style={fadeIn} className="worksBody">
-        <div className="workTitle">
+      {!showLoading && <div className={contentStyling}>
+        <div className={styles.workTitle}>
           {genre} works by <span style={{ color: "brown" }}>{composer}</span>
         </div>
         <FilterWorks filterWorks={filterWorks} />

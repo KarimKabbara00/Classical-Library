@@ -4,8 +4,9 @@ import SearchBar from "../components/home/SearchBar";
 import Button from "../components/home/Button";
 import QueryError from "../components/home/QueryError";
 import composerList from "../composerList";
+import styles from "../css/homepage.module.css"
 
-function Home(props) {
+function Home() {
   const navigate = useNavigate();
 
   // circular navigate. Home sends query to SearchResults. If query is fine,
@@ -39,13 +40,18 @@ function Home(props) {
   }, []);
 
   return (
-    <div className="searchAndButtons" onClick={handleClick}>
-      <SearchBar inputFocused={inputFocused} onQuery={onQuery} />
-      <div className="buttonParent">
-        <Button buttonType="Shuffle" buttonText="Shuffle Composers" buttonAction={randomComposer} />
-        <Button buttonType="All" buttonText="View All Composers" buttonAction={onQuery} />
+    <div className={styles.homeBody} style={{ height: "100vh" }}>
+      <div className={styles.searchAndButtons} onClick={handleClick}>
+        <SearchBar inputFocused={inputFocused} onQuery={onQuery} />
+        <div className={styles.buttonParent}>
+          <Button buttonType="Shuffle" buttonText="Shuffle Composers" buttonAction={randomComposer} />
+          <Button buttonType="All" buttonText="View All Composers" buttonAction={onQuery} />
+        </div>
+        {error && <QueryError errorMessage={errorMsg} />}
       </div>
-      {error && <QueryError errorMessage={errorMsg} />}
+      <div>
+        other stuff
+      </div>
     </div>
   );
 }

@@ -1,8 +1,8 @@
 import React from "react";
-import "../../css/viewComposer.css";
+import styles from "../../css/viewComposer.module.css";
 
 function ComposerImage(props) {
-  return <img alt="composer portrait" className="composerImage" src={props.portrait} />;
+  return <img alt="composer portrait" className={styles.composerImage} src={props.portrait} />;
 }
 
 export default ComposerImage;

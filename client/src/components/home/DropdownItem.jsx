@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../../css/homepage.css";
+import styles from "../../css/homepage.module.css"
 
 function DropdownItem(props) {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ function DropdownItem(props) {
   }
 
   return (
-    <div onClick={goToComposer} name="ddlItem" className="option">
+    <div onClick={goToComposer} name="ddlItem" className={styles.option}>
       {props.compName}
     </div>
   );
