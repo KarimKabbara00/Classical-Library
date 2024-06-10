@@ -14,15 +14,15 @@ dotenv.config();
 const app = express();
 const port = 3001;
 
-const db = new pg.Client({
-  user: "postgres",
-  host: "localhost",
-  database: "Classical_Library",
-  password: process.env.POSTGRES_PASSWORD,
-  port: 5432,
-});
+// const db = new pg.Client({
+//   user: "postgres",
+//   host: "localhost",
+//   database: "Classical_Library",
+//   password: process.env.POSTGRES_PASSWORD,
+//   port: 5432,
+// });
 
-db.connect();
+// db.connect();
 
 /* ---- Middleware ---- */
 var logger = function (req, res, next) {
