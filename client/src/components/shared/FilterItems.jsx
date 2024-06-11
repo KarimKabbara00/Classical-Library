@@ -21,7 +21,7 @@ function FilterItems(props) {
 
     return (
         <div className={styles.workFilter}>
-            <input className={styles.workFilterInput} type="text" value={filter} placeholder="filter titles here..." onInput={filterItems} />
+            <input className={styles.workFilterInput} type="text" value={filter} placeholder={props.placeholderText} onInput={filterItems} />
             {filter && <div className={styles.clearIcon} onClick={clearFilter}><FontAwesomeIcon icon={faX} /></div>}
         </div>
     )

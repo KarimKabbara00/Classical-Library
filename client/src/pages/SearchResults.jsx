@@ -144,7 +144,7 @@ function SearchResults() {
           )}
         </div>
         <div className={styles.searchResultBody}>
-          <FilterItems filterItems={filterComposers} />
+          <FilterItems filterItems={filterComposers} placeholderText={"Filter composers here..."}/>
           <div className={styles.searchResultGrid}>
             {shownResults.length === 0 ? (
               <div className={styles.noResults}>No Results Found</div>

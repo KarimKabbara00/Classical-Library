@@ -19,7 +19,6 @@
 
 .searchResultParent {
   opacity: 0;
-  min-width: 83vw;
 }
 
 .searchResultTitle {
@@ -52,7 +51,8 @@
 
 .noResults {
   color: brown;
-  grid-column: 1 / -1; /*Span all cols*/
+  grid-column: 1 / -1;
+  /*Span all cols*/
   justify-self: center;
   font-size: 1.25rem;
   font-weight: bold;

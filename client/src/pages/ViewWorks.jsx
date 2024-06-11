@@ -94,7 +94,7 @@ function ViewWorks(props) {
         <div className={styles.workTitle}>
           {genre} works by <span style={{ color: "brown" }}>{composer}</span>
         </div>
-        <FilterItems filterItems={filterWorks} />
+        <FilterItems filterItems={filterWorks} placeholderText={"Filter works here..."} />
         <WorkHeader sortWorks={sortWorks} />
         {shownWorks.map((work, index) => {
           return (

@@ -61,7 +61,7 @@ function ViewComposer() {
 
   // screen height when loading or not
   const dynamicHeight = {
-    height: showLoading ? "90vh" : "125vh"
+    height: showLoading ? "90vh" : ""
   };
 
   return (
