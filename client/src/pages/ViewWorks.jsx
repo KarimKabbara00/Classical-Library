@@ -8,6 +8,9 @@ import FilterItems from "../components/shared/FilterItems";
 import Loading from "../components/Loading";
 import styles from "../css/viewWorks.module.css";
 import loadingStyles from "../css/loading.module.css";
+import BackToTop from "../components/shared/BackToTop";
+import deburr from 'lodash/deburr';
+
 
 function ViewWorks(props) {
   const location = useLocation();
@@ -20,6 +23,12 @@ function ViewWorks(props) {
 
   const [showLoading, setShowLoading] = useState(true);
   useEffect(() => {
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    })
+
     // if coming directly to this page, grab the ID from the url
     compID = !compID ? window.location.href.split("id=")[1].split("&")[0] : compID;
     axios
@@ -43,9 +52,10 @@ function ViewWorks(props) {
     } else {
       // filter works based on input
       let filteredWorks = allWorks.filter((work) => {
+        // create modified titles to relax constraint on matching query to title
         function matchQueryToTitle(title, query) {
-          // create modified titles to relax constraint on matching query to title
-          title = title.toLocaleLowerCase();
+          // remove diactritcs and accents
+          title = deburr(title).toLocaleLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
           let modifiedTitleA = title.replace("no. ", "").replaceAll("op. ", "").replaceAll(".", "").replaceAll(",", "").replaceAll('"', "").replace("in ", ""); // as basic as possible
           let modifiedTitleB = title.replace("no. ", "").replaceAll("op. ", "").replaceAll(".", "").replaceAll(",", "").replaceAll('"', ""); // keep 'in'
           let modifiedTitleC = title.replace("no. ", "number ").replace("op. ", "opus "); // lengthened abbreviations.
@@ -91,6 +101,7 @@ function ViewWorks(props) {
       </div>
 
       {!showLoading && <div className={contentStyling}>
+        <BackToTop />
         <div className={styles.workTitle}>
           {genre} works by <span style={{ color: "brown" }}>{composer}</span>
         </div>

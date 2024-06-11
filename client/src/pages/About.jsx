@@ -55,7 +55,8 @@ function About() {
                 <span style={arrow2Pressed ? showCSS : hideCSS} className={styles.sectionDesc}>
                     <ul>
                         <li>OpenOpus</li>
-                        <li>OpenAI's ChatGPT</li>
+                        <li>ChatGPT</li>
+                        <li>Google Maps</li>
                     </ul>
                 </span>
             </div>

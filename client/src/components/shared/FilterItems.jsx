@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons';
-import styles from "../../css/viewWorks.module.css";
+import styles from "../../css/shared.module.css";
 
 function FilterItems(props) {
 
     const [filter, setFilter] = useState("")
 
     function filterItems(event) {
-        const filter = event.target.value;
+        const filter = event.target.value.toLocaleLowerCase();
         setFilter(filter);
         props.filterItems(filter);
     }

@@ -1,0 +1,62 @@
+/* Filter Item */
+
+.workFilter {
+    position: relative;
+    align-self: flex-end;
+    margin-bottom: 1.5rem;
+    display: flex;
+}
+
+.workFilterInput {
+    padding: 0.5rem 0.5rem;
+    padding-right: 1.5rem;
+    border-radius: 5px;
+    width: 13rem;
+    border: 2px solid black;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+}
+
+.workFilterInput:focus {
+    outline: none !important;
+    border: 2px solid brown;
+}
+
+.clearIcon {
+    position: absolute;
+    right: 0.6rem;
+    top: 0.47rem;
+    color: black;
+}
+
+.clearIcon:hover {
+    color: brown;
+    cursor: pointer;
+}
+
+/* Filter Item */
+
+/* Back To Top */
+.backToTop {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 3rem;
+    transform: translateX(300%);
+    z-index: 20;
+    border: 0.15rem solid brown;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    background-color: white;
+    transition: background-color 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.backToTop:hover {
+    cursor: pointer;
+    background-color: brown;
+}
+
+/* Back To Top */

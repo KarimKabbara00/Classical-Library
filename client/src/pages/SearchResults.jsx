@@ -7,6 +7,9 @@ import Card from "../components/searchResults/Card";
 import Loading from "../components/Loading";
 import styles from "../css/searchResult.module.css";
 import loadingStyles from "../css/loading.module.css";
+import BackToTop from "../components/shared/BackToTop";
+import deburr from 'lodash/deburr';
+
 // import LetterHeader from "../components/searchResults/LetterHeader";
 
 // function sortWorks(works) {
@@ -67,6 +70,12 @@ function SearchResults() {
   const [shownResults, setShownResults] = useState([]);
   const [showLoading, setShowLoading] = useState(true);
   useEffect(() => {
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    })
+
     axios
       .post(`http://localhost:3001/search?q=${query}`)
       .then(function (res) {
@@ -94,20 +103,17 @@ function SearchResults() {
     } else {
       // filter works based on input
       let filteredResults = allResults.filter((result) => {
-        function matchQueryToTitle(name, query) {
-          // create modified titles to relax constraint on matching query to name
-          name = name.toLocaleLowerCase();
-          let modifiedTitleA = name.replace("no. ", "").replaceAll("op. ", "").replaceAll(".", "").replaceAll(",", "").replaceAll('"', "").replace("in ", ""); // as basic as possible
-          let modifiedTitleB = name.replace("no. ", "").replaceAll("op. ", "").replaceAll(".", "").replaceAll(",", "").replaceAll('"', ""); // keep 'in'
-          let modifiedTitleC = name.replace("no. ", "number ").replace("op. ", "opus "); // lengthened abbreviations.
-          let modifiedTitleD = name.replace("no. ", "no ").replace("op. ", "op "); // alternate abbreviations.
-          return name.includes(query) || modifiedTitleA.includes(query) || modifiedTitleB.includes(query) || modifiedTitleC.includes(query) || modifiedTitleD.includes(query);
-        }
-        return matchQueryToTitle(result.name, filter.toLocaleLowerCase());
+        // remove diactritcs and accents
+        let name = deburr(result.name).toLocaleLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
+        return name.includes(filter);
       });
       setShownResults(filteredResults);
     }
   }
+
+  // ------- Back to Top  -------//
+  // function scrollToTop
+  // ------- Back to Top  -------//
 
   // slide up or down loading
   const loadingStyling = classNames({
@@ -134,6 +140,7 @@ function SearchResults() {
       </div>
 
       {!showLoading && <div className={contentStyling} >
+        <BackToTop />
         <div className={styles.searchResultTitle}>
           {query !== "all" ? (
             <span>
@@ -144,7 +151,7 @@ function SearchResults() {
           )}
         </div>
         <div className={styles.searchResultBody}>
-          <FilterItems filterItems={filterComposers} placeholderText={"Filter composers here..."}/>
+          <FilterItems filterItems={filterComposers} placeholderText={"Filter composers here..."} />
           <div className={styles.searchResultGrid}>
             {shownResults.length === 0 ? (
               <div className={styles.noResults}>No Results Found</div>

@@ -17,6 +17,7 @@
   flex-direction: column;
   margin-bottom: 3rem;
   margin-top: 4rem;
+  min-width: 72%;
   width: fit-content;
   margin-left: auto;
   margin-right: auto;
@@ -28,39 +29,6 @@
   font-weight: bold;
   text-align: center;
   margin-bottom: 3rem;
-}
-
-.workFilter {
-  position: relative;
-  align-self: flex-end;
-  margin-bottom: 1.5rem;
-  display: flex;
-}
-
-.workFilterInput {
-  padding: 0.5rem 0.5rem;
-  padding-right: 1.5rem;
-  border-radius: 5px;
-  width: 13rem;
-  border: 2px solid black;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-}
-
-.workFilterInput:focus {
-  outline: none !important;
-  border: 2px solid brown;
-}
-
-.clearIcon {
-  position: absolute;
-  right: 0.6rem;
-  top: 0.47rem;
-  color: black;
-}
-
-.clearIcon:hover {
-  color: brown;
-  cursor: pointer;
 }
 
 .workHeader {

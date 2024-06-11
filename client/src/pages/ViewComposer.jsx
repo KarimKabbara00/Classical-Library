@@ -20,6 +20,12 @@ function ViewComposer() {
   var compID = location.state;
 
   useEffect(() => {
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    })
+
     // if coming directly to this page, grab the ID from the url
     compID = !compID ? window.location.href.split("id=")[1] : compID;
 
@@ -61,7 +67,7 @@ function ViewComposer() {
 
   // screen height when loading or not
   const dynamicHeight = {
-    height: showLoading ? "90vh" : ""
+    height: showLoading ? "90vh" : "100%"
   };
 
   return (
