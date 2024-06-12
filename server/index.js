@@ -134,14 +134,13 @@ app.get("/viewComposer*", async (req, res) => {
 /* ---- View Works Page ----*/
 app.get("/viewWorks*", async (req, res) => {
   var id = req.query.id;
-  // var genre = req.query.genre;
-
-  // const response = await axios.get(`https://api.openopus.org/work/list/composer/${id}/genre/${genre}.json`);
   const response = await axios.get(`https://api.openopus.org/work/list/composer/${id}/genre/all.json`);
-  console.log(response.data.works);
+  const allGenresResponse = await axios.get(`https://api.openopus.org/genre/list/composer/${id}.json`);
+
   await sleep(2000);
   res.status(200).send({
     works: response.data.works,
+    allGenres: allGenresResponse.data.genres,
     composer: response.data.composer.complete_name,
     portrait: response.data.composer.portrait,
   });
