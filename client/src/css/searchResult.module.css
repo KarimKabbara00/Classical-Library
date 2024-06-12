@@ -26,7 +26,7 @@
   justify-content: center;
   margin-top: 5rem;
   font-weight: bold;
-  font-size: 2rem;
+  font-size: 2.5rem;
 }
 
 .query {
@@ -42,11 +42,27 @@
   margin-bottom: 6rem;
 }
 
+.sectionHeader {
+  width: 100%;
+}
+
+.letterHeader {
+  position: relative;
+  width: inherit;
+  margin-top: 1rem;
+  font-size: 2rem;
+  display: block;
+  width: fit-content;
+  font-weight: bold;
+  padding-left: 0.1rem;
+}
+
 .searchResultGrid {
   display: grid;
   gap: 0rem 3rem;
   grid-template-columns: repeat(3, 1fr);
   min-width: 80%;
+  margin-top: 0.25rem;
 }
 
 .noResults {
@@ -57,12 +73,6 @@
   font-size: 1.25rem;
   font-weight: bold;
 }
-
-/* .letterHeader {
-  position: relative;
-  width: inherit;
-  border-bottom: 1px solid brown;
-} */
 
 .searchResultItem {
   display: flex;

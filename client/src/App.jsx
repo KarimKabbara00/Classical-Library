@@ -34,7 +34,7 @@ function App() {
   /* -------------------------------- Music Player -------------------------------- */
 
   return (
-    <div className={styles.mainApp}>
+    <div>
       {showMusicPlayer && <MusicPlayer audioObject={audioObject} setAudioObject={setAudioObject} volume={volume} setVolume={setVolume} currentSong={currentSong} setCurrentSong={setCurrentSong} animInOut={animInOut} showOrHideMusicPlayer={showOrHideMusicPlayer} />}
       <BrowserRouter>
         <Header />

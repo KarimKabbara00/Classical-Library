@@ -11,7 +11,6 @@ import loadingStyles from "../css/loading.module.css";
 import BackToTop from "../components/shared/BackToTop";
 import deburr from 'lodash/deburr';
 
-
 function ViewWorks(props) {
   const location = useLocation();
   var compID = location.state.id;
@@ -35,7 +34,9 @@ function ViewWorks(props) {
       .get(`http://localhost:3001/viewWorks?id=${compID}&genre=${genre}`)
       .then(function (res) {
         setAllWorks(res.data.works);
-        setShownWorks(res.data.works);
+
+        setShownWorks(filterWorksByGenre(res.data.works, genre));
+
         setComposer(res.data.composer);
         setPortrait(res.data.portrait);
         setShowLoading(false);
@@ -45,6 +46,21 @@ function ViewWorks(props) {
       });
   }, [compID, genre]);
 
+  // for the buttons next to the filter input bar
+  function filterWorksByGenre(works, genre) {
+    console.log(genre)
+    var filteredWorks = works.filter(work => {
+      if (genre === "Popular" || genre === "Recommended") {
+        return work.genre === "1";
+      }
+      else {
+        return work.genre === genre;
+      }
+    });
+    return filteredWorks;
+  }
+
+  // filter input bar
   function filterWorks(filter) {
     if (!filter) {
       // show all
@@ -105,7 +121,13 @@ function ViewWorks(props) {
         <div className={styles.workTitle}>
           {genre} works by <span style={{ color: "brown" }}>{composer}</span>
         </div>
-        <FilterItems filterItems={filterWorks} placeholderText={"Filter works here..."} />
+
+        <div className={styles.filterWorksHeader}>
+          <div>genre 1</div>
+          <div>genre 2</div>
+          <FilterItems filterItems={filterWorks} placeholderText={"Filter works here..."} />
+        </div>
+
         <WorkHeader sortWorks={sortWorks} />
         {shownWorks.map((work, index) => {
           return (

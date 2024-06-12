@@ -41,6 +41,7 @@
 
 .footer {
   position: relative;
+  z-index: -1;
   height: 4rem;
   width: 100%;
   background-color: brown;

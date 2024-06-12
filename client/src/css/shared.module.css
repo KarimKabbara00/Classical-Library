@@ -38,8 +38,8 @@
 /* Back To Top */
 .backToTop {
     position: fixed;
-    right: 1.5rem;
-    bottom: 3rem;
+    right: 2%;
+    bottom: 5%;
     transform: translateX(300%);
     z-index: 20;
     border: 0.15rem solid brown;

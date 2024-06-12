@@ -14,13 +14,13 @@ dotenv.config();
 const app = express();
 const port = 3001;
 
-// const db = new pg.Client({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "Classical_Library",
-//   password: process.env.POSTGRES_PASSWORD,
-//   port: 5432,
-// });
+const db = new pg.Client({
+  user: "postgres",
+  host: "localhost",
+  database: "Classical_Library",
+  password: process.env.POSTGRES_PASSWORD,
+  port: 5432,
+});
 
 // db.connect();
 
@@ -134,10 +134,11 @@ app.get("/viewComposer*", async (req, res) => {
 /* ---- View Works Page ----*/
 app.get("/viewWorks*", async (req, res) => {
   var id = req.query.id;
-  var genre = req.query.genre;
+  // var genre = req.query.genre;
 
-  const response = await axios.get(`https://api.openopus.org/work/list/composer/${id}/${genre}.json`);
-
+  // const response = await axios.get(`https://api.openopus.org/work/list/composer/${id}/genre/${genre}.json`);
+  const response = await axios.get(`https://api.openopus.org/work/list/composer/${id}/genre/all.json`);
+  console.log(response.data.works);
   await sleep(2000);
   res.status(200).send({
     works: response.data.works,

@@ -12,8 +12,6 @@ function Map() {
     const mapStyles = {
         height: "100%",
         width: "100%",
-        // border: "2px solid black",
-        // borderRadius: "10px"
     };
 
     const defaultCenter = {
@@ -56,7 +54,7 @@ function Map() {
             {!showLoading && <div className={contentStyling}>
                 <div className={styles.mapBody}>
                     <LoadScript googleMapsApiKey="AIzaSyBMejuj6SyQbxx90HYBXAVCkeKj7YRoY2U">
-                        <GoogleMap mapContainerStyle={mapStyles} zoom={2} center={defaultCenter}>
+                        <GoogleMap mapContainerStyle={mapStyles} zoom={2.75} center={defaultCenter}>
                             {pinData.map((pin, index) => {
                                 return <CustomMarker key={index} pinID={pin.composerID} pinName={pin.composerName} pinLat={pin.latitude} pinLng={pin.longitude} />
                             })}
