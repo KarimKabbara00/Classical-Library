@@ -29,11 +29,28 @@
   font-weight: bold;
   text-align: center;
   margin-bottom: 3rem;
+  display: flex;
+  justify-content: center;
 }
 
 .filterWorksHeader {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.5rem;
+}
+
+.allGenresParent {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.genreButton {
+  border: 0.1rem solid black;
+  border-radius: 5px;
+  background-color: white;
+  padding: 0.20rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 }
 
 .workHeader {

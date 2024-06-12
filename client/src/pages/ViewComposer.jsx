@@ -50,7 +50,7 @@ function ViewComposer() {
 
   const navigate = useNavigate();
   function viewWorksByGenre(genre) {
-    navigate(`../viewWorks?id=${allData.composerData.id}&genre=${genre}`, { state: { id: allData.composerData.id, genre: genre } });
+    navigate(`../viewWorks?id=${allData.composerData.id}&genre=${genre}`, { state: { id: allData.composerData.id, allGenres: allData.genreData, genre: genre } });
   }
 
   // slide up or down loading

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { animated, useSpring } from "@react-spring/web";
 import axios from "axios";
 import classNames from "classnames";
 import WorkHeader from "../components/viewWorks/WorkHeader";
@@ -10,6 +11,7 @@ import styles from "../css/viewWorks.module.css";
 import loadingStyles from "../css/loading.module.css";
 import BackToTop from "../components/shared/BackToTop";
 import deburr from 'lodash/deburr';
+import GenreButton from "../components/viewWorks/GenreButton";
 
 function ViewWorks(props) {
   const location = useLocation();
@@ -19,6 +21,10 @@ function ViewWorks(props) {
   const [shownWorks, setShownWorks] = useState([]); // these change based on the search bar. These are the works that are shown
   const [composer, setComposer] = useState("");
   const [portrait, setPortrait] = useState("");
+
+  // genre states
+  const [allGenres, setAllGenres] = useState([]);
+  const [currentGenre, setCurrentGenre] = useState("");
 
   const [showLoading, setShowLoading] = useState(true);
   useEffect(() => {
@@ -34,11 +40,14 @@ function ViewWorks(props) {
       .get(`http://localhost:3001/viewWorks?id=${compID}&genre=${genre}`)
       .then(function (res) {
         setAllWorks(res.data.works);
-
         setShownWorks(filterWorksByGenre(res.data.works, genre));
-
         setComposer(res.data.composer);
         setPortrait(res.data.portrait);
+
+        // genre states
+        setCurrentGenre(genre);
+        setAllGenres(res.data.allGenres);
+
         setShowLoading(false);
       })
       .catch(function (err) {
@@ -48,16 +57,26 @@ function ViewWorks(props) {
 
   // for the buttons next to the filter input bar
   function filterWorksByGenre(works, genre) {
-    console.log(genre)
     var filteredWorks = works.filter(work => {
-      if (genre === "Popular" || genre === "Recommended") {
-        return work.genre === "1";
+      if (genre === "Popular") {
+        return work.popular === "1";
+      }
+      else if (genre === "Recommended") {
+        return work.recommended === "1";
       }
       else {
         return work.genre === genre;
       }
     });
     return filteredWorks;
+  }
+
+  function onGenreButtonClick(genre) {
+    setShownWorks(filterWorksByGenre(allWorks, genre));
+    setCurrentGenre(genre);
+    // update the URL &genre=
+    let newUrl = window.location.href.split("&")[0] + `&genre=${genre}`
+    window.history.pushState({ path: newUrl }, '', newUrl);
   }
 
   // filter input bar
@@ -84,7 +103,7 @@ function ViewWorks(props) {
     }
   }
 
-  function sortWorks(column, ascending) {
+  function sortWorks(column, ascending = false) {
     ascending = ascending ? -1 : 1;
     const sortedWorks = [...shownWorks].sort(function (a, b) { // [...shownWorks] creates a copy so react can rerender
       return ascending * a[column].localeCompare(b[column]);
@@ -110,6 +129,12 @@ function ViewWorks(props) {
     height: showLoading ? "90vh" : ""
   };
 
+  const test = useSpring({
+    from: { transform: "translateX(0%)" },
+    to: { transform: "translateX(-35%)" },
+    config: { tension: 200, friction: 30 },
+  })
+
   return (
     <div style={dynamicHeight}>
       <div className={loadingStyling}>
@@ -119,16 +144,19 @@ function ViewWorks(props) {
       {!showLoading && <div className={contentStyling}>
         <BackToTop />
         <div className={styles.workTitle}>
-          {genre} works by <span style={{ color: "brown" }}>{composer}</span>
+          <animated.div style={test}>{currentGenre}</animated.div>&nbsp;works by&nbsp;<span style={{ color: "brown" }}>{composer}</span>
         </div>
 
         <div className={styles.filterWorksHeader}>
-          <div>genre 1</div>
-          <div>genre 2</div>
+          <div className={styles.allGenresParent}>
+            {allGenres.map((genre, index) => {
+              return <GenreButton key={index} name={genre} currentGenre={currentGenre} onGenreButtonClick={onGenreButtonClick} />
+            })}
+          </div>
           <FilterItems filterItems={filterWorks} placeholderText={"Filter works here..."} />
         </div>
 
-        <WorkHeader sortWorks={sortWorks} />
+        <WorkHeader currentGenre={currentGenre} sortWorks={sortWorks} />
         {shownWorks.map((work, index) => {
           return (
             <WorkCard
