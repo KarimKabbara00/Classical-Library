@@ -137,13 +137,18 @@ app.get("/viewWorks*", async (req, res) => {
   const response = await axios.get(`https://api.openopus.org/work/list/composer/${id}/genre/all.json`);
   const allGenresResponse = await axios.get(`https://api.openopus.org/genre/list/composer/${id}.json`);
 
-  await sleep(2000);
-  res.status(200).send({
-    works: response.data.works,
-    allGenres: allGenresResponse.data.genres,
-    composer: response.data.composer.complete_name,
-    portrait: response.data.composer.portrait,
-  });
+  if (response.data.status.success == "false" || allGenresResponse.data.status.success == "false") {
+    res.status(400).send({}) // sending nothing will cause catch to be executed on the frontend
+  } else {
+    await sleep(2000);
+    res.status(200).send({
+      works: response.data.works,
+      allGenres: allGenresResponse.data.genres,
+      composer: response.data.composer.complete_name,
+      portrait: response.data.composer.portrait,
+    });
+  }
+
 });
 
 app.listen(port, () => {
