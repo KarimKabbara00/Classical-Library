@@ -9,14 +9,24 @@ import FilterItems from "../components/shared/FilterItems";
 import Loading from "../components/Loading";
 import styles from "../css/viewWorks.module.css";
 import loadingStyles from "../css/loading.module.css";
+import sharedStyles from "../css/shared.module.css";
 import BackToTop from "../components/shared/BackToTop";
 import deburr from 'lodash/deburr';
 import GenreButton from "../components/viewWorks/GenreButton";
+import Error from "../components/shared/Error";
 
 function ViewWorks(props) {
   const location = useLocation();
-  var compID = location.state.id;
-  var genre = location.state.genre;
+  var compID;
+  var genre;
+  try {
+    compID = location.state.id;
+    genre = location.state.genre;
+  }
+  catch {
+    void (0);
+  }
+
   const [allWorks, setAllWorks] = useState([]); // "immutable" works array
   const [shownWorks, setShownWorks] = useState([]); // these change based on the search bar. These are the works that are shown
   const [composer, setComposer] = useState("");
@@ -27,6 +37,7 @@ function ViewWorks(props) {
   const [currentGenre, setCurrentGenre] = useState("");
 
   const [showLoading, setShowLoading] = useState(true);
+  const [showError, setShowError] = useState(false);
   useEffect(() => {
 
     window.scrollTo({
@@ -36,6 +47,7 @@ function ViewWorks(props) {
 
     // if coming directly to this page, grab the ID from the url
     compID = !compID ? window.location.href.split("id=")[1].split("&")[0] : compID;
+    genre = !genre ? window.location.href.split("genre=")[1].split("&")[0] : genre
     axios
       .get(`http://localhost:3001/viewWorks?id=${compID}&genre=${genre}`)
       .then(function (res) {
@@ -52,6 +64,8 @@ function ViewWorks(props) {
       })
       .catch(function (err) {
         console.log(err);
+        setShowLoading(false);
+        setShowError(true);
       });
   }, [compID, genre]);
 
@@ -129,22 +143,21 @@ function ViewWorks(props) {
     height: showLoading ? "90vh" : ""
   };
 
-  const test = useSpring({
-    from: { transform: "translateX(0%)" },
-    to: { transform: "translateX(-35%)" },
-    config: { tension: 200, friction: 30 },
-  })
-
   return (
     <div style={dynamicHeight}>
       <div className={loadingStyling}>
         <Loading />
       </div>
 
-      {!showLoading && <div className={contentStyling}>
+      <div className={sharedStyles.errorParent}>
+        <Error showError={showError} />
+      </div>
+
+      {!showLoading && !showError && <div className={contentStyling}>
         <BackToTop />
         <div className={styles.workTitle}>
-          <animated.div style={test}>{currentGenre}</animated.div>&nbsp;works by&nbsp;<span style={{ color: "brown" }}>{composer}</span>
+          {/* <animated.div style={test}>{currentGenre}</animated.div> */}
+          {currentGenre} works by <span style={{ color: "brown" }}>{composer}</span>
         </div>
 
         <div className={styles.filterWorksHeader}>
