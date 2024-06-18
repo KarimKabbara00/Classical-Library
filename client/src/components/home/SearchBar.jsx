@@ -12,7 +12,7 @@ function SearchBar(props) {
     const currentSearchTerm = event.target.value;
     setSearchTerm(currentSearchTerm);
 
-    let options = composerList.filter((result) => result.name.toLowerCase().includes(currentSearchTerm));
+    let options = composerList.filter((result) => result.name.toLowerCase().includes(currentSearchTerm.toLowerCase()));
     setDropdownList(options);
     setOptionsExist(options.length > 0 && currentSearchTerm !== "");
   }

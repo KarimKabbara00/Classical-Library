@@ -9,43 +9,53 @@ import ComposerFacts from "../components/viewComposer/ComposerFacts";
 import ExploreWorks from "../components/viewComposer/ExploreWorks";
 import Timeline from "../components/viewComposer/Timeline";
 import Loading from "../components/Loading";
+import Error from "../components/shared/Error";
 import styles from "../css/viewComposer.module.css";
+import sharedStyles from "../css/shared.module.css";
 import loadingStyles from "../css/loading.module.css";
 
 function ViewComposer() {
   const location = useLocation();
   const [allData, setAllData] = useState({});
 
-  const [showLoading, setShowLoading] = useState(true);
   var compID = location.state;
 
+  const [showLoading, setShowLoading] = useState(true);
+  const [showError, setShowError] = useState(false);
   useEffect(() => {
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    })
-
-    // if coming directly to this page, grab the ID from the url
-    compID = !compID ? window.location.href.split("id=")[1] : compID;
-
-    axios
-      .get(`http://localhost:3001/viewComposer?id=${compID}`)
-      .then(function (res) {
-        setAllData({
-          composerData: res.data.composerData,
-          genreData: res.data.genreData,
-          description: res.data.description,
-          born: res.data.born,
-          died: res.data.died,
-          timeline: res.data.timeline,
-        });
-        setShowLoading(false);
+    try {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
       })
-      .catch(function (err) {
-        console.log("ERROR FETCHING COMPOSER")
-        console.log(err);
-      });
+
+      // if coming directly to this page, grab the ID from the url
+      compID = !compID ? window.location.href.split("id=")[1] : compID;
+
+      axios
+        .get(`http://localhost:3001/viewComposer?id=${compID}`)
+        .then(function (res) {
+          setAllData({
+            composerData: res.data.composerData,
+            genreData: res.data.genreData,
+            description: res.data.description,
+            born: res.data.born,
+            died: res.data.died,
+            timeline: res.data.timeline,
+          });
+          setShowLoading(false);
+        })
+        .catch(function (err) {
+          console.log(err);
+          setShowLoading(false);
+          setShowError(true);
+        });
+    }
+    catch (err) {
+      console.log(err);
+      setShowLoading(false);
+      setShowError(true);
+    }
   }, [compID, window.location.href]);
 
   const navigate = useNavigate();
@@ -77,7 +87,11 @@ function ViewComposer() {
         <Loading />
       </div>
 
-      {!showLoading && <div className={contentStyling}>
+      <div className={sharedStyles.errorParent}>
+        <Error showError={showError} />
+      </div>
+
+      {!showLoading && !showError && <div className={contentStyling}>
         <div className={styles.left}>
           <div className={styles.composerBody}>
             <div className={styles.composerHeader}>

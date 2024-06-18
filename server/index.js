@@ -103,41 +103,54 @@ app.get("/viewComposer*", async (req, res) => {
   // get composer
   const compResponse = await axios.get(`https://api.openopus.org/genre/list/composer/${id}.json`);
 
-  // ask ChatGPT for a brief description about this composer
-  const composerName = compResponse.data.composer.complete_name;
-  const openAIDescriptionResponse = await askGPT(`Give me a brief description about the music composer ${composerName}. Your answer should 
+  if (compResponse.data.status.success == "false") {
+    res.status(400).send({}) // sending nothing will cause catch to be executed on the frontend
+  }
+  else {
+    try {
+      // ask ChatGPT for a brief description about this composer
+      const composerName = compResponse.data.composer.complete_name;
+      const openAIDescriptionResponse = await askGPT(`Give me a brief description about the music composer ${composerName}. Your answer should 
                                                   be at least 95 words. Do not exceed 100 words.`);
 
-  const openAIDateResponse = await askGPT(`Give me dates in the following format: YYYY-MM-DD for when the music composer ${composerName} was 
+      const openAIDateResponse = await askGPT(`Give me dates in the following format: YYYY-MM-DD for when the music composer ${composerName} was 
                                           born and died. Only give me two dates, each in a new line, do not add any more words.`);
 
-  const openAITimelineResponse = await askGPT(`Give me a timeline of the life of the music composer ${composerName}. Follow these instructions: 
+      const openAITimelineResponse = await askGPT(`Give me a timeline of the life of the music composer ${composerName}. Follow these instructions: 
                                               You must give me exactly 5 significant dates, each date on a new line. Use only 1 sentence. Answer using this format: 
                                               February 15, 1947: some words here.`);
 
-  // hopefully gpt answers with "YYYY-MM-DD\nYYYY-MM-DD"
-  const description = openAIDescriptionResponse.choices[0].message.content;
-  const dates = openAIDateResponse.choices[0].message.content.split("\n");
-  const timeline = openAITimelineResponse.choices[0].message.content.split("\n").filter((el) => el !== "");
+      // hopefully gpt answers with "YYYY-MM-DD\nYYYY-MM-DD"
+      const description = openAIDescriptionResponse.choices[0].message.content;
+      const dates = openAIDateResponse.choices[0].message.content.split("\n");
+      const timeline = openAITimelineResponse.choices[0].message.content.split("\n").filter((el) => el !== "");
 
-  await sleep(2000);
-  res.status(200).send({
-    composerData: compResponse.data.composer,
-    genreData: compResponse.data.genres,
-    description: description,
-    born: dates[0],
-    died: dates[1],
-    timeline: timeline,
-  });
+      await sleep(2000);
+      res.status(200).send({
+        composerData: compResponse.data.composer,
+        genreData: compResponse.data.genres,
+        description: description,
+        born: dates[0],
+        died: dates[1],
+        timeline: timeline,
+      });
+    }
+    catch (e) {
+      res.status(400).send({}) // sending nothing will cause catch to be executed on the frontend
+      console.log(e);
+    }
+  }
 });
 
 /* ---- View Works Page ----*/
 app.get("/viewWorks*", async (req, res) => {
   var id = req.query.id;
+  var genre = req.query.genre;
+
   const response = await axios.get(`https://api.openopus.org/work/list/composer/${id}/genre/all.json`);
   const allGenresResponse = await axios.get(`https://api.openopus.org/genre/list/composer/${id}.json`);
 
-  if (response.data.status.success == "false" || allGenresResponse.data.status.success == "false") {
+  if (response.data.status.success == "false" || allGenresResponse.data.status.success == "false" || !(allGenresResponse.data.genres.includes(genre))) {
     res.status(400).send({}) // sending nothing will cause catch to be executed on the frontend
   } else {
     await sleep(2000);

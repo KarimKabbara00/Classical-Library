@@ -39,34 +39,42 @@ function ViewWorks(props) {
   const [showLoading, setShowLoading] = useState(true);
   const [showError, setShowError] = useState(false);
   useEffect(() => {
+    try {
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    })
-
-    // if coming directly to this page, grab the ID from the url
-    compID = !compID ? window.location.href.split("id=")[1].split("&")[0] : compID;
-    genre = !genre ? window.location.href.split("genre=")[1].split("&")[0] : genre
-    axios
-      .get(`http://localhost:3001/viewWorks?id=${compID}&genre=${genre}`)
-      .then(function (res) {
-        setAllWorks(res.data.works);
-        setShownWorks(filterWorksByGenre(res.data.works, genre));
-        setComposer(res.data.composer);
-        setPortrait(res.data.portrait);
-
-        // genre states
-        setCurrentGenre(genre);
-        setAllGenres(res.data.allGenres);
-
-        setShowLoading(false);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
       })
-      .catch(function (err) {
-        console.log(err);
-        setShowLoading(false);
-        setShowError(true);
-      });
+
+      // if coming directly to this page, grab the ID from the url
+      compID = !compID ? window.location.href.split("id=")[1].split("&")[0] : compID;
+      genre = !genre ? window.location.href.split("genre=")[1].split("&")[0] : genre
+
+      axios
+        .get(`http://localhost:3001/viewWorks?id=${compID}&genre=${genre}`)
+        .then(function (res) {
+          setAllWorks(res.data.works);
+          setShownWorks(filterWorksByGenre(res.data.works, genre));
+          setComposer(res.data.composer);
+          setPortrait(res.data.portrait);
+
+          // genre states
+          setCurrentGenre(genre);
+          setAllGenres(res.data.allGenres);
+
+          setShowLoading(false);
+        })
+        .catch(function (err) {
+          console.log(err);
+          setShowLoading(false);
+          setShowError(true);
+        });
+    }
+    catch (err) {
+      console.log(err);
+      setShowLoading(false);
+      setShowError(true);
+    }
   }, [compID, genre]);
 
   // for the buttons next to the filter input bar
@@ -156,8 +164,7 @@ function ViewWorks(props) {
       {!showLoading && !showError && <div className={contentStyling}>
         <BackToTop />
         <div className={styles.workTitle}>
-          {/* <animated.div style={test}>{currentGenre}</animated.div> */}
-          {currentGenre} works by <span style={{ color: "brown" }}>{composer}</span>
+          {currentGenre} works by <span style={{ color: "brown" }}>&nbsp;{composer}</span>
         </div>
 
         <div className={styles.filterWorksHeader}>
