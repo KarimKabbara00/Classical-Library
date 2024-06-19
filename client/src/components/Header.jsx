@@ -6,18 +6,22 @@ import { useNavigate } from "react-router-dom";
 function Header() {
 
     const navigate = useNavigate();
+
+    function goToSignIn() {
+        navigate("/signIn");
+    }
+
     function goToHome() {
-        navigate("/")
+        navigate("/");
     }
 
     function goToMap() {
-        navigate("/map")
+        navigate("/map");
     }
 
     function goToAbout() {
-        navigate("/about")
+        navigate("/about");
     }
-
     return (
         <div>
             <nav className={styles.navBar}>
@@ -26,6 +30,7 @@ function Header() {
                     <span>Classical Library</span>
                 </span>
                 <span className={styles.navButtons}>
+                    <span onClick={goToSignIn} className={styles.navButton}>Sign In</span>
                     <span onClick={goToHome} className={styles.navButton}>Home</span>
                     <span onClick={goToMap} className={styles.navButton}>Map</span>
                     <span onClick={goToAbout} className={styles.navButton}>About</span>

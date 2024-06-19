@@ -10,6 +10,7 @@ import ViewComposer from "./pages/ViewComposer";
 import MusicPlayer from "./components/musicPlayer/MusicPlayer";
 import ViewWorks from "./pages/ViewWorks";
 import styles from "./css/main.module.css";
+import SignIn from "./pages/SignIn";
 
 function App() {
   /* -------------------------------- Music Player -------------------------------- */
@@ -48,6 +49,7 @@ function App() {
             element={<ViewWorks audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} showOrHideMusicPlayer={showOrHideMusicPlayer} animInOut={animInOut} />}
           />
           <Route path="/about" element={<About />} />
+          <Route path="/signIn" element={<SignIn />} />
         </Routes>
         <Footer />
       </BrowserRouter>

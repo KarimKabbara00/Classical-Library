@@ -5,8 +5,13 @@ import OpenAI from "openai";
 import * as dotenv from "dotenv";
 import cors from "cors";
 import ytdl from "ytdl-core";
-import pg from "pg";
+import { createClient } from '@supabase/supabase-js';
 
+/////////
+import passport from 'passport';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import session from 'express-session';
+/////////
 
 // import .env module and grab kv pairs
 dotenv.config();
@@ -14,15 +19,8 @@ dotenv.config();
 const app = express();
 const port = 3001;
 
-const db = new pg.Client({
-  user: "postgres",
-  host: "localhost",
-  database: "Classical_Library",
-  password: process.env.POSTGRES_PASSWORD,
-  port: 5432,
-});
-
-// db.connect();
+// supabase db
+const supabase = createClient(process.env.SUPABASE_DB, process.env.SUPABASE_ANON_KEY);
 
 /* ---- Middleware ---- */
 var logger = function (req, res, next) {
@@ -40,6 +38,55 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger);
 app.use(cors());
+
+/////////
+app.use(session({
+  secret: 'your_session_secret',
+  resave: false,
+  saveUninitialized: true,
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+// Serialize user
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+// Deserialize user
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
+});
+
+// Configure Passport with Google OAuth
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
+  callbackURL: 'http://localhost:3001/auth/google/callback',
+}, async (accessToken, refreshToken, profile, done) => {
+  // In a real application, you would save the user to the database here
+
+  const { id, name, emails, photos } = profile;
+  const { familyName, giveName } = name;
+  const email = emails[0].value;
+  const photo = photos[0].value;
+
+  return done(null, profile);
+}
+));
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/error' }),
+  function (req, res) {
+    // Successful authentication, redirect success.
+    res.status(200).redirect('http://localhost:3000/');
+  });
+/////////
 
 /* ---- Home Page ----*/
 app.get("/", async (req, res) => {
@@ -181,10 +228,15 @@ app.get("/music", async (req, res) => {
 
 /* Exposed API Endpoints */
 app.get("/api/mapMarkers", async (req, res) => {
-  const result = await db.query('Select * FROM public."Markers"');
-  const rows = result.rows;
-  await sleep(2000);
-  res.status(200).send(rows);
+  const { data, error } = await supabase.from('Markers').select('*');
+
+  if (error) {
+    res.status(400).send({})
+  }
+  else {
+    await sleep(2000);
+    res.status(200).send(data);
+  }
 })
 
 /* ---- Helper Functions ---- */
