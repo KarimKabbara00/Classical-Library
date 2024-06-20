@@ -36,57 +36,18 @@ const openai = new OpenAI({
 /* --- Middleware ---- */
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(logger);
 app.use(cors());
 
-/////////
-app.use(session({
+app.use(session({ // google auth
   secret: 'your_session_secret',
   resave: false,
   saveUninitialized: true,
 }));
 
-app.use(passport.initialize());
+app.use(passport.initialize()); // google auth
 app.use(passport.session());
-
-
-// Serialize user
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-// Deserialize user
-passport.deserializeUser((obj, done) => {
-  done(null, obj);
-});
-
-// Configure Passport with Google OAuth
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
-  callbackURL: 'http://localhost:3001/auth/google/callback',
-}, async (accessToken, refreshToken, profile, done) => {
-  // In a real application, you would save the user to the database here
-
-  const { id, name, emails, photos } = profile;
-  const { familyName, giveName } = name;
-  const email = emails[0].value;
-  const photo = photos[0].value;
-
-  return done(null, profile);
-}
-));
-
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/error' }),
-  function (req, res) {
-    // Successful authentication, redirect success.
-    res.status(200).redirect('http://localhost:3000/');
-  });
-/////////
 
 /* ---- Home Page ----*/
 app.get("/", async (req, res) => {
@@ -215,18 +176,7 @@ app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
 });
 
-app.get("/music", async (req, res) => {
-
-  let videoUrl = "https://www.youtube.com/watch?v=vyDpyXsyOkE";
-  const info = await ytdl.getInfo(videoUrl);
-  const audioFormat = ytdl.chooseFormat(info.formats, { quality: "highestaudio" });
-  res.setHeader("Content-Type", "audio/mpeg");
-  res.setHeader("Content-Disposition", `attachment; filename="audio.mp3"`);
-
-  ytdl(videoUrl, { format: audioFormat }).pipe(res);
-});
-
-/* Exposed API Endpoints */
+/* ---- Exposed API Endpoints ---- */
 app.get("/api/mapMarkers", async (req, res) => {
   const { data, error } = await supabase.from('Markers').select('*');
 
@@ -238,6 +188,111 @@ app.get("/api/mapMarkers", async (req, res) => {
     res.status(200).send(data);
   }
 })
+
+app.get("/music", async (req, res) => {
+
+  let videoUrl = "https://www.youtube.com/watch?v=vyDpyXsyOkE";
+  const info = await ytdl.getInfo(videoUrl);
+  const audioFormat = ytdl.chooseFormat(info.formats, { quality: "highestaudio" });
+  res.setHeader("Content-Type", "audio/mpeg");
+  res.setHeader("Content-Disposition", `attachment; filename="audio.mp3"`);
+
+  ytdl(videoUrl, { format: audioFormat }).pipe(res);
+});
+
+/* ---- Sign In & Sign Up ---- */
+
+app.post("/signIn", async (req, res) => {
+
+  const { email, password } = req.body;
+  try {
+    const { data, error } = await supabase.from('Users').select('*').eq("email", email);
+
+    if (error || data.length !== 1) {
+      error === null ? "Internal Server Error" : error;
+      throw (error);
+    }
+
+    let userData = data[0];
+    if (password === userData.password) {
+      res.status(200).send()
+    }
+    else {
+      res.status(401).send(); // bad password TODO: NEED TO HASH AND SALT
+    }
+  }
+  catch (error) {
+    res.status(500).send(); // catch all
+  }
+
+});
+
+// app.post("/signUp", async (req, res) => {
+//   const { email, password, confirmPassword, showSignUp } = req.body;
+
+//   if (confirmPassword !== "" && showSignUp) {
+//     try {
+//       const { data, error } = await supabase.from("Users").insert(
+//         [
+//           {
+//             "email": email,
+//             "password": password
+//           }
+//         ]
+//       )
+
+//       if (error) {
+//         throw (error);
+//       }
+
+//       res.status(200).send({});
+
+//     }
+//     catch (error) {
+//       console.log("error");
+//       console.log(error)
+//     }
+//   }
+
+// })
+
+// Serialize user
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+// Deserialize user
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
+});
+
+// Configure Passport with Google OAuth
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
+  callbackURL: 'http://localhost:3001/auth/google/callback',
+}, async (accessToken, refreshToken, profile, done) => {
+  // In a real application, you would save the user to the database here
+
+  const { id, name, emails, photos } = profile;
+  const { familyName, giveName } = name;
+  const email = emails[0].value;
+  const photo = photos[0].value;
+
+  return done(null, profile);
+}
+));
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/error' }),
+  function (req, res) {
+    // Successful authentication, redirect success.
+    res.status(200).redirect('http://localhost:3000/');
+  });
+
 
 /* ---- Helper Functions ---- */
 async function askGPT(query) {
