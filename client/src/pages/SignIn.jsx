@@ -2,38 +2,17 @@ import React, { useState } from "react";
 import axios from "axios";
 import styles from "../css/signIn.module.css";
 import googleLogo from "../images/google.svg";
-import check from "../images/check.svg";
-import x from "../images/x.svg";
+import PasswordReq from "../components/signIn/PasswordReq.jsx";
+import classNames from "classnames";
+import { animated, useSpring } from "@react-spring/web";
+import toast from 'react-hot-toast';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 function SignIn() {
 
-    const [showSignUp, setShowSignUp] = useState(false);
-
-    const dynamicHeight = {
-        minHeight: "89vh",
-        height: "89vh"
-    };
-
-    function toggleShowSignUp() {
-        setShowSignUp(!showSignUp);
-        setUserInfo(prev => {
-            // clear form on change
-            return {
-                displayName: "",
-                email: "",
-                password: "",
-                confirmPassword: ""
-            }
-        })
-    }
-
-    const signInFormStyling = {
-        height: showSignUp ? "18rem" : "12rem"
-    }
-
-    const hiddenSignUpStyling = {
-        display: showSignUp ? "block" : "none",
-    }
+    const [passwordReqSatisfied, setPasswordReqsSatisfied] = useState(false);
 
     const [userInfo, setUserInfo] = useState({
         displayName: "",
@@ -49,62 +28,142 @@ function SignIn() {
                 displayName: name === "displayName" ? value : prev.displayName,
                 email: name === "email" ? value : prev.email,
                 password: name === "password" ? value : prev.password,
-                confirmPassword: name === "confirmPassword" ? value : ""
+                confirmPassword: name === "confirmPassword" ? value : prev.confirmPassword
             }
+        })
+    }
+
+    const [showSignUp, setShowSignUp] = useState(false);
+    function toggleShowSignUp() {
+        setShowSignUp(!showSignUp);
+        setUserInfo({  // clear form on change
+            displayName: "",
+            email: "",
+            password: "",
+            confirmPassword: ""
         })
     }
 
     async function signIn(event) {
         event.preventDefault();
-        await axios.post("http://localhost:3001/signIn", userInfo, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }).then(res => {
-            console.log(res.data);
-        }).catch(err => {
-            console.log(err);
-        });
+
+        if (userInfo.email.length < 1) {
+            toast.error("Please enter an email.");
+            return;
+        }
+        else if (userInfo.password.length < 1) {
+            toast.error("Please enter a password.");
+            return;
+        }
+        toast.success("Signed in")
+        // await axios.post("http://localhost:3001/signIn", userInfo, {
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        // }).then(res => {
+        //     console.log(res.data);
+        // }).catch(err => {
+        //     console.log(err);
+        // });
     }
+
+    // ---- Nudge Animation ---- //
+    const [playNudge, setPlayNudge] = useState(false);
+    const passwordReqStyling = classNames({
+        [styles.passwordRequirements]: true,
+        [styles.applyNudge]: playNudge
+    });
+
+    function stopAnim() {
+        setPlayNudge(false);
+    }
+    // ---- Nudge Animation ---- //
 
     async function signUp(event) {
         event.preventDefault();
+        console.log(passwordReqSatisfied)
 
-        if (userInfo.password !== userInfo.confirmPassword) {
+        if (userInfo.displayName.length < 1) {
+            toast.error("Please enter a username.");
             return;
         }
-        await axios.post("http://localhost:3001/signUp", userInfo, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }).then(res => {
-            console.log(res.data);
-        }).catch(err => {
-            console.log(err);
-        });
+        else if (userInfo.email.length < 1) {
+            toast.error("Please enter an email.");
+            return;
+        }
+        else if (userInfo.password.length < 1) {
+            toast.error("Please enter a password.");
+            return;
+        }
+        else if (!passwordReqSatisfied) {
+            setPlayNudge(true);
+            return;
+        }
+        // toast.success("Account created")
+        // await axios.post("http://localhost:3001/signUp", userInfo, {
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        // }).then(res => {
+        //     console.log(res.data);
+        // }).catch(err => {
+        //     console.log(err);
+        // });
     }
+
+    const [showPassword, setShowPassord] = useState(false);
+    function peekPassword() {
+        setShowPassord(prev => !prev);
+    }
+
+    const [showConfPass, setShowConfPass] = useState(false);
+    function peekConfPass() {
+        setShowConfPass(prev => !prev);
+    }
+
+    const dynamicHeight = {
+        minHeight: "89vh",
+        height: "89vh"
+    };
+
+    const signInBoxStyling = {
+        marginTop: showSignUp ? "5%" : "7%"
+    }
+
+    const showSignUpElements = {
+        display: showSignUp ? "block" : "none",
+    }
+
+    const showPasswordReqs = useSpring({
+        from: { transform: showSignUp ? "translate(300%, -15%)" : "translate(0%, -15%)" },
+        to: { transform: showSignUp ? "translate(0%, -15%)" : "translate(300%, -15%)" },
+        config: { tension: 200, friction: 30 },
+    });
 
     return (
         <div style={dynamicHeight}>
             <div className={styles.signInParent}>
-                {showSignUp && <div className={styles.passwordRequirements}>
-                    <div>Password must:</div>
-                    <div className={styles.passwordReq}><img src={x} width="13px" />Contain 8 to 30 characters</div>
-                    <div className={styles.passwordReq}><img src={x} width="13px" />Contain both uppercase and lowercase letters</div>
-                    <div className={styles.passwordReq}><img src={x} width="13px" />Contain 1 number</div>
-                    <div className={styles.passwordReq}><img src={x} width="13px" />Contain 1 special character</div>
-                    <div className={styles.passwordReq}><img src={x} width="13px" />Match</div>
-                </div>}
-                <div className={styles.signInBox}>
-                    <form autoComplete="off" onSubmit={showSignUp ? signUp : signIn} style={signInFormStyling} className={styles.signInForm} >
+                <div style={signInBoxStyling} className={styles.signInBox}>
+                    <form autoComplete="off" onSubmit={showSignUp ? signUp : signIn} className={styles.signInForm} noValidate>
                         <h1 className={styles.signInHeader}>Sign {showSignUp ? "Up" : "In"}</h1>
-                        <input name="displayName" onInput={updateUserInfo} style={hiddenSignUpStyling} className={styles.signInField} type="text" placeholder="Display Name" required={showSignUp} value={userInfo.displayName} />
+                        <input name="displayName" onInput={updateUserInfo} style={showSignUpElements} className={styles.signInField} type="text" placeholder="Username" required={showSignUp} value={userInfo.displayName} />
                         <input name="email" onInput={updateUserInfo} className={styles.signInField} type="email" placeholder="Email" required value={userInfo.email} />
-                        <input name="password" onInput={updateUserInfo} className={styles.signInField} type="password" placeholder="Password" required value={userInfo.password} />
-                        <input name="confirmPassword" onInput={updateUserInfo} style={hiddenSignUpStyling} className={styles.signInField} type="password" placeholder="Confirm Password" required={showSignUp} value={userInfo.confirmPassword} />
+                        <div>
+                            <animated.div style={showPasswordReqs} className={passwordReqStyling} onAnimationEnd={stopAnim}>
+                                <PasswordReq currentPass={userInfo.password} currentConfPass={userInfo.confirmPassword} passwordReqSatisfied={passwordReqSatisfied} setPasswordReqsSatisfied={setPasswordReqsSatisfied} />
+                            </animated.div>
+                            <div style={{ position: "relative" }}>
+                                <input name="password" onInput={updateUserInfo} className={styles.signInField} type={showPassword ? "text" : "password"} placeholder="Password" required value={userInfo.password} />
+                                {userInfo.password.length > 0 && <div onMouseLeave={() => setShowPassord(false)} onMouseDown={peekPassword} onMouseUp={peekPassword} className={styles.peekPassword}><FontAwesomeIcon icon={faEye} /></div>}
+                            </div>
+                        </div>
+                        <div style={{ position: "relative" }}>
+                            <input name="confirmPassword" onInput={updateUserInfo} className={styles.signInField} style={showSignUpElements} type={showConfPass ? "text" : "password"} placeholder="Confirm Password" required={showSignUp} value={userInfo.confirmPassword} />
+                            {userInfo.confirmPassword.length > 0 && <div onMouseLeave={() => setShowConfPass(false)} onMouseDown={peekConfPass} onMouseUp={peekConfPass} className={styles.peekPassword}><FontAwesomeIcon icon={faEye} /></div>}
+                        </div>
                         <button type="submit" className={styles.signInButton}>Sign {showSignUp ? "Up" : "In"}</button>
                     </form>
-                    <div style={{ color: "white" }}>
+                    <div className={styles.askUserText}>
                         {showSignUp ?
                             <span>
                                 Already have an account? <a className={styles.signUpHyperlink} onClick={toggleShowSignUp}>Sign In</a>

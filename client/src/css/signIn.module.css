@@ -4,6 +4,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-x: hidden;
 }
 
 .signInBox {
@@ -11,9 +12,9 @@
     flex-direction: column;
     align-items: center;
     gap: 0.25rem 0rem;
-    margin-top: 12rem;
     background-color: brown;
     border-radius: 10px;
+    transition: all ease-in-out 200ms;
 }
 
 .signInForm {
@@ -23,23 +24,26 @@
     align-items: center;
     gap: 0.75rem 0rem;
     width: 16rem;
-    height: 12rem;
+    height: auto;
+    margin-bottom: 1rem;
     border-radius: 10px;
     transition: all ease-in-out 100ms;
 }
 
 .signInHeader {
     color: white;
+    font-size: 2rem;
+    padding-top: 1.5rem;
 }
 
 .signInField {
+    position: relative;
     padding: 0.25rem;
     font-size: 1.1rem;
     border-radius: 5px;
     height: 1.15rem;
     width: 13rem;
     transition: all ease-in-out 200ms;
-
 }
 
 .signInButton {
@@ -65,6 +69,23 @@
 .signUpHyperlink:hover {
     cursor: pointer;
     color: #0000FF;
+}
+
+.peekPassword {
+    position: absolute;
+    right: 0.6rem;
+    top: 0.47rem;
+    color: black;
+}
+
+.peekPassword:hover {
+    color: brown;
+    cursor: pointer;
+}
+
+.askUserText {
+    color: white;
+    font-size: 1rem;
 }
 
 .or {
@@ -103,21 +124,92 @@
 
 .passwordRequirements {
     position: absolute;
-    bottom: 10%;
+    right: 8%;
+    transform: translate(0%, -15%);
     width: 23rem;
     border-radius: 10px;
     border: 1px solid black;
-    /* background-color: #2aa5a5; */
     color: black;
     padding: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px 0px;
 }
 
-.passwordRequirements>div:first-child {
+.passwordRequirements>div>div:first-child {
     font-weight: bold;
 }
 
-.passwordReq{
+.passwordReq {
     display: flex;
     align-items: center;
     gap: 0.3rem;
+}
+
+@keyframes nudgeReqBox {
+    0% {
+        transform: translate(0%, -15%);
+    }
+
+    25% {
+        transform: translate(3%, -15%);
+    }
+
+    50% {
+        transform: translate(-3%, -15%);
+    }
+
+    75% {
+        transform: translate(3%, -15%);
+    }
+
+    100% {
+        transform: translate(0%, -15%);
+    }
+}
+
+.applyNudge {
+    animation: nudgeReqBox 300ms 1 normal;
+}
+
+@media (max-width: 1280px) {
+
+    .signInHeader {
+        font-size: 1.75rem;
+    }
+
+    .signInForm {
+        gap: 0.5rem 0rem;
+        width: 15rem;
+    }
+
+    .signInField {
+        padding: 0.25rem;
+        font-size: 1rem;
+        height: 1.15rem;
+        width: 12rem;
+    }
+
+    .signInButton {
+        width: 12.6rem;
+        font-size: 1rem;
+        padding: 0.25rem;
+    }
+
+    .askUserText {
+        color: white;
+        font-size: 0.9rem;
+    }
+
+    .or {
+        margin-top: 0.5rem;
+        margin-bottom: 0.55rem;
+    }
+
+    .bar {
+        width: 5.4rem;
+        margin-top: 0.1rem;
+    }
+
+    .continueWithGoogle {
+        margin-bottom: 1.35rem;
+    }
 }

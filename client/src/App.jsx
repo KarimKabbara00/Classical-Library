@@ -9,7 +9,7 @@ import SearchResults from "./pages/SearchResults";
 import ViewComposer from "./pages/ViewComposer";
 import MusicPlayer from "./components/musicPlayer/MusicPlayer";
 import ViewWorks from "./pages/ViewWorks";
-import styles from "./css/main.module.css";
+import { Toaster } from 'react-hot-toast';
 import SignIn from "./pages/SignIn";
 
 function App() {
@@ -36,6 +36,20 @@ function App() {
 
   return (
     <div>
+      <div>
+        <Toaster
+          position="top-left"
+          reverseOrder={false}
+          
+          containerStyle={{
+            position: "absolute",
+            top: 80,
+            left: 20,
+            bottom: 20,
+            right: 20,
+          }}
+        />
+      </div>
       {showMusicPlayer && <MusicPlayer audioObject={audioObject} setAudioObject={setAudioObject} volume={volume} setVolume={setVolume} currentSong={currentSong} setCurrentSong={setCurrentSong} animInOut={animInOut} showOrHideMusicPlayer={showOrHideMusicPlayer} />}
       <BrowserRouter>
         <Header />
