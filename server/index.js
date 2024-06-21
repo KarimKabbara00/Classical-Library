@@ -44,6 +44,12 @@ app.use(session({ // google auth
   secret: 'your_session_secret',
   resave: false,
   saveUninitialized: true,
+  cookie: {
+    secure: false,
+    httpOnly: true,
+    sameSite: 'strict'
+  }
+
 }));
 
 app.use(passport.initialize()); // google auth
@@ -203,95 +209,79 @@ app.get("/music", async (req, res) => {
 /* ---- Sign In & Sign Up ---- */
 
 app.post("/signIn", async (req, res) => {
-
   const { email, password } = req.body;
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  console.log(data)
   try {
-    const { data, error } = await supabase.from('Users').select('*').eq("email", email);
-
-    if (error || data.length !== 1) {
-      error === null ? "Internal Server Error" : error;
-      throw (error);
+    if (error) {
+      throw error;
     }
-
-    let userData = data[0];
-    if (password === userData.password) {
-      res.status(200).send()
-    }
-    else {
-      res.status(401).send(); // bad password TODO: NEED TO HASH AND SALT
-    }
+    res.status(201).send(data.session);
   }
   catch (error) {
-    res.status(500).send(); // catch all
+    res.status(401).send(error)
   }
-
 });
 
-// app.post("/signUp", async (req, res) => {
-//   const { email, password, confirmPassword, showSignUp } = req.body;
+app.post("/signUp", async (req, res) => {
+  const { displayName, email, password, confirmPassword } = req.body;
+  // const { data, error } = await 
+  
+  supabase.auth.signUp({ email, password })
+    .then(res => {
+      console.log("in res")
+      console.log(res.data)
+    }).catch(err => {
+      console.log(err)
+    });
+  
+  // try {
+  //   if (error) {
+  //     throw error;
+  //   }
+  //   res.status(201).send(data.session);
+  // }
+  // catch (error) {
+  //   res.status(401).send(error)
+  // }
+})
 
-//   if (confirmPassword !== "" && showSignUp) {
-//     try {
-//       const { data, error } = await supabase.from("Users").insert(
-//         [
-//           {
-//             "email": email,
-//             "password": password
-//           }
-//         ]
-//       )
+// // Serialize user
+// passport.serializeUser((user, done) => {
+//   done(null, user);
+// });
 
-//       if (error) {
-//         throw (error);
-//       }
+// // Deserialize user
+// passport.deserializeUser((obj, done) => {
+//   done(null, obj);
+// });
 
-//       res.status(200).send({});
+// // Configure Passport with Google OAuth
+// passport.use(new GoogleStrategy({
+//   clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
+//   clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
+//   callbackURL: 'http://localhost:3001/auth/google/callback',
+// }, async (accessToken, refreshToken, profile, done) => {
+//   // In a real application, you would save the user to the database here
 
-//     }
-//     catch (error) {
-//       console.log("error");
-//       console.log(error)
-//     }
-//   }
+//   const { id, name, emails, photos } = profile;
+//   const { familyName, giveName } = name;
+//   const email = emails[0].value;
+//   const photo = photos[0].value;
 
-// })
+//   return done(null, profile);
+// }
+// ));
 
-// Serialize user
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
+// app.get('/auth/google',
+//   passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-// Deserialize user
-passport.deserializeUser((obj, done) => {
-  done(null, obj);
-});
-
-// Configure Passport with Google OAuth
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
-  callbackURL: 'http://localhost:3001/auth/google/callback',
-}, async (accessToken, refreshToken, profile, done) => {
-  // In a real application, you would save the user to the database here
-
-  const { id, name, emails, photos } = profile;
-  const { familyName, giveName } = name;
-  const email = emails[0].value;
-  const photo = photos[0].value;
-
-  return done(null, profile);
-}
-));
-
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/error' }),
-  function (req, res) {
-    // Successful authentication, redirect success.
-    res.status(200).redirect('http://localhost:3000/');
-  });
+// app.get('/auth/google/callback',
+//   passport.authenticate('google', { failureRedirect: '/error' }),
+//   function (req, res) {
+//     // Successful authentication, redirect success.
+//     res.status(200).redirect('http://localhost:3000/');
+//   });
 
 
 /* ---- Helper Functions ---- */

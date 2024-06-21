@@ -11,7 +11,7 @@
     flex-direction: column;
     align-items: center;
     gap: 0.25rem 0rem;
-    margin-top: 15rem;
+    margin-top: 12rem;
     background-color: brown;
     border-radius: 10px;
 }
@@ -99,4 +99,25 @@
 .continueWithGoogle:hover {
     background-color: lightgray;
     cursor: pointer;
+}
+
+.passwordRequirements {
+    position: absolute;
+    bottom: 10%;
+    width: 23rem;
+    border-radius: 10px;
+    border: 1px solid black;
+    /* background-color: #2aa5a5; */
+    color: black;
+    padding: 0.5rem;
+}
+
+.passwordRequirements>div:first-child {
+    font-weight: bold;
+}
+
+.passwordReq{
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
 }
