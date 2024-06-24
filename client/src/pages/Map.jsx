@@ -51,8 +51,8 @@ function Map() {
     });
 
     const dynamicHeight = {
-        minHeight: "89vh",
-        height: showLoading ? "89vh" : ""
+        minHeight: "93.25vh",
+        height: showLoading ? "93.25vh" : ""
     };
 
     return (

@@ -19,11 +19,13 @@
     "axios": "^1.7.2",
     "classnames": "^2.5.1",
     "font-awesome": "^4.7.0",
+    "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
     "react-scripts": "5.0.1",
+    "react-switch": "^7.0.0",
     "vlc-player": "^2.0.0",
     "web-vitals": "^2.1.4"
   },

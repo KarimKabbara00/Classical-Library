@@ -4,11 +4,14 @@ import axios from "axios";
 import classNames from "classnames";
 import FilterItems from "../components/shared/FilterItems";
 import Loading from "../components/Loading";
-import styles from "../css/searchResult.module.css";
+import styles from "../css/allComposers.module.css";
 import loadingStyles from "../css/loading.module.css";
 import BackToTop from "../components/shared/BackToTop";
 import deburr from 'lodash/deburr';
-import LetterSection from "../components/searchResults/LetterSection";
+import LetterSection from "../components/allComposers/LetterSection";
+import composerList from "../composerList";
+import Button from "../components/allComposers/Button";
+
 
 function sortWorks(works) {
 
@@ -64,12 +67,11 @@ function sortWorks(works) {
   return alphabetObject;
 }
 
-function SearchResults() {
+function AllComposers() {
   const navigate = useNavigate();
   const location = useLocation();
 
   // receive data from Home.jsx
-  const query = location.state ? location.state.searchTerm : "";
   const [allResults, setAllResults] = useState([]);
   const [shownResults, setShownResults] = useState([]);
   const [showLoading, setShowLoading] = useState(true);
@@ -81,21 +83,20 @@ function SearchResults() {
     })
 
     axios
-      .post(`http://localhost:3001/search?q=${query}`)
+      .post("http://localhost:3001/allComposers")
       .then(function (res) {
-        // sort alphabetically by last name
-        // let sortedResults = res.data.searchResult.sort((a, b) => a.name.split(" ").pop(0).charAt(0) > b.name.split(" ").pop(0).charAt(0));
-        let sortedResults = sortWorks(res.data.searchResult);
+        // sort composers by last name initial
+        let sortedResults = sortWorks(res.data.allComposers);
         setAllResults(sortedResults);
         setShownResults(sortedResults);
         setShowLoading(false);
       })
       .catch(function (err) {
         console.log(err)
-        console.log(err.response.data.searchResult);
-        navigate("/", { state: { error: true, errorMsg: err.response.data.searchResult } });
+        console.log(err.response.data.allComposers);
+        navigate("/", { state: { error: true, errorMsg: err.response.data.allComposers } });
       });
-  }, [query, navigate]);
+  }, [navigate]);
 
   function filterComposers(filter) {
     if (!filter) {
@@ -113,6 +114,12 @@ function SearchResults() {
     }
   }
 
+  function randomComposer() {
+    let random = Math.floor(Math.random() * composerList.length);
+    let compID = composerList[random].id;
+    navigate(`/viewComposer?id=${compID}`);
+  }
+
   // slide up or down loading
   const loadingStyling = classNames({
     [loadingStyles.loadingParent]: true,
@@ -121,7 +128,7 @@ function SearchResults() {
   });
 
   const contentStyling = classNames({
-    [styles.searchResultParent]: true,
+    [styles.allCompParent]: true,
     [styles.applyFadeIn]: !showLoading,
   });
 
@@ -132,24 +139,19 @@ function SearchResults() {
   };
 
   return (
-    <div className={styles.searchResMainBody} style={dynamicHeight}>
+    <div id="allCompMainBody" className={styles.allCompMainBody} style={dynamicHeight}>
       <div className={loadingStyling}>
         <Loading />
       </div>
 
       {!showLoading && <div className={contentStyling} >
-        <BackToTop />
-        <h1 className={styles.searchResultTitle}>
-          {query !== "all" ? (
-            <span>
-              Top results for <span className={styles.query}>{query}</span>
-            </span>
-          ) : (
-            "All Composers"
-          )}
-        </h1>
-        <div className={styles.searchResultBody}>
-          <FilterItems filterItems={filterComposers} placeholderText={"Filter composers here..."} />
+        <BackToTop elementId={"allCompMainBody"} />
+        <h1 className={styles.allCompTitle}>Composers</h1>
+        <div className={styles.allCompBody}>
+          <div className={styles.allComposersHeader}>
+            <Button buttonType="Shuffle" buttonText="Random Composer" buttonAction={randomComposer} />
+            <FilterItems filterItems={filterComposers} placeholderText={"Search composers here..."} />
+          </div>
           {shownResults.length === 0 ? (
             <div className={styles.noResults}>No Results Found</div>
           ) : (
@@ -163,4 +165,4 @@ function SearchResults() {
   );
 }
 
-export default SearchResults;
+export default AllComposers;

@@ -4,11 +4,12 @@ import backToTopBrown from "../../images/back-to-top-brown.svg";
 import backToTopWhite from "../../images/back-to-top-white.svg";
 import styles from "../../css/shared.module.css";
 
-function BackToTop() {
+function BackToTop(props) {
 
     const [hovered, setHovered] = useState(false);
     const [hoveredSVG, setHoveredSVG] = useState(backToTopBrown);
     const [showButton, setShowButton] = useState(false);
+    const parentElement = document.getElementById(props.elementId);
 
     function onAction() {
         setHovered((prev) => !prev);
@@ -16,14 +17,14 @@ function BackToTop() {
     }
 
     function scrollToTop() {
-        window.scrollTo({
+        parentElement.scrollTo({
             top: 0,
             behavior: "smooth"
         })
     }
 
     function toggleScrollButton() {
-        if (window.scrollY > 300) {
+        if (parentElement.scrollTop > 300) {
             setShowButton(true);
         }
         else {
@@ -34,9 +35,9 @@ function BackToTop() {
     }
 
     useEffect(() => {
-        window.addEventListener("scroll", toggleScrollButton)
+        parentElement.addEventListener("scroll", toggleScrollButton)
         return () => {
-            window.removeEventListener("scroll", toggleScrollButton)
+            parentElement.removeEventListener("scroll", toggleScrollButton)
         }
     }, []);
 

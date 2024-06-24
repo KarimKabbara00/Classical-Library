@@ -28,7 +28,7 @@ function ViewWorks(props) {
   }
 
   const [allWorks, setAllWorks] = useState([]); // "immutable" works array
-  const [shownWorks, setShownWorks] = useState([]); // these change based on the search bar. These are the works that are shown
+  const [shownWorks, setShownWorks] = useState([]); // these change based on the filter bar. These are the works that are shown
   const [composer, setComposer] = useState("");
   const [portrait, setPortrait] = useState("");
 
@@ -152,7 +152,7 @@ function ViewWorks(props) {
   };
 
   return (
-    <div style={dynamicHeight}>
+    <div id="worksBody" className={styles.worksMainBody} style={dynamicHeight}>
       <div className={loadingStyling}>
         <Loading />
       </div>
@@ -162,7 +162,7 @@ function ViewWorks(props) {
       </div>
 
       {!showLoading && !showError && <div className={contentStyling}>
-        <BackToTop />
+        <BackToTop elementId={"worksBody"} />
         <div className={styles.workTitle}>
           {currentGenre} works by <span style={{ color: "brown" }}>&nbsp;{composer}</span>
         </div>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "../css/signIn.module.css";
 import googleLogo from "../images/google.svg";
@@ -6,14 +7,13 @@ import PasswordReq from "../components/signIn/PasswordReq.jsx";
 import classNames from "classnames";
 import { animated, useSpring } from "@react-spring/web";
 import toast from 'react-hot-toast';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye } from '@fortawesome/free-solid-svg-icons';
+import Cookies from 'js-cookie';
 
-function SignIn() {
-
+function SignIn(props) {
+    const navigate = useNavigate();
     const [passwordReqSatisfied, setPasswordReqsSatisfied] = useState(false);
-
     const [userInfo, setUserInfo] = useState({
         displayName: "",
         email: "",
@@ -33,18 +33,8 @@ function SignIn() {
         })
     }
 
-    const [showSignUp, setShowSignUp] = useState(false);
-    function toggleShowSignUp() {
-        setShowSignUp(!showSignUp);
-        setUserInfo({  // clear form on change
-            displayName: "",
-            email: "",
-            password: "",
-            confirmPassword: ""
-        })
-    }
-
-    async function signIn(event) {
+    // sign In
+    function signIn(event) {
         event.preventDefault();
 
         if (userInfo.email.length < 1) {
@@ -55,31 +45,34 @@ function SignIn() {
             toast.error("Please enter a password.");
             return;
         }
-        toast.success("Signed in")
-        // await axios.post("http://localhost:3001/signIn", userInfo, {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        // }).then(res => {
-        //     console.log(res.data);
-        // }).catch(err => {
-        //     console.log(err);
-        // });
+        axios.post("http://localhost:3001/signIn", userInfo, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(res => {
+            console.log(res.data);
+            props.setAccessToken(res.data.access_token);
+            toast.success("Signed in");
+            navigate("/");
+        }).catch(err => {
+            err.response.data === true ? toast.error("Invalid username or password.") : toast.error("Error making request.")
+        });
     }
 
-    // ---- Nudge Animation ---- //
-    const [playNudge, setPlayNudge] = useState(false);
-    const passwordReqStyling = classNames({
-        [styles.passwordRequirements]: true,
-        [styles.applyNudge]: playNudge
-    });
-
-    function stopAnim() {
-        setPlayNudge(false);
+    // sign up
+    const [showSignUp, setShowSignUp] = useState(null); // null for on-render
+    function toggleShowSignUp() {
+        showSignUp === null ? setShowSignUp(true) : void (0);
+        setShowSignUp(!showSignUp);
+        setUserInfo({  // clear form on change
+            displayName: "",
+            email: "",
+            password: "",
+            confirmPassword: ""
+        })
     }
-    // ---- Nudge Animation ---- //
 
-    async function signUp(event) {
+    function signUp(event) {
         event.preventDefault();
         console.log(passwordReqSatisfied)
 
@@ -99,17 +92,39 @@ function SignIn() {
             setPlayNudge(true);
             return;
         }
-        // toast.success("Account created")
-        // await axios.post("http://localhost:3001/signUp", userInfo, {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        // }).then(res => {
-        //     console.log(res.data);
-        // }).catch(err => {
-        //     console.log(err);
-        // });
+        axios.post("http://localhost:3001/signUp", userInfo, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(res => {
+            toast.success("Account created. Check your inbox to confirm your email.")
+        }).catch(err => {
+            toast.error(err.response.data);
+        });
     }
+
+    // Google OAuth
+    function continueWithGoogle() {
+        return;
+        axios.post("http://localhost:3001/auth/google").then(res => {
+            window.location.href = res.data;
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
+
+    // ---- Nudge Animation ---- //
+    const [playNudge, setPlayNudge] = useState(false);
+    const passwordReqStyling = classNames({
+        [styles.passwordRequirements]: true,
+        [styles.applyNudge]: playNudge
+    });
+
+    function stopAnim() {
+        setPlayNudge(false);
+    }
+    // ---- Nudge Animation ---- //
 
     const [showPassword, setShowPassord] = useState(false);
     function peekPassword() {
@@ -127,7 +142,7 @@ function SignIn() {
     };
 
     const signInBoxStyling = {
-        marginTop: showSignUp ? "5%" : "7%"
+        marginTop: showSignUp ? "5%" : "5%"
     }
 
     const showSignUpElements = {
@@ -135,8 +150,8 @@ function SignIn() {
     }
 
     const showPasswordReqs = useSpring({
-        from: { transform: showSignUp ? "translate(300%, -15%)" : "translate(0%, -15%)" },
-        to: { transform: showSignUp ? "translate(0%, -15%)" : "translate(300%, -15%)" },
+        from: { transform: showSignUp ? "translate(300%, -15%)" : "translate(65%, -15%)" },
+        to: { transform: showSignUp ? "translate(65%, -15%)" : "translate(300%, -15%)" },
         config: { tension: 200, friction: 30 },
     });
 
@@ -149,18 +164,18 @@ function SignIn() {
                         <input name="displayName" onInput={updateUserInfo} style={showSignUpElements} className={styles.signInField} type="text" placeholder="Username" required={showSignUp} value={userInfo.displayName} />
                         <input name="email" onInput={updateUserInfo} className={styles.signInField} type="email" placeholder="Email" required value={userInfo.email} />
                         <div>
-                            <animated.div style={showPasswordReqs} className={passwordReqStyling} onAnimationEnd={stopAnim}>
+                            {showSignUp !== null && <animated.div style={showPasswordReqs} className={passwordReqStyling} onAnimationEnd={stopAnim}>
                                 <PasswordReq currentPass={userInfo.password} currentConfPass={userInfo.confirmPassword} passwordReqSatisfied={passwordReqSatisfied} setPasswordReqsSatisfied={setPasswordReqsSatisfied} />
-                            </animated.div>
+                            </animated.div>}
                             <div style={{ position: "relative" }}>
                                 <input name="password" onInput={updateUserInfo} className={styles.signInField} type={showPassword ? "text" : "password"} placeholder="Password" required value={userInfo.password} />
                                 {userInfo.password.length > 0 && <div onMouseLeave={() => setShowPassord(false)} onMouseDown={peekPassword} onMouseUp={peekPassword} className={styles.peekPassword}><FontAwesomeIcon icon={faEye} /></div>}
                             </div>
                         </div>
-                        <div style={{ position: "relative" }}>
+                        {showSignUp && <div style={{ position: "relative" }}>
                             <input name="confirmPassword" onInput={updateUserInfo} className={styles.signInField} style={showSignUpElements} type={showConfPass ? "text" : "password"} placeholder="Confirm Password" required={showSignUp} value={userInfo.confirmPassword} />
                             {userInfo.confirmPassword.length > 0 && <div onMouseLeave={() => setShowConfPass(false)} onMouseDown={peekConfPass} onMouseUp={peekConfPass} className={styles.peekPassword}><FontAwesomeIcon icon={faEye} /></div>}
-                        </div>
+                        </div>}
                         <button type="submit" className={styles.signInButton}>Sign {showSignUp ? "Up" : "In"}</button>
                     </form>
                     <div className={styles.askUserText}>
@@ -177,8 +192,8 @@ function SignIn() {
                         <div>or</div>
                         <div className={styles.bar}></div>
                     </div>
-                    <div className={styles.continueWithGoogle}>
-                        <img src={googleLogo} width="20px" />
+                    <div onClick={continueWithGoogle} className={styles.continueWithGoogle}>
+                        <img src={googleLogo} alt="Google Logo" width="20px" />
                         <span>Continue with Google</span>
                     </div>
                 </div>

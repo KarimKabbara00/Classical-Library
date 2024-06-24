@@ -21,9 +21,10 @@
 }
 
 .mapBody {
-    height: 89vh;
-    width: 100%;
+    height: 93.25vh;
+    width: 97vw;
     overflow: hidden;
+    margin-left: 3vw;
 }
 
 .mapHeader {

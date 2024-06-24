@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../css/searchResult.module.css";
+import styles from "../../css/allComposers.module.css";
 
 function LetterHeader(props) {
     return (

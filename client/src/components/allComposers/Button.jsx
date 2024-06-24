@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../../css/homepage.module.css"
+import styles from "../../css/allComposers.module.css"
 import allWhite from "../../images/all-white.svg"
 import allBrown from "../../images/all-brown.svg"
 import shuffleWhite from "../../images/shuffle-white.svg"

@@ -1,18 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
-import Footer from "./components//Footer";
+import Header from "./components/navigation/Header";
+// import Footer from "./components//Footer";
 import Home from "./pages/Home";
 import Map from "./pages/Map";
 import About from "./pages/About";
-import SearchResults from "./pages/SearchResults";
+import AllComposers from "./pages/AllComposers";
 import ViewComposer from "./pages/ViewComposer";
 import MusicPlayer from "./components/musicPlayer/MusicPlayer";
 import ViewWorks from "./pages/ViewWorks";
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import SignIn from "./pages/SignIn";
+import Cookies from 'js-cookie';
 
 function App() {
+
+  /* -------------------------------- User Session -------------------------------- */
+  const [accessToken, setAccessToken] = useState(null)
+  function logout() {
+    try {
+      Cookies.remove('accessToken');
+      setAccessToken(null);
+      toast.success("Logged out")
+    }
+    catch (err) {
+      console.log(err)
+      toast.error("Error logging out")
+    }
+  }
+  useEffect(() => {
+    Cookies.set("accessToken", accessToken, { expires: 2 }); // 2 day expiration
+  }, [accessToken]);
+  /* -------------------------------- User Session -------------------------------- */
+
   /* -------------------------------- Music Player -------------------------------- */
   const [currentSong, setCurrentSong] = useState({ title: "", composer: "", portrait: "" });
   const [audioObject, setAudioObject] = useState(null);
@@ -36,37 +56,39 @@ function App() {
 
   return (
     <div>
-      <div>
-        <Toaster
-          position="top-left"
-          reverseOrder={false}
-          
-          containerStyle={{
-            position: "absolute",
-            top: 80,
-            left: 20,
-            bottom: 20,
-            right: 20,
-          }}
-        />
-      </div>
-      {showMusicPlayer && <MusicPlayer audioObject={audioObject} setAudioObject={setAudioObject} volume={volume} setVolume={setVolume} currentSong={currentSong} setCurrentSong={setCurrentSong} animInOut={animInOut} showOrHideMusicPlayer={showOrHideMusicPlayer} />}
+      {/* <div>session is : {accessToken}</div> */}
       <BrowserRouter>
-        <Header />
+        <Header accessToken={accessToken} logout={logout} />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home setAccessToken={setAccessToken} />} />
           <Route path="/map" element={<Map />} />
-          <Route path="/search" element={<SearchResults />} />
+          <Route path="/allComposers" element={<AllComposers />} />
           <Route path="/viewComposer" element={<ViewComposer />} />
           <Route
             path="/viewWorks"
             element={<ViewWorks audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} showOrHideMusicPlayer={showOrHideMusicPlayer} animInOut={animInOut} />}
           />
           <Route path="/about" element={<About />} />
-          <Route path="/signIn" element={<SignIn />} />
+          <Route path="/signIn" element={<SignIn setAccessToken={setAccessToken} />} />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
+
+
+      {showMusicPlayer && <MusicPlayer audioObject={audioObject} setAudioObject={setAudioObject} volume={volume} setVolume={setVolume} currentSong={currentSong} setCurrentSong={setCurrentSong} animInOut={animInOut} showOrHideMusicPlayer={showOrHideMusicPlayer} />}
+      <div>
+        <Toaster
+          position="top-left"
+          reverseOrder={false}
+          containerStyle={{
+            position: "absolute",
+            top: 80,
+            left: 80,
+            bottom: 20,
+            right: 20,
+          }}
+        />
+      </div>
     </div>
   );
 }

@@ -7,12 +7,6 @@ import cors from "cors";
 import ytdl from "ytdl-core";
 import { createClient } from '@supabase/supabase-js';
 
-/////////
-import passport from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import session from 'express-session';
-/////////
-
 // import .env module and grab kv pairs
 dotenv.config();
 
@@ -40,72 +34,43 @@ app.use(bodyParser.json());
 app.use(logger);
 app.use(cors());
 
-app.use(session({ // google auth
-  secret: 'your_session_secret',
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    secure: false,
-    httpOnly: true,
-    sameSite: 'strict'
-  }
-
-}));
-
-app.use(passport.initialize()); // google auth
-app.use(passport.session());
-
 /* ---- Home Page ----*/
 app.get("/", async (req, res) => {
   res.status(200).send("Homepage Loaded");
 });
 
-/* ---- Search Page ----*/
-app.post("/search*", async (req, res) => {
-  // get input from form
-  var query = req.query.q;
+/* ---- All Composers Page ----*/
+app.post("/allComposers", async (req, res) => {
 
-  // check if shuffle is passed as a parameter
-  const isShuffle = Object.keys(req.query).includes("shuffle");
+  // make api call for all composers.
+  const response = await axios.get("https://api.openopus.org/composer/list/search/.json");
+  const success = response.data.status.success;
+  const errorMessage = response.data.status.error;
+  if (success === "true") {
+    // if request is successful pull list of composers
+    const composersArray = response.data.composers;
 
-  // if shuffle isnt passed, its either a query search, or all
-  if (isShuffle === false) {
-    // if all, set to empty string to grab all
-    query = query === "all" ? "" : query;
-
-    // make api call for composers with similar names. Empty string query grabs all
-    const response = await axios.get(`https://api.openopus.org/composer/list/search/${query}.json`);
-    const success = response.data.status.success;
-    const errorMessage = response.data.status.error;
-
-    if (success === "true") {
-      // if search is successful
-      // pull list of composers
-      const composersArray = response.data.composers;
-
-      // extract name and portrait for list view
-      var composerInfo = [];
-      composersArray.forEach((element) => {
-        composerInfo.push({
-          id: element.id,
-          name: element.complete_name,
-          portrait: element.portrait,
-        });
+    // extract name and portrait for list view
+    var composerInfo = [];
+    composersArray.forEach((element) => {
+      composerInfo.push({
+        id: element.id,
+        name: element.complete_name,
+        portrait: element.portrait,
       });
+    });
 
-      await sleep(2000);
-      res.status(200).send({
-        query: query,
-        searchResult: composerInfo,
-      });
-    } else {
-      // if search fails, stay on home page
-      const errMsg = response.data.status.error === "Too short search term" ? "Search term too short" : response.data.status.error;
-      res.status(400).send({
-        query: query,
-        searchResult: errMsg,
-      });
-    }
+    await sleep(2000);
+    res.status(200).send({
+      allComposers: composerInfo,
+    });
+  }
+  else {
+    // if request fails, stay on home page
+    res.status(400).send({
+      query: query,
+      allComposers: response.data.status.error,
+    });
   }
 });
 
@@ -178,9 +143,45 @@ app.get("/viewWorks*", async (req, res) => {
 
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port: ${port}`);
+/* ---- Sign In & Sign Up ---- */
+app.post("/signIn", async (req, res) => {
+  const { email, password } = req.body;
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  console.log(data)
+  try {
+    if (error) {
+      throw error;
+    }
+    res.status(201).send(data.session);
+  }
+  catch (error) {
+    let invalidCreds = error.__isAuthError === true;
+    res.status(401).send(invalidCreds)
+  }
 });
+
+app.post("/signUp", async (req, res) => {
+  const { displayName, email, password, confirmPassword } = req.body;
+
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq("email", email);
+
+  console.log(data.length)
+  if (data.length !== 0) {
+    res.status(400).send("Email already exists.");
+  }
+  else {
+    supabase.auth.signUp({ email, password })
+      .then(result => {
+        res.status(201).send(res.data.user.email);
+      }).catch(err => {
+        console.log(err);
+        res.status(400).send(err);
+      });
+  }
+})
 
 /* ---- Exposed API Endpoints ---- */
 app.get("/api/mapMarkers", async (req, res) => {
@@ -206,82 +207,24 @@ app.get("/music", async (req, res) => {
   ytdl(videoUrl, { format: audioFormat }).pipe(res);
 });
 
-/* ---- Sign In & Sign Up ---- */
-
-app.post("/signIn", async (req, res) => {
-  const { email, password } = req.body;
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  console.log(data)
-  try {
-    if (error) {
-      throw error;
-    }
-    res.status(201).send(data.session);
+app.post('/auth/google', async (req, res) => {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: 'http://localhost:3000/',
+    },
+  })
+  if (error) {
+    res.status(400).send(error);
   }
-  catch (error) {
-    res.status(401).send(error)
+  else {
+    res.status(200).send(data.url);
   }
-});
-
-app.post("/signUp", async (req, res) => {
-  const { displayName, email, password, confirmPassword } = req.body;
-  // const { data, error } = await 
-  
-  supabase.auth.signUp({ email, password })
-    .then(res => {
-      console.log("in res")
-      console.log(res.data)
-    }).catch(err => {
-      console.log(err)
-    });
-  
-  // try {
-  //   if (error) {
-  //     throw error;
-  //   }
-  //   res.status(201).send(data.session);
-  // }
-  // catch (error) {
-  //   res.status(401).send(error)
-  // }
 })
 
-// // Serialize user
-// passport.serializeUser((user, done) => {
-//   done(null, user);
-// });
-
-// // Deserialize user
-// passport.deserializeUser((obj, done) => {
-//   done(null, obj);
-// });
-
-// // Configure Passport with Google OAuth
-// passport.use(new GoogleStrategy({
-//   clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
-//   clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
-//   callbackURL: 'http://localhost:3001/auth/google/callback',
-// }, async (accessToken, refreshToken, profile, done) => {
-//   // In a real application, you would save the user to the database here
-
-//   const { id, name, emails, photos } = profile;
-//   const { familyName, giveName } = name;
-//   const email = emails[0].value;
-//   const photo = photos[0].value;
-
-//   return done(null, profile);
-// }
-// ));
-
-// app.get('/auth/google',
-//   passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-// app.get('/auth/google/callback',
-//   passport.authenticate('google', { failureRedirect: '/error' }),
-//   function (req, res) {
-//     // Successful authentication, redirect success.
-//     res.status(200).redirect('http://localhost:3000/');
-//   });
+app.listen(port, () => {
+  console.log(`Server running on port: ${port}`);
+});
 
 
 /* ---- Helper Functions ---- */

@@ -1,6 +1,6 @@
 @keyframes slideDown {
     0% {
-        transform: translateY(-200%);
+        transform: translateY(-300%);
     }
 
     100% {
@@ -14,7 +14,7 @@
     }
 
     100% {
-        transform: translateY(-200%);
+        transform: translateY(-300%);
     }
 }
 
@@ -33,7 +33,7 @@
     left: 0;
     right: 0;
     z-index: 10;
-    transform: translateY(-200%);
+    transform: translateY(-300%);
     overflow-y: hidden;
 }
 

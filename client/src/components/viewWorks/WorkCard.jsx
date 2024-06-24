@@ -49,6 +49,7 @@ function WorkCard(props) {
       <div className={styles.workCard} name="workCard">
         <span>{props.title}</span>
         <span>{props.genre}</span>
+        <span>{props.genre}</span>
         <div onClick={handleFetchAudio} className={styles.playButton}>
           <FontAwesomeIcon icon={svgIcon} className={svgIcon === faSpinner ? "fa-spin" : ""} style={{ color: "#a52a2a", fontSize: "2rem" }} />
         </div>
