@@ -130,9 +130,19 @@ app.get("/viewWorks*", async (req, res) => {
   const allGenresResponse = await axios.get(`https://api.openopus.org/genre/list/composer/${id}.json`);
 
   if (response.data.status.success == "false" || allGenresResponse.data.status.success == "false" || !(allGenresResponse.data.genres.includes(genre))) {
-    res.status(400).send({}) // sending nothing will cause catch to be executed on the frontend
-  } else {
+    res.status(400).send() // 400 will throw an error at the frontend
+  }
+  else {
     await sleep(2000);
+
+    // TODO: QUERY SUPABASE DB FOR DURATION AND URL
+
+    // add duration to every work
+    response.data.works.forEach((item) => {
+      item["duration"] = processTime(0);
+      item["url"] = "https://www.youtube.com/watch?v=vyDpyXsyOkE";
+    })
+
     res.status(200).send({
       works: response.data.works,
       allGenres: allGenresResponse.data.genres,
@@ -140,7 +150,6 @@ app.get("/viewWorks*", async (req, res) => {
       portrait: response.data.composer.portrait,
     });
   }
-
 });
 
 /* ---- Sign In & Sign Up ---- */
@@ -196,15 +205,14 @@ app.get("/api/mapMarkers", async (req, res) => {
   }
 })
 
-app.get("/music", async (req, res) => {
-
-  let videoUrl = "https://www.youtube.com/watch?v=vyDpyXsyOkE";
-  const info = await ytdl.getInfo(videoUrl);
+app.post("/api/music", async (req, res) => {
+  const url = req.body.url
+  const info = await ytdl.getInfo(url);
   const audioFormat = ytdl.chooseFormat(info.formats, { quality: "highestaudio" });
   res.setHeader("Content-Type", "audio/mpeg");
   res.setHeader("Content-Disposition", `attachment; filename="audio.mp3"`);
 
-  ytdl(videoUrl, { format: audioFormat }).pipe(res);
+  ytdl(url, { format: audioFormat }).pipe(res);
 });
 
 app.post('/auth/google', async (req, res) => {
@@ -239,6 +247,10 @@ async function askGPT(query) {
     model: "gpt-4o",
   });
   return openAIResponse;
+}
+
+function processTime(seconds) {
+  return new Date(seconds * 1000).toISOString().slice(11, 19);
 }
 
 function sleep(ms) {

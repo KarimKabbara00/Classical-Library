@@ -150,8 +150,8 @@ function SignIn(props) {
     }
 
     const showPasswordReqs = useSpring({
-        from: { transform: showSignUp ? "translate(300%, -15%)" : "translate(65%, -15%)" },
-        to: { transform: showSignUp ? "translate(65%, -15%)" : "translate(300%, -15%)" },
+        from: { transform: showSignUp ? "translate(300%, -15%)" : "translate(70%, -15%)" },
+        to: { transform: showSignUp ? "translate(70%, -15%)" : "translate(300%, -15%)" },
         config: { tension: 200, friction: 30 },
     });
 

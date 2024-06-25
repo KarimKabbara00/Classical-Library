@@ -13,7 +13,7 @@
 }
 
 .worksMainBody {
-  max-height: 93.25vh;
+  max-height: 92vh;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -25,9 +25,7 @@
   margin-left: auto;
   margin-right: auto;
   opacity: 0;
-  width: 65vw;
-  padding: 4rem 21rem 2rem 21rem;
-  border: 1px solid peru;
+  padding: 4rem 30rem 2rem 30rem;
 }
 
 .workTitle {
@@ -61,7 +59,7 @@
 
 .workHeader {
   display: grid;
-  grid-template-columns: 42rem 17rem 11rem 1.5rem;
+  grid-template-columns: 35rem 10rem 7rem 1.5rem;
   column-gap: 2rem;
   font-size: 1.5rem;
   font-weight: bold;
@@ -75,7 +73,7 @@
 
 .workCard {
   display: grid;
-  grid-template-columns: 42rem 17rem 11rem 1.5rem;
+  grid-template-columns: 35rem 10rem 7rem 1.5rem;
   column-gap: 2rem;
   align-items: center;
   font-size: 1.2rem;
@@ -94,5 +92,6 @@
 @media (max-width: 1280px) {
   .worksBody {
     min-width: 72%;
+    padding: 4rem 10rem 2rem 10rem;
   }
 }

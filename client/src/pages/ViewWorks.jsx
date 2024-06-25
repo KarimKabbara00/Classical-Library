@@ -128,7 +128,10 @@ function ViewWorks(props) {
   function sortWorks(column, ascending = false) {
     ascending = ascending ? -1 : 1;
     const sortedWorks = [...shownWorks].sort(function (a, b) { // [...shownWorks] creates a copy so react can rerender
-      return ascending * a[column].localeCompare(b[column]);
+      if (column === "duration")
+        return ascending * a[column] < (b[column]);
+      else
+        return ascending * a[column].localeCompare(b[column]);
     })
     setShownWorks(sortedWorks);
   }
@@ -183,6 +186,8 @@ function ViewWorks(props) {
               key={index}
               title={work.title}
               genre={work.genre}
+              duration={work.duration}
+              url={work.url}
               composer={composer}
               portrait={portrait}
               showOrHideMusicPlayer={props.showOrHideMusicPlayer}

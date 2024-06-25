@@ -12,6 +12,7 @@ import aboutBrown from "../../images/sidebar/about-brown.svg";
 import aboutWhite from "../../images/sidebar/about-white.svg";
 import moon from "../../images/sidebar/moon.svg";
 import Switch from "react-switch";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 function SidebarItem(props) {
 
@@ -35,23 +36,24 @@ function SidebarItem(props) {
         props.text === "Dark Mode" ? setIcon(moon) : void (0);
     }, [props.text])
 
-    const label = { inputProps: { 'aria-label': 'Dark Mode' } };
-
     const [checked, setChecked] = useState(false);
     function toggleChecked() {
         setChecked(prev => !prev);
     }
 
+    // resize dark mode switch
+    const is1280Px = useMediaQuery("only screen and (max-width : 1280px)");
+
     return (
         <div>
             {props.text !== "Dark Mode" && <div onMouseEnter={toggleHovered} onMouseLeave={toggleHovered} className={styles.sidebarItem}>
-                <div className={styles.sidebarIcon}><img src={icon} width="40px" /></div>
+                <img src={icon} className={styles.sidebarIcon} />
                 <div className={styles.sidebarText} style={{ color: isHovered ? "white" : "black" }}>{props.text}</div>
             </div>}
             {props.text === "Dark Mode" && <div onMouseEnter={toggleHovered} onMouseLeave={toggleHovered} className={styles.darkmode} >
-                <div className={styles.sidebarIcon}><img src={icon} width="40px" /></div>
+                <img src={icon} className={styles.sidebarIcon} />
                 <div className={styles.sidebarText}>{props.text}</div>
-                <Switch onChange={toggleChecked} checked={checked} onColor="#a52a2a" uncheckedIcon={null} checkedIcon={null} height={28} handleDiameter={22} />
+                <Switch onChange={toggleChecked} checked={checked} onColor="#a52a2a" uncheckedIcon={null} checkedIcon={null} handleDiameter={is1280Px ? 22 : 26} height={is1280Px ? 24 : 28} width={is1280Px ? 48 : 56} />
             </div>}
         </div>
 

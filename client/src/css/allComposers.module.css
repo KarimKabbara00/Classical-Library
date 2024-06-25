@@ -15,7 +15,7 @@
 .allCompMainBody {
   display: flex;
   justify-content: center;
-  max-height: 93.25vh;
+  max-height: 92vh;
   overflow-y: scroll;
 }
 
@@ -38,18 +38,18 @@
 .allCompBody {
   display: flex;
   align-items: center;
-  justify-items: center;
+  justify-content: center;
   flex-direction: column;
   margin-top: 2rem;
   margin-bottom: 6rem;
-  width: 67.75vw;
+  min-width: 82.5vw;
 }
 
 .allComposersHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  width: 67.75vw;
+  width: 100%;
 }
 
 .sectionHeader {
@@ -69,8 +69,9 @@
 
 .allCompGrid {
   display: grid;
-  gap: 0rem 3rem;
-  grid-template-columns: repeat(3, 1fr);
+  justify-content: space-between;
+  gap: 0rem 4rem;
+  grid-template-columns: repeat(4, 1fr);
   min-width: 80%;
   margin-top: 0.25rem;
 }
@@ -89,7 +90,7 @@
   align-items: center;
   border: 1px solid rgba(128, 128, 128, 0.705);
   border-radius: 10px;
-  width: 25rem;
+  width: 22rem;
   margin-bottom: 1rem;
   transition: all ease-in-out 0.1s;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
@@ -140,6 +141,11 @@
 }
 
 @media (max-width: 1280px) {
+
+  .allCompBody {
+    min-width: 82.5vw;
+  }
+
   .allCompGrid {
     grid-template-columns: repeat(3, 1fr);
   }

@@ -20,8 +20,17 @@ function WorkCard(props) {
       return;
     }
 
-    setSvgIcon(faSpinner); // TODO: make spinny
-    const response = await fetch(`http://localhost:3001/music`);
+    setSvgIcon(faSpinner);
+    // send url
+    const response = await fetch("http://localhost:3001/api/music", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ url: props.url })
+    });
+
     if (response.ok) {
       const audioBlob = await response.blob();
       const audioUrl = await URL.createObjectURL(audioBlob);
@@ -49,7 +58,7 @@ function WorkCard(props) {
       <div className={styles.workCard} name="workCard">
         <span>{props.title}</span>
         <span>{props.genre}</span>
-        <span>{props.genre}</span>
+        <span>{props.duration}</span>
         <div onClick={handleFetchAudio} className={styles.playButton}>
           <FontAwesomeIcon icon={svgIcon} className={svgIcon === faSpinner ? "fa-spin" : ""} style={{ color: "#a52a2a", fontSize: "2rem" }} />
         </div>

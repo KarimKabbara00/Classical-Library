@@ -8,7 +8,6 @@ import { useSpring, animated } from "@react-spring/web";
 import Sidebar from "./Sidebar";
 import Profile from "./Profile";
 
-
 function Header(props) {
 
     useEffect(() => { }, [props.accessToken])
@@ -17,8 +16,8 @@ function Header(props) {
 
     const [showSidebar, setShowSidebar] = useState(false);
     const sidebarAnimation = useSpring({
-        from: { width: showSidebar ? "3.25vw" : "14vw" },
-        to: { width: showSidebar ? "14vw" : "3.25vw" },
+        from: { width: showSidebar ? "4rem" : "16.5rem" },
+        to: { width: showSidebar ? "16.5rem" : "4rem" },
         config: { tension: 200, friction: 30 },
     });
 
@@ -28,10 +27,10 @@ function Header(props) {
     }
 
     return (
-        <div style={{ height: "100%" }}>
+        <div>
             <nav className={styles.navBar}>
                 <span className={styles.navTitle}>
-                    <img src={logo} width="50px" alt="Treble Clef Icon" />
+                    <img className={styles.navTitleLogo} src={logo} alt="Treble Clef Icon" />
                     <span>Classical Library</span>
                 </span>
                 {!props.accessToken && <div className={styles.signIn} onClick={() => { navigate("/signIn") }}>Sign In</div>}

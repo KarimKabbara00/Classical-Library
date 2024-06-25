@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import classNames from "classnames";
 import FilterItems from "../components/shared/FilterItems";
@@ -69,7 +69,6 @@ function sortWorks(works) {
 
 function AllComposers() {
   const navigate = useNavigate();
-  const location = useLocation();
 
   // receive data from Home.jsx
   const [allResults, setAllResults] = useState([]);
@@ -89,6 +88,7 @@ function AllComposers() {
         let sortedResults = sortWorks(res.data.allComposers);
         setAllResults(sortedResults);
         setShownResults(sortedResults);
+        setFilteredResultsCount(countFilteredResults(sortedResults));
         setShowLoading(false);
       })
       .catch(function (err) {
@@ -102,6 +102,7 @@ function AllComposers() {
     if (!filter) {
       // show all
       setShownResults(allResults);
+      setFilteredResultsCount(countFilteredResults(allResults));
     } else {
       var filteredResults = Object.fromEntries( // transform from [key, value] into {key: value}
         Object.entries(allResults).map(([letter, composers]) => [  // for every letter and array of composer objs
@@ -111,7 +112,17 @@ function AllComposers() {
         ])
       );
       setShownResults(filteredResults);
+      setFilteredResultsCount(countFilteredResults(filteredResults));
     }
+  }
+
+  const [filteredResultsCount, setFilteredResultsCount] = useState(null);
+  function countFilteredResults(filteredResults) {
+    let totalCount = 0;
+    for (let i of Object.keys(filteredResults)) {
+      totalCount += filteredResults[i].length;
+    }
+    return totalCount;
   }
 
   function randomComposer() {
@@ -150,15 +161,12 @@ function AllComposers() {
         <div className={styles.allCompBody}>
           <div className={styles.allComposersHeader}>
             <Button buttonType="Shuffle" buttonText="Random Composer" buttonAction={randomComposer} />
+            {filteredResultsCount === 0 ? <div className={styles.noResults}>No Results Found</div> : null}
             <FilterItems filterItems={filterComposers} placeholderText={"Search composers here..."} />
           </div>
-          {shownResults.length === 0 ? (
-            <div className={styles.noResults}>No Results Found</div>
-          ) : (
-            Object.entries(shownResults).map(([letter, composers]) => (
-              <LetterSection key={letter} letterHeaderCount={Object.keys(shownResults).length} composerArray={composers} letter={letter} />
-            ))
-          )}
+          {Object.entries(shownResults).map(([letter, composers]) => (
+            <LetterSection key={letter} letterHeaderCount={Object.keys(shownResults).length} composerArray={composers} letter={letter} />
+          ))}
         </div>
       </div>}
     </div>
