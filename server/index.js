@@ -14,7 +14,7 @@ const app = express();
 const port = 3001;
 
 // supabase db
-const supabase = createClient(process.env.SUPABASE_DB, process.env.SUPABASE_ANON_KEY);
+// const supabase = createClient(process.env.SUPABASE_DB, process.env.SUPABASE_ANON_KEY);
 
 /* ---- Middleware ---- */
 var logger = function (req, res, next) {
@@ -23,9 +23,9 @@ var logger = function (req, res, next) {
 };
 
 /* ---- API Keys ---- */
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY,
+// });
 
 /* --- Middleware ---- */
 app.use(express.static("public"));
@@ -193,6 +193,48 @@ app.post("/signUp", async (req, res) => {
 })
 
 /* ---- Exposed API Endpoints ---- */
+
+app.get("/api/birthday", async (req, res) => {
+
+  const today = new Date();
+  let todayMs = today.setUTCHours(0, 0, 0, 0);
+
+  // const { data, error } = await supabase
+  //   .from('Markers')
+  //   .select('*')
+  //   .eq("dobMs", todayMs);
+
+  // if no one today, get next closest
+  // if (data.length === 0) {
+  //   const { data, error } = await supabase
+  //     .from('Markers')
+  //     .select('*')
+  //     .eq("dobMs", todayMs);
+  // }
+
+  // TODO: QUERY SUPABASE FOR DOB
+  /*
+    SELECT *
+    FROM Markers
+    WHERE dobMS > todayMs
+    ORDER BY value - 50
+    LIMIT 1;
+  */
+  // select * from Markers where bdate === todayMs
+  // if !records
+  //    
+
+  const bday = new Date(2024, 5, 25);
+  let bdayMs = bday.setUTCHours(0, 0, 0, 0);
+
+  console.log(todayMs == bdayMs);
+
+  const response = await axios.get("https://api.openopus.org/composer/list/ids/145,121.json");
+  const data = response.data.composers;
+  res.status(200).send(data)
+
+})
+
 app.get("/api/mapMarkers", async (req, res) => {
   const { data, error } = await supabase.from('Markers').select('*');
 

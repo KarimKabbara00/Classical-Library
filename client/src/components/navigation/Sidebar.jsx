@@ -4,7 +4,7 @@ import SidebarItem from "./SidebarItem";
 import { useNavigate } from "react-router-dom";
 
 
-function Sidebar() {
+function Sidebar(props) {
 
     const navigate = useNavigate();
 
@@ -34,12 +34,12 @@ function Sidebar() {
 
     return (
         <div className={styles.sidebar}>
-            <div onClick={goToHome}><SidebarItem text={"Home"} /></div>
-            <div onClick={goToAllComposers}><SidebarItem text={"Composers"} /></div>
-            <div onClick={goToAllWorks}><SidebarItem text={"Works"} /></div>
-            <div onClick={goToMap}><SidebarItem text={"Map"} /></div>
-            <div onClick={goToAbout} style={{ flexGrow: "1" }}><SidebarItem text={"About"} /></div> {/* Flex grow to shove darkmode to bottom */}
-            <div onClick={setDarkmode}><SidebarItem text={"Dark Mode"} /></div>
+            <div onClick={goToHome}><SidebarItem styling={props.styling} text={"Home"} /></div>
+            <div onClick={goToAllComposers}><SidebarItem styling={props.styling} text={"Composers"} /></div>
+            <div onClick={goToAllWorks}><SidebarItem styling={props.styling} text={"Works"} /></div>
+            <div onClick={goToMap}><SidebarItem styling={props.styling} text={"Map"} /></div>
+            <div onClick={goToAbout}><SidebarItem styling={props.styling} text={"About"} /></div>
+            <div className={styles.placeDarkmodeBottom} onClick={setDarkmode}><SidebarItem styling={props.styling} text={"Dark Mode"} /></div>
         </div>
     )
 }

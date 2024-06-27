@@ -6,7 +6,7 @@
     background-color: #a52a2a;
     padding: 0.5rem 0rem;
     z-index: 10;
-    height: 7vh;
+    height: 3.5rem;
 }
 
 .navTitle {
@@ -66,25 +66,30 @@
     cursor: pointer;
 }
 
-.sidebarIcon {
-    width: 2.5rem;
+.darkModeItem {
+    display: flex;
+    align-items: center;
+    margin-left: 0.3rem;
+    gap: 0rem 1rem;
+    width: 95%;
+    border-radius: 10px;
+    border: 1px solid white;
+    padding: 0.3rem 0rem 0.25rem 0.25rem;
+    font-size: 0.5rem;
+    white-space: nowrap;
+}
+
+.placeDarkmodeBottom {
+    margin-top: auto;
+}
+
+.darkModeSwitch {
+    padding-top: 0.3rem;
 }
 
 .sidebarText {
     padding-top: 0.2rem;
-    font-size: 1.2rem;
 }
-
-.darkmode {
-    display: flex;
-    align-items: center;
-    margin-left: 0.3vw;
-    gap: 0rem 1.25rem;
-    width: 12.8vw;
-    border: 1px solid white;
-    padding: 0rem 0rem 1rem 0.25rem;
-}
-
 
 .profileIcon {
     margin-right: 1vw;
@@ -136,7 +141,9 @@
 }
 
 @media (max-width:1280px) {
-
+    .navBar {
+        height: 3rem;
+    }
 
     .navTitle {
         font-size: 2rem;
@@ -145,8 +152,4 @@
     .navTitleLogo {
         width: 40px;
     }
-
-    /* .sidebarText {
-        font-size: 1rem;
-    } */
 }

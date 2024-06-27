@@ -47,13 +47,25 @@ function SidebarItem(props) {
     return (
         <div>
             {props.text !== "Dark Mode" && <div onMouseEnter={toggleHovered} onMouseLeave={toggleHovered} className={styles.sidebarItem}>
-                <img src={icon} className={styles.sidebarIcon} />
-                <div className={styles.sidebarText} style={{ color: isHovered ? "white" : "black" }}>{props.text}</div>
+                <img src={icon} width={props.styling.iconSize} />
+                <div className={styles.sidebarText}
+                    style={{
+                        color: isHovered ? "white" : "black",
+                        fontSize: props.styling.fontSize
+                    }}>
+                    {props.text}
+                </div>
             </div>}
-            {props.text === "Dark Mode" && <div onMouseEnter={toggleHovered} onMouseLeave={toggleHovered} className={styles.darkmode} >
-                <img src={icon} className={styles.sidebarIcon} />
-                <div className={styles.sidebarText}>{props.text}</div>
-                <Switch onChange={toggleChecked} checked={checked} onColor="#a52a2a" uncheckedIcon={null} checkedIcon={null} handleDiameter={is1280Px ? 22 : 26} height={is1280Px ? 24 : 28} width={is1280Px ? 48 : 56} />
+
+            {props.text === "Dark Mode" && <div onMouseEnter={toggleHovered} onMouseLeave={toggleHovered} className={styles.darkModeItem} >
+                <img src={icon} width={props.styling.iconSize} />
+                <div className={styles.sidebarText}
+                    style={{
+                        fontSize: "1rem"//props.styling.fontSize
+                    }}>
+                    {props.text}
+                </div>
+                <div className={styles.darkModeSwitch}><Switch onChange={toggleChecked} checked={checked} onColor="#a52a2a" uncheckedIcon={null} checkedIcon={null} handleDiameter={is1280Px ? 12 : 26} height={is1280Px ? 14 : 28} width={is1280Px ? 28 : 56} /></div>
             </div>}
         </div>
 
