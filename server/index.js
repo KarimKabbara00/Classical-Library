@@ -229,7 +229,7 @@ app.get("/api/birthday", async (req, res) => {
 
   console.log(todayMs == bdayMs);
 
-  const response = await axios.get("https://api.openopus.org/composer/list/ids/145,121.json");
+  const response = await axios.get("https://api.openopus.org/composer/list/ids/145,121,196.json");
   const data = response.data.composers;
   res.status(200).send(data)
 

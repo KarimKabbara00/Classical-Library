@@ -19,6 +19,7 @@ function Header(props) {
     // programatic media queries
     const is1280Px = useMediaQuery("only screen and (max-width : 1280px)");
     const [styling, setStyling] = useState({
+        sidebarHeight: "0rem",
         collapsedWidth: "0rem",
         expandedWidth: "0rem",
         iconSize: "0rem",
@@ -26,23 +27,27 @@ function Header(props) {
     })
     useEffect(() => {
         // go from smallest to largest
+        let sidebarHeight = "";
         let collapsedWidth = "";
         let expandedWidth = "";
         let iconSize = "";
         let fontSize = "";
         if (is1280Px) {
+            sidebarHeight = "92vh"
             collapsedWidth = "3rem";
             expandedWidth = "12rem";
             iconSize = "30rem";
             fontSize = "1.1rem";
         }
         else {
-            collapsedWidth = "3rem";
-            expandedWidth = "12rem";
-            iconSize = "30rem";
-            fontSize = "1rem";
+            sidebarHeight = "94vh"
+            collapsedWidth = "4rem";
+            expandedWidth = "15rem";
+            iconSize = "40rem";
+            fontSize = "1.25rem";
         }
         setStyling({
+            sidebarHeight: sidebarHeight,
             collapsedWidth: collapsedWidth,
             expandedWidth: expandedWidth,
             iconSize: iconSize,
@@ -74,7 +79,7 @@ function Header(props) {
                     {profileHovered && <Profile logout={props.logout} />}
                 </div>}
             </nav>
-            <animated.div style={sidebarAnimation} onMouseEnter={() => { setShowSidebar(true) }} onMouseLeave={() => { setShowSidebar(false) }} className={styles.sidebarParent}>
+            <animated.div style={{ ...sidebarAnimation, height: styling.sidebarHeight }} onMouseEnter={() => { setShowSidebar(true) }} onMouseLeave={() => { setShowSidebar(false) }} className={styles.sidebarParent}>
                 <Sidebar styling={styling} />
             </animated.div>
         </div>

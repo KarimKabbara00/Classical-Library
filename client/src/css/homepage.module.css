@@ -3,4 +3,81 @@
     flex-direction: column;
     gap: 2rem 0rem;
     align-items: center;
+    width: 100%;
+}
+
+.secondRow {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.birthdayCarouselParent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 45%;
+}
+
+.birthdayCarousel {
+    display: flex;
+    overflow-x: scroll;
+    /* Internet Explorer 10+ */
+    -ms-overflow-style: none;
+    /* Firefox */
+    scrollbar-width: none;
+}
+
+.birthdayCarousel::-webkit-scrollbar {
+    /* Safari and Chrome */
+    display: none;
+}
+
+.carouselButtonParent {
+    position: absolute;
+    bottom: -1.5rem;
+    left: 50%;
+    right: 50%;
+    display: flex;
+    gap: 0rem 1rem;
+}
+
+.carouselButton {
+    min-width: 10px;
+    min-height: 10px;
+    border-radius: 10px;
+}
+
+.carouselButton:hover {
+    cursor: pointer;
+}
+
+.portraitAndWorks {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    gap: 0rem 0.75rem;
+}
+
+h4 {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.recommendedWorks {
+    display: flex;
+    align-items: center;
+    gap: 0rem 1rem;
+    font-size: 1.1rem;
+    padding-left: 1px;
+    padding-bottom: 0.75rem;
+}
+
+.recommendedWorks > span {
+    padding-top: 0.1rem;
+}
+
+.playButton {
+    cursor: pointer;
 }
