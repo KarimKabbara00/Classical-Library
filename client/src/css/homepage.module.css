@@ -27,6 +27,7 @@
     -ms-overflow-style: none;
     /* Firefox */
     scrollbar-width: none;
+    margin-top: 1rem;
 }
 
 .birthdayCarousel::-webkit-scrollbar {
@@ -53,6 +54,16 @@
     cursor: pointer;
 }
 
+.birthdayCardHeader {
+    display: flex;
+    gap: 0rem 0.5rem;
+}
+
+.birthdayCardHeaderImage{
+    width: 1rem;
+    cursor: pointer;
+}
+
 .portraitAndWorks {
     display: flex;
     align-items: flex-start;
@@ -74,10 +85,16 @@ h4 {
     padding-bottom: 0.75rem;
 }
 
-.recommendedWorks > span {
+.recommendedWorks>span {
     padding-top: 0.1rem;
 }
 
 .playButton {
     cursor: pointer;
+}
+
+@media (max-width: 1280px) {
+    .recommendedWorks {
+        font-size: 0.9rem;
+    }
 }

@@ -29,6 +29,9 @@ function Home(props) {
   return (
     <div className={styles.homeBody}>
 
+      <div className={styles.firstRow}>
+        What is the classical library
+      </div>
       <div className={styles.secondRow}>
         <div className={styles.birthdayCarouselParent}>
           <h2>Upcoming Birthdays</h2>
