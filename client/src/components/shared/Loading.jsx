@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import styles from "../css/loading.module.css";
-import eighthNote from "../images/8thNote.svg";
+import styles from "../../css/loading.module.css";
+import eighthNote from "../../images/8thNote.svg";
 import { animated, useSprings } from "@react-spring/web";
 
 function Loading(props) {

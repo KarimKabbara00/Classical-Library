@@ -54,13 +54,22 @@ function App() {
   }
   /* -------------------------------- Music Player -------------------------------- */
 
+  /* ------------------------------ Homepage On Load ------------------------------ */
+  // we dont want to show the home page animation on every render
+  // wait 2 seconds for all anims to finish on load then set to false
+  const [firstLoad, setFirstLoad] = useState(true);
+  setTimeout(() => {
+    setFirstLoad(false);
+  }, 2000)
+  /* ------------------------------ Homepage On Load ------------------------------ */
+
   return (
     <div>
       {/* <div>session is : {accessToken}</div> */}
       <BrowserRouter>
         <Header accessToken={accessToken} logout={logout} />
         <Routes>
-          <Route path="/" element={<Home setAccessToken={setAccessToken} />} />
+          <Route path="/" element={<Home setAccessToken={setAccessToken} firstLoad={firstLoad} />} />
           <Route path="/map" element={<Map />} />
           <Route path="/allComposers" element={<AllComposers />} />
           <Route path="/viewComposer" element={<ViewComposer />} />

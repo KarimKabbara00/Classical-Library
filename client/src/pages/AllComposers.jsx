@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import classNames from "classnames";
 import FilterItems from "../components/shared/FilterItems";
-import Loading from "../components/Loading";
+import Loading from "../components/shared/Loading";
 import styles from "../css/allComposers.module.css";
 import loadingStyles from "../css/loading.module.css";
 import BackToTop from "../components/shared/BackToTop";

@@ -1,15 +1,49 @@
 .homeBody {
     display: flex;
     flex-direction: column;
-    gap: 2rem 0rem;
+    gap: 4rem 0rem;
     align-items: center;
     width: 100%;
+    height: 94vh;
+}
+
+.firstRow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5rem;
+}
+
+.title {
+    font-size: 2rem;
+}
+
+.websiteDesc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem 0rem;
+    font-size: 1.4rem;
+    text-align: center;
+    margin-top: 0.5rem;
+    line-height: 1.75rem;
+}
+
+.featureHighlight {
+    color: brown;
+    font-weight: bold;
 }
 
 .secondRow {
     display: flex;
     justify-content: space-around;
+    align-items: center;
     width: 100%;
+    height: 100%;
+    background-color: whitesmoke;
+    padding-top: 3rem;
+    padding-bottom: 5rem;
+    opacity: 0;
 }
 
 .birthdayCarouselParent {
@@ -17,7 +51,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    width: 45%;
+    width: 40%;
+    height: fit-content;
 }
 
 .birthdayCarousel {
@@ -28,6 +63,9 @@
     /* Firefox */
     scrollbar-width: none;
     margin-top: 1rem;
+    border: 1px solid black;
+    background-color: whitesmoke;
+    border-radius: 10px;
 }
 
 .birthdayCarousel::-webkit-scrollbar {
@@ -57,11 +95,13 @@
 .birthdayCardHeader {
     display: flex;
     gap: 0rem 0.5rem;
+    justify-content: space-between;
 }
 
-.birthdayCardHeaderImage{
-    width: 1rem;
+.birthdayCardHeaderImage {
+    width: 1.5rem;
     cursor: pointer;
+    margin-left: 0.5rem;
 }
 
 .portraitAndWorks {
@@ -69,6 +109,11 @@
     align-items: flex-start;
     width: 100%;
     gap: 0rem 0.75rem;
+    padding-top: 0.25rem;
+}
+
+.portraitAndWorks>img {
+    border-radius: 10px;
 }
 
 h4 {

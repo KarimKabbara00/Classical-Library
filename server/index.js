@@ -14,7 +14,7 @@ const app = express();
 const port = 3001;
 
 // supabase db
-// const supabase = createClient(process.env.SUPABASE_DB, process.env.SUPABASE_ANON_KEY);
+const supabase = createClient(process.env.SUPABASE_DB, process.env.SUPABASE_ANON_KEY);
 
 /* ---- Middleware ---- */
 var logger = function (req, res, next) {
@@ -23,9 +23,9 @@ var logger = function (req, res, next) {
 };
 
 /* ---- API Keys ---- */
-// const openai = new OpenAI({
-//   apiKey: process.env.OPENAI_API_KEY,
-// });
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 /* --- Middleware ---- */
 app.use(express.static("public"));

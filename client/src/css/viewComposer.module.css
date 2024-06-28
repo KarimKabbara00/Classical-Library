@@ -20,6 +20,7 @@
   display: flex;
   gap: 0rem 5rem;
   opacity: 0;
+  padding-left: 4rem;
 }
 
 .left {
@@ -55,13 +56,14 @@
 }
 
 .composerImage {
-  width: 250px;
+  width: 15.5rem;
   float: left;
-  padding-right: 1rem;
+  margin-right: 1rem;
+  border-radius: 10px;
 }
 
 .composerDescription {
-  line-height: 2rem;
+  line-height: 1.75rem;
   font-size: 1.1rem;
 }
 
@@ -127,6 +129,7 @@
 .timeLine {
   display: flex;
   gap: 0rem 2rem;
+  width: 37.5vw;
 }
 
 .timeLineArt {

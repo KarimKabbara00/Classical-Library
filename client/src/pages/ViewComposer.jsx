@@ -8,7 +8,7 @@ import ComposerName from "../components/viewComposer/ComposerName";
 import ComposerFacts from "../components/viewComposer/ComposerFacts";
 import ExploreWorks from "../components/viewComposer/ExploreWorks";
 import Timeline from "../components/viewComposer/Timeline";
-import Loading from "../components/Loading";
+import Loading from "../components/shared/Loading";
 import Error from "../components/shared/Error";
 import styles from "../css/viewComposer.module.css";
 import sharedStyles from "../css/shared.module.css";

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { animated, useSpring } from "@react-spring/web";
 import axios from "axios";
 import classNames from "classnames";
 import WorkHeader from "../components/viewWorks/WorkHeader";
 import WorkCard from "../components/viewWorks/WorkCard";
 import FilterItems from "../components/shared/FilterItems";
-import Loading from "../components/Loading";
+import Loading from "../components/shared/Loading";
 import styles from "../css/viewWorks.module.css";
 import loadingStyles from "../css/loading.module.css";
 import sharedStyles from "../css/shared.module.css";
@@ -61,7 +60,6 @@ function ViewWorks(props) {
           // genre states
           setCurrentGenre(genre);
           setAllGenres(res.data.allGenres);
-
           setShowLoading(false);
         })
         .catch(function (err) {

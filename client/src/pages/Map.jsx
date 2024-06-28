@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 import CustomMarker from "../components/map/CustomMarker";
 import Info from "../components/map/Info";
-import Loading from "../components/Loading";
+import Loading from "../components/shared/Loading";
 import Error from "../components/shared/Error";
 import sharedStyles from "../css/shared.module.css";
 import loadingStyles from "../css/loading.module.css";

@@ -17,14 +17,25 @@ function BirthdayCard(props) {
         navigate(`/viewWorks?id=${props.composer.id}&genre=Recommended`)
     }
 
+    function parseDate(date) {
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        const dateObj = new Date(date);
+        const day = dateObj.getUTCDate();
+        const month = dateObj.getUTCMonth();
+        const year = dateObj.getUTCFullYear();
+        return `${months[month]} ${day}, ${year}`;
+    }
+
     return (
-        <div id={props.index} style={{ minWidth: "100%" }}>
+        <div id={props.index} style={{ minWidth: "100%", padding: "1rem" }}>
             <div className={styles.birthdayCardHeader}>
                 <h3>{props.composer.complete_name}</h3>
-                <img onClick={goToComposer} className={styles.birthdayCardHeaderImage} src={composer} />
-                <img onClick={goToWorks} className={styles.birthdayCardHeaderImage} src={works} />
+                <div>
+                    <img onClick={goToComposer} className={styles.birthdayCardHeaderImage} src={composer} />
+                    <img onClick={goToWorks} className={styles.birthdayCardHeaderImage} src={works} />
+                </div>
             </div>
-            <div>{props.composer.birth}</div>
+            <div>{parseDate(props.composer.birth)}</div>
             <div className={styles.portraitAndWorks}>
                 <img src={props.composer.portrait} width="200px" />
                 <div>
@@ -36,7 +47,6 @@ function BirthdayCard(props) {
                 </div>
             </div>
         </div>
-
     )
 }
 
