@@ -60,7 +60,6 @@
 
 /* Back To Top */
 
-
 /* Error Styling */
 
 .errorParent {
@@ -171,10 +170,10 @@
     font-size: 1.25rem;
     display: flex;
     align-items: center;
-    gap: 0rem 0.25rem; 
+    gap: 0rem 0.25rem;
 }
 
-.goBack:hover{
+.goBack:hover {
     cursor: pointer;
     color: brown;
     font-weight: bold;

@@ -3,6 +3,7 @@ import { useSpring, animated } from "@react-spring/web";
 import styles from "../css/homepage.module.css";
 import Intro from "../components/home/Intro";
 import BirthdayCarousel from "../components/home/BirthdayCarousel";
+import QOTD from "../components/home/QOTD";
 
 function Home(props) {
 
@@ -13,8 +14,6 @@ function Home(props) {
     delay: 1800
   });
 
-
-
   return (
     <div className={styles.homeBody}>
 
@@ -23,11 +22,13 @@ function Home(props) {
       </div>
 
       <animated.div style={fadeCarouselAnim} className={styles.secondRow}>
-        <BirthdayCarousel />
-
-        <div style={{ border: "1px solid green" }}>
-          featured or something
-        </div>
+        <BirthdayCarousel
+          audioObject={props.audioObject}
+          setAudioObject={props.setAudioObject}
+          currentSong={props.currentSong}
+          setCurrentSong={props.setCurrentSong}
+          showOrHideMusicPlayer={props.showOrHideMusicPlayer} />
+        <QOTD />
       </animated.div>
 
     </div>

@@ -39,10 +39,10 @@ function Intro(props) {
             </animated.div>
             <div className={styles.websiteDesc}>
                 <animated.span style={descLineOneAnim} >Dive into a world of over <span className={styles.featureHighlight}>200 classical composers</span> and more
-                    than <span className={styles.featureHighlight}>1000?? timeless works</span>.
+                    than <span className={styles.featureHighlight}>24,000 timeless works</span>. {/* 24975 */}
                 </animated.span>
                 <animated.span style={descLineTwoAnim}>Explore birth locations on our <span className={styles.featureHighlight}>interactive map</span>, challenge
-                    yourself with fun <span className={styles.featureHighlight}>trivia questions</span>, <br /> and create personalized <span className={styles.featureHighlight}>playlists</span> to enjoy your favorite pieces.
+                    yourself with fun <span className={styles.featureHighlight}>trivia questions</span>, <br /> or create personalized <span className={styles.featureHighlight}>playlists</span> to enjoy your favorite pieces.
                 </animated.span>
                 <animated.span style={descLineThreeAnim}>Dive right in!</animated.span>
             </div>

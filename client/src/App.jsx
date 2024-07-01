@@ -69,13 +69,29 @@ function App() {
       <BrowserRouter>
         <Header accessToken={accessToken} logout={logout} />
         <Routes>
-          <Route path="/" element={<Home setAccessToken={setAccessToken} firstLoad={firstLoad} />} />
+          <Route path="/" element={
+            <Home
+              setAccessToken={setAccessToken}
+              firstLoad={firstLoad}
+              audioObject={audioObject}
+              setAudioObject={setAudioObject}
+              currentSong={currentSong}
+              setCurrentSong={setCurrentSong}
+              showOrHideMusicPlayer={showOrHideMusicPlayer}
+            />}
+          />
           <Route path="/map" element={<Map />} />
           <Route path="/allComposers" element={<AllComposers />} />
           <Route path="/viewComposer" element={<ViewComposer />} />
-          <Route
-            path="/viewWorks"
-            element={<ViewWorks audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} showOrHideMusicPlayer={showOrHideMusicPlayer} animInOut={animInOut} />}
+          <Route path="/viewWorks" element={
+            <ViewWorks
+              audioObject={audioObject}
+              setAudioObject={setAudioObject}
+              currentSong={currentSong}
+              setCurrentSong={setCurrentSong}
+              showOrHideMusicPlayer={showOrHideMusicPlayer}
+              animInOut={animInOut}
+            />}
           />
           <Route path="/about" element={<About />} />
           <Route path="/signIn" element={<SignIn setAccessToken={setAccessToken} />} />

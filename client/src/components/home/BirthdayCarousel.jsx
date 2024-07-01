@@ -3,14 +3,16 @@ import axios from "axios";
 import styles from "../../css/homepage.module.css";
 import BirthdayCard from "../../components/home/BirthdayComposerCard";
 
-function BirthdayCarousel() {
+function BirthdayCarousel(props) {
 
-    const [composersBirthday, setComposerBirthday] = useState([])
+    const [composerInfo, setComposerInfo] = useState([])
+    const [recommendedWorks, setRecommendedWorks] = useState([])
     const [showError, setShowError] = useState(false);
     useEffect(() => {
         axios.get("http://localhost:3001/api/birthday")
             .then(res => {
-                setComposerBirthday(res.data)
+                setComposerInfo(res.data.composerData);
+                setRecommendedWorks(res.data.recommendedWorks);
             }).catch(err => {
                 console.log(err)
                 setShowError(true);
@@ -29,8 +31,21 @@ function BirthdayCarousel() {
             <h1>Upcoming Birthdays</h1>
             {!showError && <div>
                 <div id="birthdayCarousel" className={styles.birthdayCarousel}>
-                    {composersBirthday.map((composer, index) => {
-                        return <BirthdayCard key={index} composer={composer} index={index} visibleIndex={visibleIndex} />
+                    {composerInfo.map((composer, index) => {
+                        return <BirthdayCard
+                            key={index}
+                            composer={composer}
+                            recommendedWorks={recommendedWorks[index]}
+                            index={index}
+                            visibleIndex={visibleIndex}
+                            // music stuff
+                            url={recommendedWorks[index].url}
+                            audioObject={props.audioObject}
+                            setAudioObject={props.setAudioObject}
+                            currentSong={props.currentSong}
+                            setCurrentSong={props.setCurrentSong}
+                            showOrHideMusicPlayer={props.showOrHideMusicPlayer}
+                        />
                     })}
                 </div>
                 <div className={styles.carouselButtonParent}>
