@@ -1,0 +1,150 @@
+.playlistBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 94vh;
+    /* overflow-y: scroll; */
+    /* border: 10px solid peru; */
+}
+
+.title {
+    margin-top: 3rem;
+}
+
+.playlistContent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.noPlaylists {
+    margin-top: 2rem;
+    width: 25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem 0rem;
+}
+
+.noPlaylists>span {
+    font-size: 1.1rem;
+}
+
+.createPlaylist {
+    background-color: brown;
+    color: white;
+    border-radius: 10px;
+    padding: 0.75rem 0rem 0.75rem 0rem;
+    cursor: pointer;
+    text-align: center;
+    width: 10rem;
+}
+
+.createPlaylist:hover {
+    background-color: rgb(141, 36, 36);
+}
+
+.playlists {}
+
+/* New Playlist */
+.newPlaylistBody {
+    width: 100%;
+    height: 94vh;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.newPlaylistForm {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2rem 0rem;
+}
+
+.newPlaylistNameParent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem 0rem;
+    height: fit-content;
+    margin-top: 1rem;
+}
+
+.newPlaylistNameParent>label {
+    color: brown;
+    font-weight: bold;
+}
+
+.newPlaylistName {
+    position: relative;
+    font-size: 1.3rem;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid black;
+}
+
+.newPlaylistName:focus {
+    border: none;
+    outline: none;
+    border-bottom: 2px solid brown;
+}
+
+
+.addWork {
+    color: brown;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: end;
+    width: 100%;
+    cursor: pointer;
+}
+
+.addWork:hover {
+    text-decoration: underline;
+}
+
+.searchForWorkParent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem 0rem;
+}
+
+.searchForWorkParent>label {
+    color: brown;
+    font-weight: bold;
+}
+
+.searchForWorkItem {
+    display: flex;
+    align-items: center;
+    gap: 0rem 0.5rem;
+    height: fit-content;
+}
+
+.searchForWorkItem>img {
+    cursor: pointer;
+}
+
+.searchForWork {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid black;
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    transition: all ease-in-out 50ms;
+}
+
+.searchForWork:focus {
+    width: 100%;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid brown;
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+}

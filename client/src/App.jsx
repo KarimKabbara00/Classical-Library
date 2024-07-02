@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
+import Cookies from 'js-cookie';
 import Header from "./components/navigation/Header";
 // import Footer from "./components//Footer";
 import Home from "./pages/Home";
@@ -9,9 +11,9 @@ import AllComposers from "./pages/AllComposers";
 import ViewComposer from "./pages/ViewComposer";
 import MusicPlayer from "./components/musicPlayer/MusicPlayer";
 import ViewWorks from "./pages/ViewWorks";
-import toast, { Toaster } from 'react-hot-toast';
 import SignIn from "./pages/SignIn";
-import Cookies from 'js-cookie';
+import Playlists from "./pages/Playlists";
+import NewPlaylist from "./components/playlists/NewPlaylist";
 
 function App() {
 
@@ -80,7 +82,6 @@ function App() {
               showOrHideMusicPlayer={showOrHideMusicPlayer}
             />}
           />
-          <Route path="/map" element={<Map />} />
           <Route path="/allComposers" element={<AllComposers />} />
           <Route path="/viewComposer" element={<ViewComposer />} />
           <Route path="/viewWorks" element={
@@ -93,8 +94,14 @@ function App() {
               animInOut={animInOut}
             />}
           />
+          <Route path="/map" element={<Map />} />
           <Route path="/about" element={<About />} />
+
+          {/* Profile Routes */}
           <Route path="/signIn" element={<SignIn setAccessToken={setAccessToken} />} />
+          <Route path="/profile/playlists" element={<Playlists />} />
+          <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist />} />
+
         </Routes>
         {/* <Footer /> */}
       </BrowserRouter>
