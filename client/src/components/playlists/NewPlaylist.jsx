@@ -2,21 +2,24 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "../../css/playlists.module.css";
 import AddWorkToPlaylist from "./AddWorkToPlaylist";
+import toast from 'react-hot-toast';
 
 function NewPlaylist() {
 
     // TODO MAKE INITIAL STATE DYNAMIC:
     // increment number only based on other playlists with the same name
     const [playlistName, setPlaylistName] = useState("Playlist 1");
-    const [worksToAddIndex, setWorksToAddIndex] = useState(0);
-    const [worksToAdd, setWorksToAdd] = useState([{ index: 0, workID: null }]);
+    const [worksToAdd, setWorksToAdd] = useState([null]);
+
+    const [allWorks, setAllWorks] = useState([]);
     // grab all works
     useEffect(() => {
         axios.get("http://localhost:3001/allWorks")
             .then(res => {
-
+                setAllWorks(res.data);
+                console.log(res.data);
             }).catch(err => {
-
+                console.log(err);
             })
     }, [])
 
@@ -24,22 +27,22 @@ function NewPlaylist() {
         setPlaylistName(event.target.value)
     }
 
-    function addAnotherWork() {
-        // if(allValid)
-        setWorksToAddIndex(prev => prev + 1);
-        setWorksToAdd(prev => [...prev, { index: worksToAddIndex + 1, workID: null }])
-        // else
-        // do nothing and toast error
-    }
-
-    function destroyItem(index) {
-        console.log(index)
-        setWorksToAdd(prev => {
-
-            // TODO DELETE ITEM THAT IS CLICKED ON 
-  
-            return;
-        })
+    function addWork(work) {
+        if (work === null) { // add null for empty field
+            if (worksToAdd[worksToAdd.length - 1] === null) {
+                toast.error("Select a work before adding another one.")
+                setWorksToAdd(prev => prev);
+            }
+            else { // all is well. Add work
+                setWorksToAdd(prev => [...prev, work]);
+            }
+        }
+        else {
+            setWorksToAdd(prev => {
+                prev[prev.length - 1] = work.workID; // replace last null
+                return prev
+            });
+        }
     }
 
     return (
@@ -53,12 +56,13 @@ function NewPlaylist() {
 
                 <div className={styles.searchForWorkParent}>
                     <label>Works</label>
-                    {worksToAdd.map((work, index) => {
-                        return <AddWorkToPlaylist key={index} index={work.index} workID={work.workID} destroyItem={destroyItem} />
+                    {worksToAdd.map((workID, index) => {
+                        // pass worksToAdd to disable already selected choices
+                        return <AddWorkToPlaylist worksToAdd={worksToAdd} setWorksToAdd={setWorksToAdd} key={index} first={index === 0} workID={workID} allWorks={allWorks} addWork={addWork} />
                     })}
                 </div>
 
-                <div onClick={addAnotherWork} className={styles.addWork}>+ Add another work</div>
+                <div onClick={() => addWork(null)} className={styles.addWork}>+ Add another work</div>
             </form>
         </div>
     )

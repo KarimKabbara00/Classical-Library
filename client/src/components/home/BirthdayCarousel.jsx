@@ -12,7 +12,7 @@ function BirthdayCarousel(props) {
         axios.get("http://localhost:3001/api/birthday")
             .then(res => {
                 setComposerInfo(res.data.composerData);
-                setRecommendedWorks(res.data.recommendedWorks);
+                // setRecommendedWorks(res.data.recommendedWorks);
             }).catch(err => {
                 console.log(err)
                 setShowError(true);
@@ -35,11 +35,11 @@ function BirthdayCarousel(props) {
                         return <BirthdayCard
                             key={index}
                             composer={composer}
-                            recommendedWorks={recommendedWorks[index]}
+                            recommendedWorks={composerInfo[index].recommendedWorks}
                             index={index}
                             visibleIndex={visibleIndex}
                             // music stuff
-                            url={recommendedWorks[index].url}
+                            url={composerInfo[index].recommendedWorks.url}
                             audioObject={props.audioObject}
                             setAudioObject={props.setAudioObject}
                             currentSong={props.currentSong}

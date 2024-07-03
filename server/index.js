@@ -76,6 +76,29 @@ app.post("/allComposers", async (req, res) => {
   }
 });
 
+app.get("/allWorks", async (req, res) => {
+
+  try {
+    const response = await axios.get(`https://api.openopus.org/work/list/ids/.json`)
+    const allWorks = response.data.works;
+    var allWorksList = []
+
+    // grab information we need in a format we want
+    for (let i of Object.keys(allWorks)) {
+      allWorksList.push({
+        workID: allWorks[i].id,
+        workTitle: allWorks[i].title,
+        complete_name: allWorks[i].composer.complete_name,
+      })
+    }
+    res.status(200).send(allWorksList);
+  }
+  catch (e) {
+    res.status(400).send(e)
+  }
+
+})
+
 /* ---- View Composer Page ----*/
 app.get("/viewComposer*", async (req, res) => {
   // pull composer ID from request parameters and make api call to get composer and genre info
@@ -232,28 +255,27 @@ app.get("/api/birthday", async (req, res) => {
     const composerThree = ids[2].id;
 
     // gather information about them
-    const compResponse = await axios.get(`https://api.openopus.org/composer/list/ids/${composerOne},${composerTwo},${composerThree}.json`);
-    var composerData = compResponse.data.composers.sort((a, b) => a.id - b.id); // sort by id to merge 'var ids' and composerData
+    var compResponse = await axios.get(`https://api.openopus.org/composer/list/ids/${composerOne},${composerTwo},${composerThree}.json`);
 
     // Gather 4 works for each composer
-    var recommendedWorks = [] // list of lists for work data
-    const comp1Works = await fetchFourWorks(composerOne);
-    const comp2Works = await fetchFourWorks(composerTwo);
-    const comp3Works = await fetchFourWorks(composerThree);
-    recommendedWorks.push(comp1Works);
-    recommendedWorks.push(comp2Works);
-    recommendedWorks.push(comp3Works);
+    // it appears the data comes back backwards hence the reversed composer variables
+    compResponse.data.composers[0]["recommendedWorks"] = await fetchFourWorks(composerThree);
+    compResponse.data.composers[1]["recommendedWorks"] = await fetchFourWorks(composerTwo);
+    compResponse.data.composers[2]["recommendedWorks"] = await fetchFourWorks(composerOne);
 
+    // sort by id to merge 'var ids' and composerData
+    var composerData = compResponse.data.composers.sort((a, b) => a.id - b.id);
+
+    // format dates
     composerData[0].birth = formatDate(ids[0].composer_dob);
     composerData[1].birth = formatDate(ids[1].composer_dob);
     composerData[2].birth = formatDate(ids[2].composer_dob);
 
-
-    // TODO finally resort by birth
+    // finally resort by birth
+    composerData.sort((a, b) => new Date(a.birth).setUTCHours(0, 0, 0, 0) - new Date(b.birth).setUTCHours(0, 0, 0, 0))
 
     res.status(200).send({
       composerData: composerData,
-      recommendedWorks: recommendedWorks,
     })
   }
   else {
@@ -396,16 +418,11 @@ function formatDate(date) {
 }
 
 async function fetchFourWorks(composerId) {
-  const workResponse = await axios.post("https://api.openopus.org/dyn/work/random", {
-    headers: {
-      "Content-Type": "application/json",
-      "composer:": composerId,
-    }
-  });
-
+  const workResponse = await axios.get(`https://api.openopus.org//work/list/composer/${composerId}/genre/all.json`);
   // add duration to every work
   var works = workResponse.data.works.slice(0, 4);
   works.forEach((item) => {
+    item["composerId"] = composerId;
     item["url"] = "https://www.youtube.com/watch?v=vyDpyXsyOkE";
   })
 

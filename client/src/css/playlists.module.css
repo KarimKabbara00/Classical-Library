@@ -4,8 +4,6 @@
     align-items: center;
     width: 100%;
     height: 94vh;
-    /* overflow-y: scroll; */
-    /* border: 10px solid peru; */
 }
 
 .title {
@@ -81,7 +79,7 @@
 
 .newPlaylistName {
     position: relative;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     border: none;
     outline: none;
     border-bottom: 1px solid black;
@@ -120,6 +118,7 @@
 }
 
 .searchForWorkItem {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 0rem 0.5rem;
@@ -147,4 +146,47 @@
     border-bottom: 2px solid brown;
     margin-top: 0.25rem;
     margin-bottom: 1rem;
+}
+
+.deleteButton {
+    position: absolute;
+    right: -2rem;
+    cursor: pointer;
+}
+
+.dropdownListParent {
+    position: absolute;
+    top: 1.75rem;
+    border: 1px solid brown;
+    background-color: white;
+    width: 100%;
+    border-radius: 10px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    max-height: 15rem;
+    overflow-y: scroll;
+}
+
+.dropdownListItem {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    padding: 0.75rem;
+    border-radius: 10px;
+    margin-top: 0.25rem;
+}
+
+.workTitleAndIcon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.addedWork {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
 }
