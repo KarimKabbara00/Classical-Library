@@ -4,17 +4,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 function WorkDropdownList(props) {
 
-
     const [hovered, setHovered] = useState(false);
     const enabledStyle = {
-        cursor: hovered ? "default" : "pointer",
+        cursor: "pointer",
         backgroundColor: hovered ? "brown" : "white",
         color: hovered ? "white" : "black",
     }
 
     const disabledColor = `rgba(165, 42, 42, 0.7)`
     const disabledStyle = {
-        cursor: hovered ? "not-allowed" : "default",
+        cursor: "not-allowed",
         backgroundColor: hovered ? disabledColor : "white",
         color: hovered ? "white" : "black"
     }
@@ -25,17 +24,22 @@ function WorkDropdownList(props) {
         color: "black"
     }
 
+    function addWork() {
+        // dont add already added work
+
+        props.addWork(props.work.workID, props.work.workTitle, props.work.complete_name)
+    }
+
     return (
         <div
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
-            style={props.work.workID === -1 ? termTooShortStyle : props.worksToAdd.includes(props.work.workID.toString()) ? disabledStyle : enabledStyle}
-            onClick={() => props.addWork(props.work.workID)}
-            className={styles.dropdownListItem}
-        >
+            onClick={addWork}
+            style={props.work.workID === -1 ? termTooShortStyle : props.disabled ? disabledStyle : enabledStyle}
+            className={styles.dropdownListItem}>
             <div className={styles.workTitleAndIcon}>
                 {props.work.workTitle}
-                {props.worksToAdd.includes(props.work.workID.toString()) && <FontAwesomeIcon color={hovered ? "white" : "green"} icon={faCheck} />}
+                {props.disabled && props.work.workID !== -1 && <FontAwesomeIcon color={hovered ? "white" : "green"} icon={faCheck} />}
             </div>
         </div>
     )

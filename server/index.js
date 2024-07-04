@@ -91,6 +91,7 @@ app.get("/allWorks", async (req, res) => {
         complete_name: allWorks[i].composer.complete_name,
       })
     }
+    // await sleep(2000);
     res.status(200).send(allWorksList);
   }
   catch (e) {

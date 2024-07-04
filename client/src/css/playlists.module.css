@@ -47,12 +47,19 @@
 .playlists {}
 
 /* New Playlist */
-.newPlaylistBody {
-    width: 100%;
+.newPlaylistParent {
+    display: flex;
     height: 94vh;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
+    justify-content: center;
+}
+
+.newPlaylistBody {
+    max-height: 94vh;
+    border: 1px solid red;
+    width: 100%;
+    padding-left: 15rem;
+    padding-right: 15rem;
+    overflow-y: auto;
 }
 
 .newPlaylistForm {
@@ -92,24 +99,25 @@
 }
 
 
-.addWork {
-    color: brown;
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-align: end;
-    width: 100%;
+.addNewPlaylistButton {
+    color: white;
+    background-color: brown;
+    font-size: 1rem;
+    text-align: start;
+    padding: 1rem;
+    border-radius: 10px;
     cursor: pointer;
+    margin-bottom: 5rem;
 }
 
-.addWork:hover {
-    text-decoration: underline;
+.addNewPlaylistButton:hover {
+    background-color: rgb(141, 36, 36);
 }
 
 .searchForWorkParent {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem 0rem;
 }
 
 .searchForWorkParent>label {
@@ -123,6 +131,7 @@
     align-items: center;
     gap: 0rem 0.5rem;
     height: fit-content;
+    margin-top: 0.5rem;
 }
 
 .searchForWorkItem>img {
@@ -136,7 +145,7 @@
     margin-top: 0.25rem;
     margin-bottom: 1rem;
     font-size: 1.3rem;
-    transition: all ease-in-out 50ms;
+    transition: all ease-in-out 500ms;
 }
 
 .searchForWork:focus {
@@ -187,6 +196,7 @@
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid black;
-    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
     font-size: 1.3rem;
 }

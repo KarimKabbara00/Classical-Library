@@ -93,7 +93,6 @@ function AllComposers() {
       })
       .catch(function (err) {
         console.log(err)
-        console.log(err.response.data.allComposers);
         navigate("/", { state: { error: true, errorMsg: err.response.data.allComposers } });
       });
   }, [navigate]);
