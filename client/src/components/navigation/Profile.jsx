@@ -7,20 +7,23 @@ function Profile(props) {
 
     const navigate = useNavigate();
 
+    function goToAccount() {
+        return;
+    }
+
     function goToPlaylists() {
-        navigate("/profile/playlists")
+        navigate("/profile/playlists");
     }
 
     function logout() {
-        props.logout()
+        props.logout();
     }
 
     return (
         <div className={styles.hiddenProfileBox}>
             <div className={styles.profileBox}>
-                <div onClick={goToPlaylists}><ProfileButton text={"Account"} /></div>
-                <ProfileButton text={"Playlists"} />
-                <ProfileButton text={"Contribute"} />
+                <div onClick={goToAccount}><ProfileButton text={"Account"} /></div>
+                <div onClick={goToPlaylists}><ProfileButton text={"Playlists"} /></div>
                 <div onClick={logout}><ProfileButton text={"Logout"} /></div>
             </div>
         </div>

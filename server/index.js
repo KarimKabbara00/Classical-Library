@@ -210,14 +210,13 @@ app.post("/signUp", async (req, res) => {
     .select('*')
     .eq("email", email);
 
-  console.log(data.length)
   if (data.length !== 0) {
     res.status(400).send("Email already exists.");
   }
   else {
     supabase.auth.signUp({ email, password })
       .then(result => {
-        res.status(201).send(res.data.user.email);
+        res.status(201).send(result.data.user.email);
       }).catch(err => {
         console.log(err);
         res.status(400).send(err);
@@ -350,6 +349,96 @@ app.post("/api/music", async (req, res) => {
   ytdl(url, { format: audioFormat }).pipe(res);
 });
 
+app.post("/api/viewPlaylists", async (req, res) => {
+
+  console.log(req.body)
+
+  const { data, error } = await supabase.from("playlists").select("playlist_name, playlist_work_ids").eq("associated_uid", req.body.user_id);
+  console.log(data);
+
+  var playlistData = []
+  for (let entry of data) {
+    let playlistEntry = {}
+    playlistEntry.playlistName = entry.playlist_name;
+    playlistEntry.works = {};
+
+    // join all work IDs to make one request
+    let ids = entry.playlist_work_ids.join(",");
+
+    console.log(`https://api.openopus.org/work/list/ids/${ids}.json`)
+    const response = await axios.get(`https://api.openopus.org/work/list/ids/${ids}.json`)
+    
+    // TODO PARSE RESPONSE TO PULL COMPOSER FULL NAME AND TITLE THEN SEND USING TEST FORMAT BELOW
+
+
+  }
+
+  let test = [
+    {
+      playlistName: "Playlist 1",
+      works: [
+        {
+          workID: '12305',
+          title: 'Eastern Intermezzo',
+          complete_name: 'Percy Grainger'
+        },
+        {
+          workID: '12306',
+          title: 'Eastern Intermezzo 1',
+          complete_name: 'Percy Grainger 1'
+        },
+      ]
+    },
+    {
+      playlistName: "Playlist 2",
+      works: [
+        {
+          workID: '12305',
+          title: 'Eastern Intermezzo',
+          complete_name: 'Percy Grainger'
+        },
+        {
+          workID: '12306',
+          title: 'Eastern Intermezzo 1',
+          complete_name: 'Percy Grainger 1'
+        },
+      ]
+    }
+  ]
+  res.status(200).send(test);
+})
+
+app.post("/api/createPlaylist", async (req, res) => {
+
+  try {
+    const { userID, playlistName, playlistData } = req.body;
+    let workIDs = playlistData.map(work => work.workID);
+
+    const { data, error } = await supabase.from("users").select("id").eq("id", userID);
+
+    // double check only 1 email exists
+    if (data.length > 1 || error)
+      throw error ? error : "Multiple emails found";
+
+    const insertData = {
+      playlist_name: playlistName,
+      playlist_work_ids: workIDs,
+      associated_uid: userID,
+    }
+
+    const { insertError } = await supabase.from("playlists").insert(insertData)
+    if (insertError)
+      throw insertError;
+
+    res.status(200).send({});
+
+  }
+  catch (e) {
+    res.status(400).send(e);
+  }
+
+});
+
 app.post('/auth/google', async (req, res) => {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
@@ -419,7 +508,7 @@ function formatDate(date) {
 }
 
 async function fetchFourWorks(composerId) {
-  const workResponse = await axios.get(`https://api.openopus.org//work/list/composer/${composerId}/genre/all.json`);
+  const workResponse = await axios.get(`https://api.openopus.org/work/list/composer/${composerId}/genre/all.json`);
   // add duration to every work
   var works = workResponse.data.works.slice(0, 4);
   works.forEach((item) => {

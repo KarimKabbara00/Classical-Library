@@ -13,16 +13,16 @@ import MusicPlayer from "./components/musicPlayer/MusicPlayer";
 import ViewWorks from "./pages/ViewWorks";
 import SignIn from "./pages/SignIn";
 import Playlists from "./pages/Playlists";
-import NewPlaylist from "./components/playlists/NewPlaylist";
+import NewPlaylist from "./components/playlists/NewPlaylist/NewPlaylist";
 
 function App() {
 
   /* -------------------------------- User Session -------------------------------- */
-  const [accessToken, setAccessToken] = useState(null)
+  const [sessionData, setSessionData] = useState(null)
   function logout() {
     try {
-      Cookies.remove('accessToken');
-      setAccessToken(null);
+      Cookies.remove('sessionData');
+      setSessionData(null);
       toast.success("Logged out")
     }
     catch (err) {
@@ -31,8 +31,8 @@ function App() {
     }
   }
   useEffect(() => {
-    Cookies.set("accessToken", accessToken, { expires: 2 }); // 2 day expiration
-  }, [accessToken]);
+    Cookies.set("sessionData", sessionData, { expires: 2 }); // 2 day expiration
+  }, [sessionData]);
   /* -------------------------------- User Session -------------------------------- */
 
   /* -------------------------------- Music Player -------------------------------- */
@@ -67,13 +67,13 @@ function App() {
 
   return (
     <div>
-      {/* <div>session is : {accessToken}</div> */}
+      {/* <div>session is : {sessionData}</div> */}
       <BrowserRouter>
-        <Header accessToken={accessToken} logout={logout} />
+        <Header sessionData={sessionData} logout={logout} />
         <Routes>
           <Route path="/" element={
             <Home
-              setAccessToken={setAccessToken}
+              setSessionData={setSessionData}
               firstLoad={firstLoad}
               audioObject={audioObject}
               setAudioObject={setAudioObject}
@@ -98,9 +98,9 @@ function App() {
           <Route path="/about" element={<About />} />
 
           {/* Profile Routes */}
-          <Route path="/signIn" element={<SignIn setAccessToken={setAccessToken} />} />
-          <Route path="/profile/playlists" element={<Playlists />} />
-          <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist />} />
+          <Route path="/signIn" element={<SignIn setSessionData={setSessionData} />} />
+          <Route path="/profile/playlists" element={<Playlists sessionData={sessionData} />} />
+          <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist sessionData={sessionData} />} />
 
         </Routes>
         {/* <Footer /> */}

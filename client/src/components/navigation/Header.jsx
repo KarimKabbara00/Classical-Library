@@ -14,7 +14,7 @@ function Header(props) {
 
     const navigate = useNavigate();
     // rerender header on sign in
-    useEffect(() => { }, [props.accessToken])
+    useEffect(() => { }, [props.sessionData])
 
     // programatic media queries
     const is1280Px = useMediaQuery("only screen and (max-width : 1280px)");
@@ -74,8 +74,8 @@ function Header(props) {
                     <img className={styles.navTitleLogo} src={logo} alt="Treble Clef Icon" />
                     <span>Classical Library</span>
                 </span>
-                {!props.accessToken && <div className={styles.signIn} onClick={() => { navigate("/signIn") }}>Sign In</div>}
-                {props.accessToken && <div onMouseEnter={toggleHover} onMouseLeave={toggleHover} className={styles.profileIcon}><FontAwesomeIcon icon={faUser} size="xl" style={{ color: "#a52a2a" }} />
+                {!props.sessionData && <div className={styles.signIn} onClick={() => { navigate("/signIn") }}>Sign In</div>}
+                {props.sessionData && <div onMouseEnter={toggleHover} onMouseLeave={toggleHover} className={styles.profileIcon}><FontAwesomeIcon icon={faUser} size="xl" style={{ color: "#a52a2a" }} />
                     {profileHovered && <Profile logout={props.logout} />}
                 </div>}
             </nav>

@@ -51,7 +51,7 @@ function SignIn(props) {
             },
         }).then(res => {
             console.log(res.data);
-            props.setAccessToken(res.data.access_token);
+            props.setSessionData(res.data);
             toast.success("Signed in");
             navigate("/");
         }).catch(err => {
