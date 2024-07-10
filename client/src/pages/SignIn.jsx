@@ -45,7 +45,7 @@ function SignIn(props) {
             toast.error("Please enter a password.");
             return;
         }
-        axios.post("http://localhost:3001/signIn", userInfo, {
+        axios.post("http://localhost:3001/api/signIn", userInfo, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -92,7 +92,7 @@ function SignIn(props) {
             setPlayNudge(true);
             return;
         }
-        axios.post("http://localhost:3001/signUp", userInfo, {
+        axios.post("http://localhost:3001/api/signUp", userInfo, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -106,7 +106,7 @@ function SignIn(props) {
     // Google OAuth
     function continueWithGoogle() {
         return;
-        axios.post("http://localhost:3001/auth/google").then(res => {
+        axios.post("http://localhost:3001/api/auth/google").then(res => {
             window.location.href = res.data;
         }).catch(err => {
             console.log(err);

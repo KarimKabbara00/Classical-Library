@@ -33,7 +33,7 @@ function ViewComposer() {
       compID = !compID ? window.location.href.split("id=")[1] : compID;
 
       axios
-        .get(`http://localhost:3001/viewComposer?id=${compID}`)
+        .get(`http://localhost:3001/api/viewComposer?id=${compID}`)
         .then(function (res) {
           setAllData({
             composerData: res.data.composerData,
@@ -82,7 +82,7 @@ function ViewComposer() {
   };
 
   return (
-    <div style={dynamicHeight}>
+    <div >
       <div className={loadingStyling}>
         <Loading />
       </div>

@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useSpring, animated } from "@react-spring/web";
+import toast from 'react-hot-toast';
 import WorkItem from "./WorkItem";
 import styles from "../../../css/playlists.module.css";
 import arrowRight from "../../../images/arrow-right.svg"
@@ -10,6 +13,7 @@ import editBrown from "../../../images/playlists/edit-brown.svg"
 import editBlack from "../../../images/playlists/edit-black.svg"
 import deleteBrown from "../../../images/playlists/delete-brown.svg"
 import deleteBlack from "../../../images/playlists/delete-black.svg"
+import Prompt from "../../shared/Prompt";
 
 function PlaylistItem(props) {
 
@@ -23,19 +27,53 @@ function PlaylistItem(props) {
         })
     }
 
+    // ---------- Play ---------- //
     const [playSVG, setPlaySVG] = useState(playBlack);
-    function onPlayAction(hovered) {
+    function onPlayHoverEvent(hovered) {
         hovered ? setPlaySVG(playBrown) : setPlaySVG(playBlack);
     }
 
+    // ---------- Edit ---------- //
     const [editSVG, setEditSVG] = useState(editBlack);
-    function onEditAction(hovered) {
+    function onEditHoverEvent(hovered) {
         hovered ? setEditSVG(editBrown) : setEditSVG(editBlack);
     }
 
+    const navigate = useNavigate();
+    function editPlaylist() {
+        axios.post("http://localhost:3001/api/fetchPlaylist", {
+            userID: props.user_id,
+            playlistName: props.playlist.playlistName
+        }).then(res => {
+            navigate("/profile/playlists/editPlaylist", { state: { playlistData: res.data } })
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
+    // ---------- Delete ---------- //
     const [deleteSVG, setDeleteSVG] = useState(deleteBlack);
-    function onDeleteAction(hovered) {
+    function onDeleteHoverEvent(hovered) {
         hovered ? setDeleteSVG(deleteBrown) : setDeleteSVG(deleteBlack);
+    }
+
+    const [promptDelete, setPromptDelete] = useState(false);
+    function deletePlaylist(confirmDelete) {
+
+        setPromptDelete(false);
+        if (confirmDelete === false)
+            return
+
+        axios.post("http://localhost:3001/api/deletePlaylist", {
+            userID: props.user_id,
+            playlistName: props.playlist.playlistName
+        }).then(res => {
+            toast.success("Playlist deleted");
+            props.forceUpdate();
+        }).catch(err => {
+            console.log(err);
+            toast.error("Error making request");
+        })
     }
 
     // fade in on arrow down
@@ -46,25 +84,37 @@ function PlaylistItem(props) {
     })
 
     return (
-        <div className={styles.playlistItem}>
-            <div className={styles.playlistTitleParent}>
-                <div className={styles.playlistTitleAndArrow}>
-                    <h2>{props.playlist.playlistName}</h2>
-                    <img onClick={onArrowClick} className={styles.playlistTitleArrow} src={arrowSVG} width="25px" />
+        <div>
+            <div className={styles.playlistItem}>
+                <div className={styles.playlistTitleParent}>
+                    <div className={styles.playlistTitleAndArrow}>
+                        <h2>{props.playlist.playlistName}</h2>
+                        <img onClick={onArrowClick} className={styles.playlistTitleArrow} src={arrowSVG} width="25px" alt="arrowRightDownIcon" />
+                    </div>
+                    <div className={styles.playlistActionsParent}>
+                        <img src={playSVG} onMouseEnter={() => onPlayHoverEvent(true)} onMouseLeave={() => onPlayHoverEvent(false)} width="20px" alt="playIcon"/>
+                        <img src={editSVG} onClick={editPlaylist} onMouseEnter={() => onEditHoverEvent(true)} onMouseLeave={() => onEditHoverEvent(false)} width="20px" alt="editIcon"/>
+                        <img src={deleteSVG} onClick={() => setPromptDelete(true)} onMouseEnter={() => onDeleteHoverEvent(true)} onMouseLeave={() => onDeleteHoverEvent(false)} width="20px" alt="deleteIcon"/>
+                    </div>
                 </div>
-                <div className={styles.playlistActionsParent}>
-                    <img src={playSVG} onMouseEnter={() => onPlayAction(true)} onMouseLeave={() => onPlayAction(false)} width="20px" />
-                    <img src={editSVG} onMouseEnter={() => onEditAction(true)} onMouseLeave={() => onEditAction(false)} width="20px" />
-                    <img src={deleteSVG} onMouseEnter={() => onDeleteAction(true)} onMouseLeave={() => onDeleteAction(false)} width="20px" />
-                </div>
+
+                {arrowClicked && <animated.div style={showPlaylistAnim} className={styles.playlistWorksParent}>
+                    {props.playlist.works.map((work, index) => {
+                        return <WorkItem key={index} index={index + 1} title={work.title} compName={work.complete_name} />
+                    })}
+                </animated.div>}
             </div>
 
-            {arrowClicked && <animated.div style={showPlaylistAnim} className={styles.playlistWorksParent}>
-                {props.playlist.works.map((work, index) => {
-                    return <WorkItem key={index} index={index + 1} title={work.title} compName={work.complete_name} />
-                })}
-            </animated.div>}
+            {promptDelete && <Prompt
+                title={`Delete '${props.playlist.playlistName}'?`}
+                description="This action cannot be undone."
+                confirm="Delete"
+                cancel="Cancel"
+                callback={deletePlaylist}
+            />}
+
         </div>
+
     )
 }
 

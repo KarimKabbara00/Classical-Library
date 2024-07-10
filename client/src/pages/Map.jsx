@@ -26,7 +26,7 @@ function Map() {
     const [showError, setShowError] = useState(false);
 
     useEffect(() => {
-        axios.get("http://localhost:3001/api/mapMarkers")
+        axios.get("http://localhost:3001/api/map")
             .then(res => {
                 setPinData(res.data);
                 setShowLoading(false);

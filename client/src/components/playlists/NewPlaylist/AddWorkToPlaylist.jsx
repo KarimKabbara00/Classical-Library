@@ -25,7 +25,7 @@ function AddWorkToPlaylist(props) {
             else {
                 const options = {
                     keys: ["workTitle"],    // filter by this key
-                    threshold: 0.3,         // 0 - 1, 0 being exact, 1 being anything
+                    threshold: 0.2,         // 0 - 1, 0 being exact, 1 being anything
                     shouldSort: true        // sort by most matching
                 }
                 const fuse = new Fuse(props.allWorks, options); // create fuse object with all the works, and the options

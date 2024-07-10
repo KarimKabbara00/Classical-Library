@@ -50,7 +50,7 @@ function ViewWorks(props) {
       genre = !genre ? window.location.href.split("genre=")[1].split("&")[0] : genre
 
       axios
-        .get(`http://localhost:3001/viewWorks?id=${compID}&genre=${genre}`)
+        .get(`http://localhost:3001/api/viewWorks?id=${compID}&genre=${genre}`)
         .then(function (res) {
           setAllWorks(res.data.works);
           setShownWorks(filterWorksByGenre(res.data.works, genre));

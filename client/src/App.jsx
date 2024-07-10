@@ -14,6 +14,9 @@ import ViewWorks from "./pages/ViewWorks";
 import SignIn from "./pages/SignIn";
 import Playlists from "./pages/Playlists";
 import NewPlaylist from "./components/playlists/NewPlaylist/NewPlaylist";
+import EditPlaylist from "./components/playlists/Playlists/EditPlaylist";
+import Profile from "./pages/Profile";
+
 
 function App() {
 
@@ -99,8 +102,10 @@ function App() {
 
           {/* Profile Routes */}
           <Route path="/signIn" element={<SignIn setSessionData={setSessionData} />} />
+          <Route path="/profile" element={<Profile sessionData={sessionData} />} />
           <Route path="/profile/playlists" element={<Playlists sessionData={sessionData} />} />
           <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist sessionData={sessionData} />} />
+          <Route path="/profile/playlists/editPlaylist" element={<EditPlaylist sessionData={sessionData} />} />
 
         </Routes>
         {/* <Footer /> */}

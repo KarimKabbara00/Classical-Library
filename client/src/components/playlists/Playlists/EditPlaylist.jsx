@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import AddWorkToPlaylist from "./AddWorkToPlaylist";
-import AddedWork from "./AddedWork";
+import AddWorkToPlaylist from "../NewPlaylist/AddWorkToPlaylist";
+import AddedWork from "../NewPlaylist/AddedWork";
 import toast from 'react-hot-toast';
 import Loading from "../../shared/Loading";
 import styles from "../../../css/playlists.module.css";
@@ -11,7 +11,10 @@ import classNames from "classnames";
 
 function NewPlaylist(props) {
 
-    const [playlistName, setPlaylistName] = useState("New playlist");
+    const location = useLocation();
+
+    const [playlistName, setPlaylistName] = useState("New");
+    const [oldPlaylistName, setOldPlaylistName] = useState(playlistName); // save a copy to access the correct one at the database
     function updateName(event) {
         setPlaylistName(event.target.value)
     }
@@ -27,19 +30,27 @@ function NewPlaylist(props) {
     const [allWorks, setAllWorks] = useState([]);
     const [showLoading, setShowLoading] = useState(true);
     useEffect(() => {
-        if (!props.sessionData) {
-            navigate("/signIn");
+
+        if (location.state) {
+            setOldPlaylistName(location.state.playlistData.playlistName);
+            setPlaylistName(location.state.playlistData.playlistName);
+            setWorksToAdd(location.state.playlistData.works);
         }
-        else {
-            axios.get("http://localhost:3001/api/allWorksNewPlaylist").then(res => {
-                setAllWorks(res.data);
-                setShowLoading(false);
-            }).catch(err => {
-                setShowLoading(false);
-                console.log(err);
-            })
+        else { // cant come here via url
+            if (props.sessionData)
+                navigate("/profile/playlists");
+            else
+                navigate("/signIn");
         }
-    }, [])
+
+        axios.get("http://localhost:3001/api/allWorksNewPlaylist").then(res => {
+            setAllWorks(res.data);
+            setShowLoading(false);
+        }).catch(err => {
+            setShowLoading(false);
+            console.log(err);
+        })
+    }, []);
 
     function removeWork(workObj) {
         const updatedWorksToAdd = worksToAdd.filter(work => work.workID !== workObj.workID);
@@ -48,8 +59,7 @@ function NewPlaylist(props) {
 
     const navigate = useNavigate()
 
-    async function createNewPlaylist(event) {
-        console.log("executed")
+    async function editPlaylist(event) {
         event.preventDefault();
 
         // check before making any requests
@@ -63,24 +73,15 @@ function NewPlaylist(props) {
         }
 
         try {
-            // make request to see if playlist name already exists
-            const checkResponse = await axios.post("http://localhost:3001/api/checkPlaylistRecord", {
+            await axios.post("http://localhost:3001/api/editPlaylist", {
                 userID: props.sessionData.user.id,
-                newPlaylistName: playlistName,
+                oldPlaylistName: oldPlaylistName,
+                playlistName: playlistName,
+                playlistData: worksToAdd
             })
+            toast.success("Playlist edited");
+            navigate("/profile/playlists");
 
-            if (checkResponse.data.success === false) {
-                toast.error(`Playlist with name ${playlistName} already exists`);
-            }
-            else {
-                await axios.post("http://localhost:3001/api/createPlaylist", {
-                    userID: props.sessionData.user.id,
-                    playlistName: playlistName,
-                    playlistData: worksToAdd
-                })
-                toast.success("Playlist created");
-                navigate("/profile/playlists");
-            }
         }
         catch (e) {
             console.log(e)
@@ -113,7 +114,7 @@ function NewPlaylist(props) {
                 <div className={styles.newPlaylistBody}>
                     <h1 className={styles.title}>New Playlist</h1>
 
-                    <form onSubmit={createNewPlaylist} className={styles.newPlaylistForm}>
+                    <form onSubmit={editPlaylist} className={styles.newPlaylistForm}>
                         <div className={styles.newPlaylistNameParent}>
                             <label>Name</label>
                             <input onInput={updateName} className={styles.newPlaylistName} value={playlistName} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false" />
@@ -128,7 +129,7 @@ function NewPlaylist(props) {
                         </div>
 
                         <div className={styles.buttonsParent}>
-                            <button type="submit" className={styles.createButton}>Create</button>
+                            <button type="submit" className={styles.createButton}>Save</button>
                             <button onClick={goBack} className={styles.cancelButton}>Cancel</button>
                         </div>
 

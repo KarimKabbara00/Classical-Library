@@ -10,12 +10,11 @@ import playlistWhite from "../../images/profile/playlist-white.svg";
 import signOutBrown from "../../images/profile/sign-out-brown.svg";
 import signOutWhite from "../../images/profile/sign-out-white.svg";
 
-function Profile(props) {
-
+function ProfileButton(props) {
 
     const [icon, setIcon] = useState(null)
     useEffect(() => {
-        props.text === "Account" ? setIcon(accountBrown) : void (0);
+        props.text === "Profile" ? setIcon(accountBrown) : void (0);
         props.text === "Playlists" ? setIcon(playlistBrown) : void (0);
         props.text === "Contribute" ? setIcon(contributeBrown) : void (0);
         props.text === "Logout" ? setIcon(signOutBrown) : void (0);
@@ -24,7 +23,7 @@ function Profile(props) {
     const [isHovered, setIsHovered] = useState(false);
     function onHover() {
         setIsHovered(prev => !prev);
-        props.text === "Account" ? (!isHovered ? setIcon(accountWhite) : setIcon(accountBrown)) : void (0);
+        props.text === "Profile" ? (!isHovered ? setIcon(accountWhite) : setIcon(accountBrown)) : void (0);
         props.text === "Playlists" ? (!isHovered ? setIcon(playlistWhite) : setIcon(playlistBrown)) : void (0);
         props.text === "Contribute" ? (!isHovered ? setIcon(contributeWhite) : setIcon(contributeBrown)) : void (0);
         props.text === "Logout" ? (!isHovered ? setIcon(signOutWhite) : setIcon(signOutBrown)) : void (0);
@@ -39,4 +38,4 @@ function Profile(props) {
     )
 }
 
-export default Profile;
+export default ProfileButton;

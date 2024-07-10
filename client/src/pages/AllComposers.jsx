@@ -82,7 +82,7 @@ function AllComposers() {
     })
 
     axios
-      .post("http://localhost:3001/allComposers")
+      .get("http://localhost:3001/api/allComposers")
       .then(function (res) {
         // sort composers by last name initial
         let sortedResults = sortWorks(res.data.allComposers);

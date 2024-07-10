@@ -3,12 +3,12 @@ import styles from "../../css/navigation.module.css";
 import ProfileButton from "./ProfileButton";
 import { useNavigate } from "react-router-dom";
 
-function Profile(props) {
+function ProfileBox(props) {
 
     const navigate = useNavigate();
 
-    function goToAccount() {
-        return;
+    function goToProfile() {
+        navigate("/profile");
     }
 
     function goToPlaylists() {
@@ -17,12 +17,13 @@ function Profile(props) {
 
     function logout() {
         props.logout();
+        navigate("/")
     }
 
     return (
         <div className={styles.hiddenProfileBox}>
             <div className={styles.profileBox}>
-                <div onClick={goToAccount}><ProfileButton text={"Account"} /></div>
+                <div onClick={goToProfile}><ProfileButton text={"Profile"} /></div>
                 <div onClick={goToPlaylists}><ProfileButton text={"Playlists"} /></div>
                 <div onClick={logout}><ProfileButton text={"Logout"} /></div>
             </div>
@@ -30,4 +31,4 @@ function Profile(props) {
     )
 }
 
-export default Profile;
+export default ProfileBox;

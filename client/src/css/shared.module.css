@@ -180,3 +180,54 @@
 }
 
 /* Error Styling */
+
+/* Prompt Styling */
+
+.promptScreenCover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+
+.promptParent {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 25rem;
+    border: 2px solid brown;
+    border-radius: 10px;
+    background-color: white;
+    padding: 1rem;
+    -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.promptParent>h2 {
+    margin-bottom: 0.25rem;
+}
+
+.promptButtonsParent {
+    display: flex;
+    gap: 0rem 1rem;
+    justify-content: flex-end;
+    padding-top: 1rem;
+}
+
+.promptButton {
+    color: black;
+    font-weight: bold;
+}
+
+.promptButton:hover {
+    color: brown;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Prompt Styling */
