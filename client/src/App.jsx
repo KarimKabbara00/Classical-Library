@@ -16,6 +16,8 @@ import Playlists from "./pages/Playlists";
 import NewPlaylist from "./components/playlists/NewPlaylist/NewPlaylist";
 import EditPlaylist from "./components/playlists/Playlists/EditPlaylist";
 import Profile from "./pages/Profile";
+import Trivia from "./pages/Trivia";
+import TriviaQuiz from "./components/trivia/TriviaQuiz";
 
 
 function App() {
@@ -97,8 +99,13 @@ function App() {
               animInOut={animInOut}
             />}
           />
+
           <Route path="/map" element={<Map />} />
           <Route path="/about" element={<About />} />
+
+          {/* Trivia Routes */}
+          <Route path="/trivia" element={<Trivia />} />
+          <Route path="/trivia/quiz" element={<TriviaQuiz />} />
 
           {/* Profile Routes */}
           <Route path="/signIn" element={<SignIn setSessionData={setSessionData} />} />

@@ -59,6 +59,8 @@
     border-radius: 10px;
     border: 1px solid white;
     padding: 0.3rem 0rem 0.25rem 0.25rem;
+    white-space: nowrap;
+    transition: all ease-in-out 0.1s;
 }
 
 .sidebarItem:hover {

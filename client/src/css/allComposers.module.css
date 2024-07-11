@@ -15,7 +15,7 @@
 .allCompMainBody {
   display: flex;
   justify-content: center;
-  max-height: 92vh;
+  max-height: 94vh;
   overflow-y: scroll;
 }
 
@@ -26,7 +26,7 @@
 .allCompTitle {
   display: flex;
   justify-content: center;
-  margin-top: 5rem;
+  margin-top: 3rem;
   font-weight: bold;
   font-size: 2.5rem;
 }
@@ -41,7 +41,7 @@
   justify-content: center;
   flex-direction: column;
   margin-top: 2rem;
-  margin-bottom: 6rem;
+  padding-bottom: 3rem;
   min-width: 82.5vw;
 }
 

@@ -6,8 +6,10 @@ import ytdl from "ytdl-core";
 // routes
 import home from "./routes/home.js"
 import allComposers from "./routes/allComposers.js";
+import allWorks from "./routes/allWorks.js";
 import viewComposer from "./routes/viewComposer.js";
 import viewWorks from "./routes/viewWorks.js";
+import trivia from "./routes/trivia.js";
 import map from "./routes/map.js"
 import playlists from './routes/playlists.js';
 import profile from "./routes/profile.js";
@@ -30,11 +32,12 @@ app.use(cors({ origin: "http://localhost:3000" })); // allow cors from frontend
 /* ---- Routes ---- */
 app.use("/api", home);
 app.use("/api", allComposers);
+app.use("/api", allWorks);
 app.use("/api", viewComposer);
 app.use("/api", viewWorks);
+app.use("/api", trivia);
 app.use("/api", map);
-
-app.use("/api", profile)
+app.use("/api", profile);
 app.use("/api", playlists);
 
 app.post("/api/music", async (req, res) => {

@@ -9,9 +9,7 @@ import loadingStyles from "../css/loading.module.css";
 import BackToTop from "../components/shared/BackToTop";
 import deburr from 'lodash/deburr';
 import LetterSection from "../components/allComposers/LetterSection";
-import composerList from "../composerList";
 import Button from "../components/allComposers/Button";
-
 
 function sortWorks(works) {
 
@@ -73,6 +71,7 @@ function AllComposers() {
   // receive data from Home.jsx
   const [allResults, setAllResults] = useState([]);
   const [shownResults, setShownResults] = useState([]);
+  const [composerCount, setComposerCount] = useState(0);
   const [showLoading, setShowLoading] = useState(true);
   useEffect(() => {
 
@@ -89,6 +88,7 @@ function AllComposers() {
         setAllResults(sortedResults);
         setShownResults(sortedResults);
         setFilteredResultsCount(countFilteredResults(sortedResults));
+        setComposerCount(res.data.allComposers.length);
         setShowLoading(false);
       })
       .catch(function (err) {
@@ -125,9 +125,8 @@ function AllComposers() {
   }
 
   function randomComposer() {
-    let random = Math.floor(Math.random() * composerList.length);
-    let compID = composerList[random].id;
-    navigate(`/viewComposer?id=${compID}`);
+    let randomID = Math.floor(Math.random() * composerCount) + 1;
+    navigate(`/viewComposer?id=${randomID}`);
   }
 
   // slide up or down loading

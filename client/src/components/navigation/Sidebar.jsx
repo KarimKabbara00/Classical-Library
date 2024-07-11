@@ -12,16 +12,21 @@ function Sidebar(props) {
         navigate("/");
     }
 
-    function goToMap() {
-        navigate("/map");
-    }
-
     function goToAllComposers() {
         navigate("/allComposers");
     }
 
     function goToAllWorks() {
         return;
+    }
+
+
+    function goToTrivia() {
+        navigate("/trivia");
+    }
+
+    function goToMap() {
+        navigate("/map");
     }
 
     function goToAbout() {
@@ -36,8 +41,8 @@ function Sidebar(props) {
         <div className={styles.sidebar}>
             <div onClick={goToHome}><SidebarItem styling={props.styling} text={"Home"} /></div>
             <div onClick={goToAllComposers}><SidebarItem styling={props.styling} text={"Composers"} /></div>
-            <div onClick={goToAllWorks}><SidebarItem styling={props.styling} text={"Works"} /></div>
-            <div onClick={goToAllWorks}><SidebarItem styling={props.styling} text={"Trivia"} /></div>
+            <div onClick={goToAllWorks}><SidebarItem styling={props.styling} text={"Browse Works"} /></div>
+            <div onClick={goToTrivia}><SidebarItem styling={props.styling} text={"Trivia"} /></div>
             <div onClick={goToMap}><SidebarItem styling={props.styling} text={"Map"} /></div>
             <div onClick={goToAbout}><SidebarItem styling={props.styling} text={"About"} /></div>
             <div className={styles.placeDarkmodeBottom} onClick={setDarkmode}><SidebarItem styling={props.styling} text={"Dark Mode"} /></div>

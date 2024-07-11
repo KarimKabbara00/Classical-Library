@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useMediaQuery } from "@uidotdev/usehooks";
 import styles from "../../css/navigation.module.css";
 import homeBrown from "../../images/sidebar/home-brown.svg";
 import homeWhite from "../../images/sidebar/home-white.svg";
@@ -14,7 +15,6 @@ import aboutBrown from "../../images/sidebar/about-brown.svg";
 import aboutWhite from "../../images/sidebar/about-white.svg";
 import moon from "../../images/sidebar/moon.svg";
 import Switch from "react-switch";
-import { useMediaQuery } from "@uidotdev/usehooks";
 
 function SidebarItem(props) {
 
@@ -23,7 +23,7 @@ function SidebarItem(props) {
         setIsHovered(prev => !prev);
         props.text === "Home" ? (!isHovered ? setIcon(homeWhite) : setIcon(homeBrown)) : void (0);
         props.text === "Composers" ? (!isHovered ? setIcon(composerWhite) : setIcon(composerBrown)) : void (0);
-        props.text === "Works" ? (!isHovered ? setIcon(worksWhite) : setIcon(worksBrown)) : void (0);
+        props.text === "Browse Works" ? (!isHovered ? setIcon(worksWhite) : setIcon(worksBrown)) : void (0);
         props.text === "Trivia" ? (!isHovered ? setIcon(triviaWhite) : setIcon(triviaBrown)) : void (0);
         props.text === "Map" ? (!isHovered ? setIcon(mapWhite) : setIcon(mapBrown)) : void (0);
         props.text === "About" ? (!isHovered ? setIcon(aboutWhite) : setIcon(aboutBrown)) : void (0);
@@ -33,7 +33,7 @@ function SidebarItem(props) {
     useEffect(() => {
         props.text === "Home" ? setIcon(homeBrown) : void (0);
         props.text === "Composers" ? setIcon(composerBrown) : void (0);
-        props.text === "Works" ? setIcon(worksBrown) : void (0);
+        props.text === "Browse Works" ? setIcon(worksBrown) : void (0);
         props.text === "Trivia" ? setIcon(triviaBrown) : void (0);
         props.text === "Map" ? setIcon(mapBrown) : void (0);
         props.text === "About" ? setIcon(aboutBrown) : void (0);
@@ -50,7 +50,7 @@ function SidebarItem(props) {
 
     return (
         <div>
-            {props.text !== "Dark Mode" && <div onMouseEnter={toggleHovered} onMouseLeave={toggleHovered} className={styles.sidebarItem}>
+            {props.text !== "Dark Mode" && <div  onMouseEnter={toggleHovered} onMouseLeave={toggleHovered} className={styles.sidebarItem}>
                 <img src={icon} width={props.styling.iconSize} />
                 <div className={styles.sidebarText}
                     style={{

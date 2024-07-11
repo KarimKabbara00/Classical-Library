@@ -75,12 +75,6 @@ function ViewComposer() {
     [styles.applyFadeIn]: !showLoading,
   });
 
-  // screen height when loading or not
-  const dynamicHeight = {
-    minHeight: "90vh",
-    height: showLoading ? "90vh" : ""
-  };
-
   return (
     <div >
       <div className={loadingStyling}>

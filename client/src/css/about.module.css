@@ -2,17 +2,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 6rem;
-    gap: 8rem 0rem;
+    padding-top: 4rem;
+    gap: 4rem 0rem;
+    max-height: 94vw;
 }
 
 .sectionGroup {
+    position: relative;
     display: flex;
     flex-direction: column;
-    min-width: 55rem;
-    max-width: 55rem;
-    position: relative;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+    width: 70vw;
 }
 
 .sectionTitle {
@@ -21,15 +20,12 @@
     border-bottom: 2px solid brown;
     display: flex;
     cursor: pointer;
+    padding-bottom: 0.1rem;
 }
 
 .sectionDesc {
-    visibility: hidden;
     font-size: 1.4rem;
     margin-top: 0.5rem;
-    position: absolute;
-    max-width: 55rem;
-    top: 2.5rem;
 }
 
 ul {
@@ -37,25 +33,31 @@ ul {
     padding: 0rem 1.5rem;
 }
 
-@keyframes showSection {
-    0% {
-        opacity: 0;
-        visibility: hidden;
-    }
-    100% {
-        opacity: 1;
-        visibility: visible;
-    }
+.dataRelDescription {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem 0rem;
 }
 
-@keyframes hideSection {
-    0% {
-        opacity: 1;
-        visibility: visible;
+ol {
+    margin: 0;
+    padding: 0rem 2rem;
+}
+
+ol>li::marker {
+    font-weight: bold;
+}
+
+@media (max-width: 1280px) {
+    .mainBody {
+        gap: 3rem 0rem;
     }
-    100% {
-        opacity: 0;
-        visibility: hidden;
+
+    .sectionTitle {
+        font-size: 1.75rem;
     }
-    
+
+    .sectionDesc {
+        font-size: 1.25rem;
+    }
 }
