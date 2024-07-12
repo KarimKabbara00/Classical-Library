@@ -43,7 +43,7 @@
     z-index: 20;
     border: 0.15rem solid brown;
     border-radius: 50%;
-    width: 2rem;
+    max-width: 2rem;
     height: 2rem;
     background-color: white;
     transition: background-color 0.2s;

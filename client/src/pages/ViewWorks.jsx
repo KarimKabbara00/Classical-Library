@@ -163,7 +163,7 @@ function ViewWorks(props) {
       </div>
 
       {!showLoading && !showError && <div className={contentStyling}>
-        <BackToTop elementId={"worksBody"} />
+        <BackToTop elementId={"worksBody"} triggerAtY={300} />
         <div className={styles.workTitle}>
           {currentGenre} works by <span style={{ color: "brown" }}>&nbsp;{composer}</span>
         </div>

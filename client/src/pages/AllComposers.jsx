@@ -154,7 +154,7 @@ function AllComposers() {
       </div>
 
       {!showLoading && <div className={contentStyling} >
-        <BackToTop elementId={"allCompMainBody"} />
+        <BackToTop elementId={"allCompMainBody"} triggerAtY={300} />
         <h1 className={styles.allCompTitle}>Composers</h1>
         <div className={styles.allCompBody}>
           <div className={styles.allComposersHeader}>

@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem 0rem;
-    align-items: flex-start;
+    align-items: center;
     width: 100%;
     height: 94vh;
     overflow-y: scroll;
@@ -39,25 +39,43 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    gap: 1rem 0rem;
+    width: 75vw;
+    gap: 1.75rem 0rem;
     z-index: 10;
 }
 
-.triviaHeader {
+.triviaQuizHeader {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 0.5rem 0rem;
+}
+
+.triviaQuizQuestionCounter {
+    font-size: 1.2rem;
+}
+
+.triviaQuizBar {
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 25rem;
+    min-height: 0.5rem;
+    transition: all ease-in-out 1s;
+}
+
+.triviaQuizQAParent {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem 0rem;
+    width: 60%;
     align-items: center;
 }
 
 .triviaQuizQuestion {
-    font-size: 1.25rem;
-}
-
-.triviaQuizAnswerParent {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem 0rem;
+    font-size: 1.3rem;
+    text-align: center;
+    font-weight: bold;
+    width: 105%;
 }
 
 .triviaQuizAnswer {
@@ -66,5 +84,92 @@
     gap: 0rem 0.5rem;
     border-radius: 10px;
     padding: 0.5rem;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
 }
 
+.triviaQuizAnswer>span {
+    width: 100%;
+}
+
+.buttonParent {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0rem 0.5rem;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+button {
+    align-self: flex-end;
+    border: 1px solid #a52a2a;
+    border-radius: 10px;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    color: white;
+    background-color: brown;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(141, 36, 36);
+}
+
+button:disabled {
+    background-color: rgba(165, 42, 42, 0.7);
+    border: 1px solid rgba(165, 42, 42, 0.1);
+    cursor: default;
+}
+
+/* Final Result */
+.finalResultParent {
+    z-index: 10;
+    width: 75vw;
+    margin-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem 0rem;
+    align-items: center;
+}
+
+.finalResultParent>* {
+    width: 100%;
+}
+
+.scoreAndRestart {
+    position: relative;
+    font-size: 2rem;
+    width: 63%;
+    text-align: center;
+}
+
+.restartQuiz {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.25rem;
+}
+
+.restartQuiz:hover {
+    color: brown;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.allQuiz {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem 0rem;
+    align-items: center;
+}
+
+.triviaQuizQuestionFinal {
+    text-align: start;
+}
+
+.triviaQuizAnswerFinal {
+    width: 105%;
+}

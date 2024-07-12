@@ -10,6 +10,7 @@ function BackToTop(props) {
     const [hoveredSVG, setHoveredSVG] = useState(backToTopBrown);
     const [showButton, setShowButton] = useState(false);
     const parentElement = document.getElementById(props.elementId);
+    const triggerAtY = props.triggerAtY;
 
     function onAction() {
         setHovered((prev) => !prev);
@@ -24,7 +25,7 @@ function BackToTop(props) {
     }
 
     function toggleScrollButton() {
-        if (parentElement.scrollTop > 300) {
+        if (parentElement.scrollTop > triggerAtY) {
             setShowButton(true);
         }
         else {
