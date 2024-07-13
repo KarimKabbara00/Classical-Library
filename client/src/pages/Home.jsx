@@ -14,21 +14,41 @@ function Home(props) {
     delay: 1800
   });
 
+  // -------------------- Dark Mode -------------------- //
+  const homeBodyDarkMode = {
+    backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+    color: props.darkModeEnabled ? "#e8e6e3" : ""
+  }
+
+  const secondRowDarkMode = {
+    backgroundColor: props.darkModeEnabled ? "#1e2021" : "",
+    color: props.darkModeEnabled ? "#e8e6e3" : ""
+  }
+
+  // merge useSpring and dark mode
+  const secondRowStyling = {
+    ...secondRowDarkMode,
+    ...fadeCarouselAnim
+  }
+  // -------------------- Dark Mode -------------------- //
+
   return (
-    <div className={styles.homeBody}>
+    <div style={homeBodyDarkMode} className={styles.homeBody}>
 
       <div className={styles.firstRow}>
-        <Intro firstLoad={props.firstLoad} />
+        <Intro firstLoad={props.firstLoad} darkModeEnabled={props.darkModeEnabled} />
       </div>
 
-      <animated.div style={fadeCarouselAnim} className={styles.secondRow}>
+      <animated.div style={secondRowStyling} className={styles.secondRow}>
         <BirthdayCarousel
           audioObject={props.audioObject}
           setAudioObject={props.setAudioObject}
           currentSong={props.currentSong}
           setCurrentSong={props.setCurrentSong}
-          showOrHideMusicPlayer={props.showOrHideMusicPlayer} />
-        <QOTD />
+          showOrHideMusicPlayer={props.showOrHideMusicPlayer}
+          darkModeEnabled={props.darkModeEnabled}
+        />
+        <QOTD darkModeEnabled={props.darkModeEnabled} />
       </animated.div>
 
     </div>

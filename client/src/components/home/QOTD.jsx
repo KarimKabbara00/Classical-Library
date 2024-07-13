@@ -3,7 +3,7 @@ import styles from "../../css/homepage.module.css";
 import QuoteItem from "./QuoteItem";
 import axios from "axios";
 
-function QOTD() {
+function QOTD(props) {
 
     const [quoteOne, setQuoteOne] = useState(["", ""])
     const [quoteTwo, setQuoteTwo] = useState(["", ""])
@@ -21,7 +21,7 @@ function QOTD() {
                 console.log(err)
                 setShowError(true);
             })
-    }, [])
+    }, []);
 
     return (
         <div className={styles.qotdParent}>

@@ -78,7 +78,7 @@ function ViewComposer() {
   return (
     <div >
       <div className={loadingStyling}>
-        <Loading />
+        <Loading loadingText={"Grabbing composer data..."} />
       </div>
 
       <div className={sharedStyles.errorParent}>

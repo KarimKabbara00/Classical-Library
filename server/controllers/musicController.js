@@ -1,21 +1,33 @@
-import ytdl from "ytdl-core";
+import ytstream from "yt-stream"
+import axios from "axios"
 
-const getMusic = async (req, res) => {
-    try {
-        const url = req.body.url
-        const info = await ytdl.getInfo(url);
-        const audioFormat = ytdl.chooseFormat(info.formats, { quality: "highestaudio" });
-        res.setHeader("Content-Type", "audio/mpeg");
-        res.setHeader("Content-Disposition", `attachment; filename="audio.mp3"`);
+const music = async (req, res) => {
 
-        console.log("finna pipe")
-        ytdl(url, { format: audioFormat }).pipe(res);
-        console.log("piped")
-    }
-    catch (e) {
-        console.log(e)
-    }
+    const compID = req.body.compID;
+    const worksResponse = await axios.get(`https://api.openopus.org/work/list/composer/${compID}/genre/all.json`);
 
+    const compName = worksResponse.data.composer.complete_name;
+    const workNames = worksResponse.data.works
+
+    var titles = []
+    for (let i of workNames) {
+        console.log("--------------");
+        console.log(`${i.title} by ${compName}`);
+        const searchTerm = `${i.title} ${compName}`
+
+        const results = await ytstream.search(searchTerm);
+
+        titles.push(results[0].title)
+
+        console.log(results[0].url);
+        console.log(results[0].id);
+        console.log(results[0].title);
+        console.log("--------------");
+    };
+
+    res.send(titles)
 };
 
-export { getMusic }
+export { music }
+
+// https://docs.google.com/uc?export=download&id=1KAk_m-PLFD8oT5EJ2JDBqx_Q0TqCeSEx

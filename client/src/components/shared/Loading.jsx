@@ -30,7 +30,7 @@ function Loading(props) {
   return (
     <div className={styles.loading}>
       <span id="loadingTitle" className={styles.loadingTitle}>
-        Grabbing all the data...
+        {props.loadingText}
       </span>
       <div className={styles.loadingGraphic}>
         <animated.img style={{ ...anims[0] }} id="note1" src={eighthNote} width="50px" />

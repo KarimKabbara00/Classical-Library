@@ -106,7 +106,7 @@ function NewPlaylist(props) {
     return (
         <div>
             <div className={loadingStyling}>
-                <Loading />
+                <Loading loadingText={"Grabbing all the data..."} />
             </div>
 
             {!showLoading && <div className={contentStyling}>

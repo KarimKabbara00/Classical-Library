@@ -20,7 +20,6 @@ function Sidebar(props) {
         return;
     }
 
-
     function goToTrivia() {
         navigate("/trivia");
     }
@@ -33,19 +32,21 @@ function Sidebar(props) {
         navigate("/about");
     }
 
-    function setDarkmode() {
-        return
+    // -------------------- Dark Mode -------------------- //
+    const sidebarStyling = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
     }
+    // -------------------- Dark Mode -------------------- //
 
     return (
-        <div className={styles.sidebar}>
-            <div onClick={goToHome}><SidebarItem styling={props.styling} text={"Home"} /></div>
-            <div onClick={goToAllComposers}><SidebarItem styling={props.styling} text={"Composers"} /></div>
-            <div onClick={goToAllWorks}><SidebarItem styling={props.styling} text={"Browse Works"} /></div>
-            <div onClick={goToTrivia}><SidebarItem styling={props.styling} text={"Trivia"} /></div>
-            <div onClick={goToMap}><SidebarItem styling={props.styling} text={"Map"} /></div>
-            <div onClick={goToAbout}><SidebarItem styling={props.styling} text={"About"} /></div>
-            <div className={styles.placeDarkmodeBottom} onClick={setDarkmode}><SidebarItem styling={props.styling} text={"Dark Mode"} /></div>
+        <div style={sidebarStyling} className={styles.sidebar}>
+            <div onClick={goToHome}><SidebarItem styling={props.styling} text={"Home"} darkModeEnabled={props.darkModeEnabled} /></div>
+            <div onClick={goToAllComposers}><SidebarItem styling={props.styling} text={"Composers"} darkModeEnabled={props.darkModeEnabled} /></div>
+            <div onClick={goToAllWorks}><SidebarItem styling={props.styling} text={"Works"} darkModeEnabled={props.darkModeEnabled} /></div>
+            <div onClick={goToTrivia}><SidebarItem styling={props.styling} text={"Trivia"} darkModeEnabled={props.darkModeEnabled} /></div>
+            <div onClick={goToMap}><SidebarItem styling={props.styling} text={"Map"} darkModeEnabled={props.darkModeEnabled} /></div>
+            <div onClick={goToAbout}><SidebarItem styling={props.styling} text={"About"} darkModeEnabled={props.darkModeEnabled} /></div>
+            <div className={styles.placeDarkmodeBottom}><SidebarItem toggleDarkMode={props.toggleDarkMode} styling={props.styling} text={"Dark Mode"} darkModeEnabled={props.darkModeEnabled} /></div>
         </div>
     )
 }

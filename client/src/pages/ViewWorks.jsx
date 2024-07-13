@@ -155,7 +155,7 @@ function ViewWorks(props) {
   return (
     <div id="worksBody" className={styles.worksMainBody} style={dynamicHeight}>
       <div className={loadingStyling}>
-        <Loading />
+        <Loading loadingText={"Grabbing all works..."} />
       </div>
 
       <div className={sharedStyles.errorParent}>

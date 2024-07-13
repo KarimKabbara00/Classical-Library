@@ -11,7 +11,7 @@ function Trivia() {
     }
 
     return (
-        <div className={styles.triviaMainBody}>
+        <div className={styles.triviaIntroMainBody}>
             <div className={styles.header}>
                 <h1>Classical Music Trivia</h1>
                 <h3>Test Your Knowledege!</h3>
@@ -23,7 +23,9 @@ function Trivia() {
                 maestro or a novice, enjoy fun and educational questions that celebrate the beauty and
                 history of classical music.
             </div>
-            <button onClick={startQuiz} type="button" className={styles.startButton}>Start</button>
+            <div>
+                <button onClick={startQuiz} type="button" className={styles.startButton}>Start</button>
+            </div>
         </div>
     )
 }

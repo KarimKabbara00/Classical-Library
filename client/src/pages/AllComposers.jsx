@@ -150,12 +150,12 @@ function AllComposers() {
   return (
     <div id="allCompMainBody" className={styles.allCompMainBody} style={dynamicHeight}>
       <div className={loadingStyling}>
-        <Loading />
+        <Loading loadingText={"Grabbing all composers..."} />
       </div>
 
       {!showLoading && <div className={contentStyling} >
         <BackToTop elementId={"allCompMainBody"} triggerAtY={300} />
-        <h1 className={styles.allCompTitle}>Composers</h1>
+        <h1 className={styles.allCompTitle}>All Composers</h1>
         <div className={styles.allCompBody}>
           <div className={styles.allComposersHeader}>
             <Button buttonType="Shuffle" buttonText="Random Composer" buttonAction={randomComposer} />

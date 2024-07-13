@@ -70,11 +70,18 @@ function App() {
   }, 2000)
   /* ------------------------------ Homepage On Load ------------------------------ */
 
+  /* ------------------------------ Dark Mode ------------------------------ */
+  const [darkModeEnabled, setDarkModeEnabled] = useState(false);
+  function toggleDarkMode(enabled) {
+    setDarkModeEnabled(enabled);
+  }
+  /* ------------------------------ Dark Mode ------------------------------ */
+
   return (
     <div>
       {/* <div>session is : {sessionData}</div> */}
       <BrowserRouter>
-        <Header sessionData={sessionData} logout={logout} />
+        <Header sessionData={sessionData} logout={logout} toggleDarkMode={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
         <Routes>
           <Route path="/" element={
             <Home
@@ -85,6 +92,7 @@ function App() {
               currentSong={currentSong}
               setCurrentSong={setCurrentSong}
               showOrHideMusicPlayer={showOrHideMusicPlayer}
+              darkModeEnabled={darkModeEnabled}
             />}
           />
           <Route path="/allComposers" element={<AllComposers />} />

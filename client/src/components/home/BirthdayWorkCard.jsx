@@ -17,6 +17,7 @@ function BirthdayWorkCard(props) {
                     title={props.work.title}
                     composer={props.composerName}
                     portrait={props.composerPortrait}
+                    darkModeEnabled={props.darkModeEnabled}
                 />
             </div>
         </div>

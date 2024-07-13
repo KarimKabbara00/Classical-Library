@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import sharp from "../../images/sharp.svg";
-import back from "../../images/arrow-left.svg";
+import back from "../../images/arrow-left-brown.svg";
 import styles from "../../css/shared.module.css";
 import classNames from "classnames";
 

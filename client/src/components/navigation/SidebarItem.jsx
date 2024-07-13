@@ -23,7 +23,7 @@ function SidebarItem(props) {
         setIsHovered(prev => !prev);
         props.text === "Home" ? (!isHovered ? setIcon(homeWhite) : setIcon(homeBrown)) : void (0);
         props.text === "Composers" ? (!isHovered ? setIcon(composerWhite) : setIcon(composerBrown)) : void (0);
-        props.text === "Browse Works" ? (!isHovered ? setIcon(worksWhite) : setIcon(worksBrown)) : void (0);
+        props.text === "Works" ? (!isHovered ? setIcon(worksWhite) : setIcon(worksBrown)) : void (0);
         props.text === "Trivia" ? (!isHovered ? setIcon(triviaWhite) : setIcon(triviaBrown)) : void (0);
         props.text === "Map" ? (!isHovered ? setIcon(mapWhite) : setIcon(mapBrown)) : void (0);
         props.text === "About" ? (!isHovered ? setIcon(aboutWhite) : setIcon(aboutBrown)) : void (0);
@@ -33,7 +33,7 @@ function SidebarItem(props) {
     useEffect(() => {
         props.text === "Home" ? setIcon(homeBrown) : void (0);
         props.text === "Composers" ? setIcon(composerBrown) : void (0);
-        props.text === "Browse Works" ? setIcon(worksBrown) : void (0);
+        props.text === "Works" ? setIcon(worksBrown) : void (0);
         props.text === "Trivia" ? setIcon(triviaBrown) : void (0);
         props.text === "Map" ? setIcon(mapBrown) : void (0);
         props.text === "About" ? setIcon(aboutBrown) : void (0);
@@ -42,31 +42,37 @@ function SidebarItem(props) {
 
     const [checked, setChecked] = useState(false);
     function toggleChecked() {
-        setChecked(prev => !prev);
+        let newState = !checked;
+        setChecked(newState);
+        props.toggleDarkMode(newState);
     }
 
     // resize dark mode switch
     const is1280Px = useMediaQuery("only screen and (max-width : 1280px)");
 
+    // -------------------- Dark Mode -------------------- //
+    const sidebarItemStyling = {
+        color: props.darkModeEnabled ? "#e8e6e3" : isHovered ? "white" : "black",
+        fontSize: props.styling.fontSize,
+    }
+    const sidebarItemDarkMode = {
+        border: props.darkModeEnabled ? "1px solid #181a1b" : "",
+    }
+    // -------------------- Dark Mode -------------------- //
+
     return (
         <div>
-            {props.text !== "Dark Mode" && <div  onMouseEnter={toggleHovered} onMouseLeave={toggleHovered} className={styles.sidebarItem}>
+            {props.text !== "Dark Mode" && <div style={sidebarItemDarkMode} onMouseEnter={toggleHovered} onMouseLeave={toggleHovered} className={styles.sidebarItem}>
                 <img src={icon} width={props.styling.iconSize} />
-                <div className={styles.sidebarText}
-                    style={{
-                        color: isHovered ? "white" : "black",
-                        fontSize: props.styling.fontSize
-                    }}>
+                <div className={styles.sidebarText} style={sidebarItemStyling}>
                     {props.text}
                 </div>
             </div>}
 
-            {props.text === "Dark Mode" && <div onMouseEnter={toggleHovered} onMouseLeave={toggleHovered} className={styles.darkModeItem} >
+            {props.text === "Dark Mode" && <div style={sidebarItemDarkMode} className={styles.darkModeItem} >
                 <img src={icon} width={props.styling.iconSize} />
                 <div className={styles.sidebarText}
-                    style={{
-                        fontSize: "1rem"//props.styling.fontSize
-                    }}>
+                    style={sidebarItemStyling}>
                     {props.text}
                 </div>
                 <div className={styles.darkModeSwitch}><Switch onChange={toggleChecked} checked={checked} onColor="#a52a2a" uncheckedIcon={null} checkedIcon={null} handleDiameter={is1280Px ? 12 : 26} height={is1280Px ? 14 : 28} width={is1280Px ? 28 : 56} /></div>

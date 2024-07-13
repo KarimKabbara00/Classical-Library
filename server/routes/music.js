@@ -1,8 +1,8 @@
 import express from "express";
-import { getMusic } from "../controllers/musicController.js";
+import { music } from "../controllers/musicController.js";
 
 const router = express.Router();
 
-router.post("/getMusic", getMusic);
+router.post("/music", music);
 
 export default router;

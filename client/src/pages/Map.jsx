@@ -58,7 +58,7 @@ function Map() {
     return (
         <div style={dynamicHeight}>
             <div className={loadingStyling}>
-                <Loading />
+                <Loading loadingText={"Grabbing all birth locations..."} />
             </div>
 
             <div className={sharedStyles.errorParent}>

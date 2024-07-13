@@ -20,6 +20,7 @@ function BirthdayCard(props) {
                                 key={index}
                                 work={work}
                                 url={work.url}
+                                darkModeEnabled={props.darkModeEnabled}
                                 audioObject={props.audioObject}
                                 setAudioObject={props.setAudioObject}
                                 currentSong={props.currentSong}

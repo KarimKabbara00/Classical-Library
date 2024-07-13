@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import styles from "../../css/viewWorks.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay, faSpinner, faCircleStop } from "@fortawesome/free-solid-svg-icons";
@@ -21,31 +22,30 @@ function PlayMusic(props) {
             return;
         }
 
+        // start spinning
         setSvgIcon(faSpinner);
+
         // send url
-        const response = await fetch("http://localhost:3001/api/music", {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ url: props.url })
+        const response = await axios.post("http://localhost:3001/api/music", {
+            url: props.url
+        }, {
+            responseType: 'blob'
         });
 
-        if (response.ok) {
-            const audioBlob = await response.blob();
-            const audioUrl = await URL.createObjectURL(audioBlob);
-            const audioObject = new Audio(audioUrl);
+        console.log("received");
 
-            props.setCurrentSong({ title: props.title, composer: props.composer, portrait: props.portrait });
-            props.showOrHideMusicPlayer(true);
-            props.setAudioObject(audioObject);
-            audioObject.play();
-            setSvgIcon(faCircleStop);
-        } else {
-            console.error("Error fetching audio");
-            setSvgIcon(faCircleStop);
-        }
+        const blob = new Blob([response.data], { type: 'audio/mpeg' });
+        const audioUrl = window.URL.createObjectURL(blob);
+        const audioObject = new Audio(audioUrl);
+        props.setCurrentSong({ title: props.title, composer: props.composer, portrait: props.portrait });
+        props.showOrHideMusicPlayer(true);
+        props.setAudioObject(audioObject);
+        audioObject.play();
+        setSvgIcon(faCircleStop);
+        // else {
+        //     console.error("Error fetching audio");
+        //     setSvgIcon(faCircleStop);
+        // }
     };
 
     useEffect(() => {
@@ -54,9 +54,14 @@ function PlayMusic(props) {
         }
     }, [props.currentSong, props.title]);
 
+    const playIcon = {
+        color: "#a52a2a",
+        fontSize: "2rem"
+    }
+
     return (
         <div onClick={handleFetchAudio} className={styles.playButton}>
-            <FontAwesomeIcon icon={svgIcon} className={svgIcon === faSpinner ? "fa-spin" : ""} style={{ color: "#a52a2a", fontSize: "2rem" }} />
+            <FontAwesomeIcon icon={svgIcon} className={svgIcon === faSpinner ? "fa-spin" : ""} style={playIcon} />
         </div>
     )
 }

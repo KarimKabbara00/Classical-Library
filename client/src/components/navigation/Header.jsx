@@ -87,7 +87,7 @@ function Header(props) {
                 </div>}
             </nav>
             <animated.div style={{ ...sidebarAnimation, height: styling.sidebarHeight }} onMouseEnter={() => { setShowSidebar(true) }} onMouseLeave={() => { setShowSidebar(false) }} className={styles.sidebarParent}>
-                <Sidebar styling={styling} />
+                <Sidebar styling={styling} toggleDarkMode={props.toggleDarkMode} darkModeEnabled={props.darkModeEnabled} />
             </animated.div>
         </div>
     )

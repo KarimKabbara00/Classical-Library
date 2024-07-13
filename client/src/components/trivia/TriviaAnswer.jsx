@@ -32,7 +32,6 @@ function TriviaAnswer(props) {
     })
 
     function handleClick() {
-        console.log(props.answerText, props.correctAnswer)
         // quizComplete is true when displaying final result
         if (props.quizComplete === false) {
             props.addSelectedAnswer(props.index)
@@ -43,7 +42,7 @@ function TriviaAnswer(props) {
         // id is set to props.state to force a rerender on click
         <animated.div id={props.state} onClick={handleClick} className={triviaQuizAnswerFinal} style={props.quizComplete ? completeSelectStyling : selectStyling}>
             <span>{props.answerText}</span>
-        </animated.div>
+        </animated.div >
     )
 }
 

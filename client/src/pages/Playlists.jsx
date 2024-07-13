@@ -54,7 +54,7 @@ function Playlists(props) {
 
         <div>
             <div className={loadingStyling}>
-                <Loading />
+                <Loading loadingText={"Grabbing your playlists..."} />
             </div>
             {!showLoading && <div className={contentStyling}>
                 <h1 className={styles.title}>Playlists</h1>

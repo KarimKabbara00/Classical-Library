@@ -6,13 +6,11 @@ import BirthdayCard from "../../components/home/BirthdayComposerCard";
 function BirthdayCarousel(props) {
 
     const [composerInfo, setComposerInfo] = useState([])
-    const [recommendedWorks, setRecommendedWorks] = useState([])
     const [showError, setShowError] = useState(false);
     useEffect(() => {
         axios.get("http://localhost:3001/api/birthday")
             .then(res => {
                 setComposerInfo(res.data.composerData);
-                // setRecommendedWorks(res.data.recommendedWorks);
             }).catch(err => {
                 console.log(err)
                 setShowError(true);
@@ -26,11 +24,18 @@ function BirthdayCarousel(props) {
         document.getElementById(index.toString()).scrollIntoView({ behavior: "smooth" });
     }
 
+    // -------------------- Dark Mode -------------------- //
+    const birthdayCarouselDarkMode = {
+        backgroundColor: props.darkModeEnabled ? "#1e2021" : "",
+        border: props.darkModeEnabled ? "1px solid #e8e6e3" : ""
+    }
+    // -------------------- Dark Mode -------------------- //
+
     return (
         <div className={styles.birthdayCarouselParent}>
             <h1>Upcoming Birthdays</h1>
             {!showError && <div>
-                <div id="birthdayCarousel" className={styles.birthdayCarousel}>
+                <div id="birthdayCarousel" style={birthdayCarouselDarkMode} className={styles.birthdayCarousel}>
                     {composerInfo.map((composer, index) => {
                         return <BirthdayCard
                             key={index}
@@ -38,6 +43,7 @@ function BirthdayCarousel(props) {
                             recommendedWorks={composerInfo[index].recommendedWorks}
                             index={index}
                             visibleIndex={visibleIndex}
+                            darkModeEnabled={props.darkModeEnabled}
                             // music stuff
                             url={composerInfo[index].recommendedWorks.url}
                             audioObject={props.audioObject}

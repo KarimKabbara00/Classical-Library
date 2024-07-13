@@ -1,7 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import ytdl from "ytdl-core";
 
 // routes
 import home from "./routes/home.js"
@@ -13,6 +12,7 @@ import trivia from "./routes/trivia.js";
 import map from "./routes/map.js"
 import playlists from './routes/playlists.js';
 import profile from "./routes/profile.js";
+import music from "./routes/music.js";
 
 const app = express();
 const port = 3001;
@@ -39,16 +39,7 @@ app.use("/api", trivia);
 app.use("/api", map);
 app.use("/api", profile);
 app.use("/api", playlists);
-
-app.post("/api/music", async (req, res) => {
-  const url = req.body.url
-  const info = await ytdl.getInfo(url);
-  const audioFormat = ytdl.chooseFormat(info.formats, { quality: "highestaudio" });
-  res.setHeader("Content-Type", "audio/mpeg");
-  res.setHeader("Content-Disposition", `attachment; filename="audio.mp3"`);
-
-  ytdl(url, { format: audioFormat }).pipe(res);
-});
+app.use("/api", music)
 
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
