@@ -9,8 +9,9 @@ import Error from "../components/shared/Error";
 import sharedStyles from "../css/shared.module.css";
 import loadingStyles from "../css/loading.module.css";
 import styles from "../css/map.module.css"
+import { head } from "lodash";
 
-function Map() {
+function Map(props) {
     const mapStyles = {
         height: "100%",
         width: "100%",
@@ -50,19 +51,21 @@ function Map() {
         [styles.applyFadeIn]: !showLoading,
     });
 
-    const dynamicHeight = {
-        minHeight: "93.25vh",
-        height: showLoading ? "93.25vh" : ""
-    };
+    // -------------------- Dark Mode -------------------- //
+    const DarkMode = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        height: "94.5vh"
+    }
+    // -------------------- Dark Mode -------------------- //
 
     return (
-        <div style={dynamicHeight}>
+        <div style={DarkMode}>
             <div className={loadingStyling}>
-                <Loading loadingText={"Grabbing all birth locations..."} />
+                <Loading loadingText={"Grabbing all birth locations..."} darkModeEnabled={props.darkModeEnabled} />
             </div>
 
             <div className={sharedStyles.errorParent}>
-                <Error showError={showError} />
+                <Error showError={showError} darkModeEnabled={props.darkModeEnabled} />
             </div>
 
             {!showLoading && !showError && < div className={contentStyling}>

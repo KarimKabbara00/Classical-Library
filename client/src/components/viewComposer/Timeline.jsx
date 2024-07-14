@@ -3,8 +3,15 @@ import TimelineItem from "./TimelineItem";
 import styles from "../../css/viewComposer.module.css";
 
 function Timeline(props) {
+
+    // -------------------- Dark Mode -------------------- //
+    const textDarkMode = {
+        color: props.darkModeEnabled ? "#e8e6e3" : ""
+    }
+    // -------------------- Dark Mode -------------------- //
+
     return (
-        <div>
+        <div style={textDarkMode}>
             <div className={styles.timeLineHeader}>Timeline</div>
             <div className={styles.timeLine}>
                 <div className={styles.timeLineArt}>

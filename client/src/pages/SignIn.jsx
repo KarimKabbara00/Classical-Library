@@ -8,7 +8,7 @@ import classNames from "classnames";
 import { animated, useSpring } from "@react-spring/web";
 import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faE, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import Cookies from 'js-cookie';
 
 function SignIn(props) {
@@ -105,7 +105,6 @@ function SignIn(props) {
 
     // Google OAuth
     function continueWithGoogle() {
-        return;
         axios.post("http://localhost:3001/api/auth/google").then(res => {
             window.location.href = res.data;
         }).catch(err => {
@@ -127,19 +126,11 @@ function SignIn(props) {
     // ---- Nudge Animation ---- //
 
     const [showPassword, setShowPassord] = useState(false);
+    const [peekSVG, setPeekSVG] = useState(faEye);
     function peekPassword() {
         setShowPassord(prev => !prev);
+        showPassword ? setPeekSVG(faEye) : setPeekSVG(faEyeSlash);
     }
-
-    const [showConfPass, setShowConfPass] = useState(false);
-    function peekConfPass() {
-        setShowConfPass(prev => !prev);
-    }
-
-    const dynamicHeight = {
-        minHeight: "89vh",
-        height: "89vh"
-    };
 
     const signInBoxStyling = {
         marginTop: showSignUp ? "5%" : "5%"
@@ -155,8 +146,15 @@ function SignIn(props) {
         config: { tension: 200, friction: 30 },
     });
 
+    // -------------------- Dark Mode -------------------- //
+    const darkMode = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        height: "94.5vh"
+    }
+    // -------------------- Dark Mode -------------------- //
+
     return (
-        <div style={dynamicHeight}>
+        <div style={darkMode}>
             <div className={styles.signInParent}>
                 <div style={signInBoxStyling} className={styles.signInBox}>
                     <form autoComplete="off" onSubmit={showSignUp ? signUp : signIn} className={styles.signInForm} noValidate>
@@ -165,18 +163,19 @@ function SignIn(props) {
                         <input name="email" onInput={updateUserInfo} className={styles.signInField} type="email" placeholder="Email" required value={userInfo.email} />
                         <div>
                             {showSignUp !== null && <animated.div style={showPasswordReqs} className={passwordReqStyling} onAnimationEnd={stopAnim}>
-                                <PasswordReq currentPass={userInfo.password} currentConfPass={userInfo.confirmPassword} passwordReqSatisfied={passwordReqSatisfied} setPasswordReqsSatisfied={setPasswordReqsSatisfied} />
+                                <PasswordReq currentPass={userInfo.password} currentConfPass={userInfo.confirmPassword} passwordReqSatisfied={passwordReqSatisfied} setPasswordReqsSatisfied={setPasswordReqsSatisfied} darkModeEnabled={props.darkModeEnabled} />
                             </animated.div>}
                             <div style={{ position: "relative" }}>
                                 <input name="password" onInput={updateUserInfo} className={styles.signInField} type={showPassword ? "text" : "password"} placeholder="Password" required value={userInfo.password} />
-                                {userInfo.password.length > 0 && <div onMouseLeave={() => setShowPassord(false)} onMouseDown={peekPassword} onMouseUp={peekPassword} className={styles.peekPassword}><FontAwesomeIcon icon={faEye} /></div>}
+                                {userInfo.password.length > 0 && <div onClick={peekPassword} className={styles.peekPassword}><FontAwesomeIcon icon={peekSVG} /></div>}
                             </div>
                         </div>
                         {showSignUp && <div style={{ position: "relative" }}>
-                            <input name="confirmPassword" onInput={updateUserInfo} className={styles.signInField} style={showSignUpElements} type={showConfPass ? "text" : "password"} placeholder="Confirm Password" required={showSignUp} value={userInfo.confirmPassword} />
-                            {userInfo.confirmPassword.length > 0 && <div onMouseLeave={() => setShowConfPass(false)} onMouseDown={peekConfPass} onMouseUp={peekConfPass} className={styles.peekPassword}><FontAwesomeIcon icon={faEye} /></div>}
+                            <input name="confirmPassword" onInput={updateUserInfo} className={styles.signInField} style={showSignUpElements} type="password" placeholder="Confirm Password" required={showSignUp} value={userInfo.confirmPassword} />
                         </div>}
-                        <button type="submit" className={styles.signInButton}>Sign {showSignUp ? "Up" : "In"}</button>
+                        <div>
+                            <button type="submit" className={styles.signInButton}>Sign {showSignUp ? "Up" : "In"}</button>
+                        </div>
                     </form>
                     <div className={styles.askUserText}>
                         {showSignUp ?

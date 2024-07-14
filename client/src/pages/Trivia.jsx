@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../css/trivia.module.css";
 
-function Trivia() {
+function Trivia(props) {
 
     const navigate = useNavigate();
 
@@ -10,8 +10,15 @@ function Trivia() {
         navigate("/trivia/quiz");
     }
 
+    // -------------------- Dark Mode -------------------- //
+    const triviaIntroMainBodyDarkMode = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        color: props.darkModeEnabled ? "#e8e6e3" : ""
+    }
+    // -------------------- Dark Mode -------------------- //
+
     return (
-        <div className={styles.triviaIntroMainBody}>
+        <div style={triviaIntroMainBodyDarkMode} className={styles.triviaIntroMainBody}>
             <div className={styles.header}>
                 <h1>Classical Music Trivia</h1>
                 <h3>Test Your Knowledege!</h3>

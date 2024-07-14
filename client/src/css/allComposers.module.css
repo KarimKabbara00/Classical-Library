@@ -15,7 +15,7 @@
 .allCompMainBody {
   display: flex;
   justify-content: center;
-  max-height: 94vh;
+  max-height: 94.5vh;
   overflow-y: scroll;
 }
 

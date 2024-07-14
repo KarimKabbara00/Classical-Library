@@ -6,9 +6,9 @@ function WorkHeader(props) {
 
     return (
         <div className={styles.workHeader}>
-            <WorkColumnTitle currentGenre={props.currentGenre} sortWorks={props.sortWorks} colTitle={"Title"} />
-            <WorkColumnTitle currentGenre={props.currentGenre} sortWorks={props.sortWorks} colTitle={"Genre"} />
-            <WorkColumnTitle currentGenre={props.currentGenre} sortWorks={props.sortWorks} colTitle={"Duration"} />
+            <WorkColumnTitle currentGenre={props.currentGenre} sortWorks={props.sortWorks} colTitle={"Title"} darkModeEnabled={props.darkModeEnabled} />
+            <WorkColumnTitle currentGenre={props.currentGenre} sortWorks={props.sortWorks} colTitle={"Genre"} darkModeEnabled={props.darkModeEnabled} />
+            <WorkColumnTitle currentGenre={props.currentGenre} sortWorks={props.sortWorks} colTitle={"Duration"} darkModeEnabled={props.darkModeEnabled} />
         </div>
     )
 }

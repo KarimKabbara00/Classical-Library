@@ -7,7 +7,7 @@ function TriviaAnswer(props) {
 
     // used when taking quiz 
     const selectStyling = useSpring({
-        backgroundColor: props.highlightedAnswerIndex === props.index ? "brown" : "white",
+        backgroundColor: props.highlightedAnswerIndex === props.index ? "brown" : props.darkModeEnabled ? "#e8e6e3" : "white",
         color: props.highlightedAnswerIndex === props.index ? "white" : "black",
         border: "1px solid black",
         cursor: "pointer",
@@ -17,7 +17,8 @@ function TriviaAnswer(props) {
     // used when quiz complete
     const completeSelectStyling = {
         backgroundColor: props.answerText === props.correctAnswer ? "green" :
-            props.highlightedAnswerIndex === props.index ? "brown" : "white", // this line evaluates when not the right answer
+            props.highlightedAnswerIndex === props.index ? "brown" : // this line evaluates when not the right answer
+                props.darkModeEnabled ? "#e8e6e3" : "white",  // dark mode
 
         color: props.answerText === props.correctAnswer ? "white" :
             props.highlightedAnswerIndex === props.index ? "white" : "black", // this line evaluates when not the right answer

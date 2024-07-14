@@ -65,7 +65,7 @@ function sortWorks(works) {
   return alphabetObject;
 }
 
-function AllComposers() {
+function AllComposers(props) {
   const navigate = useNavigate();
 
   // receive data from Home.jsx
@@ -141,16 +141,18 @@ function AllComposers() {
     [styles.applyFadeIn]: !showLoading,
   });
 
-  // screen height when loading or not
-  const dynamicHeight = {
-    minHeight: "90vh",
-    height: showLoading ? "90vh" : ""
-  };
+  // -------------------- Dark Mode -------------------- //
+  const allCompMainBodyDarkMode = {
+    backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+    color: props.darkModeEnabled ? "#e8e6e3" : "",
+    height: "94.5vh"
+  }
+  // -------------------- Dark Mode -------------------- //
 
   return (
-    <div id="allCompMainBody" className={styles.allCompMainBody} style={dynamicHeight}>
+    <div id="allCompMainBody" className={styles.allCompMainBody} style={allCompMainBodyDarkMode}>
       <div className={loadingStyling}>
-        <Loading loadingText={"Grabbing all composers..."} />
+        <Loading loadingText={"Grabbing all composers..."} darkModeEnabled={props.darkModeEnabled} />
       </div>
 
       {!showLoading && <div className={contentStyling} >
@@ -158,12 +160,12 @@ function AllComposers() {
         <h1 className={styles.allCompTitle}>All Composers</h1>
         <div className={styles.allCompBody}>
           <div className={styles.allComposersHeader}>
-            <Button buttonType="Shuffle" buttonText="Random Composer" buttonAction={randomComposer} />
+            <Button darkModeEnabled={props.darkModeEnabled} buttonType="Shuffle" buttonText="Random Composer" buttonAction={randomComposer} />
             {filteredResultsCount === 0 ? <div className={styles.noResults}>No Results Found</div> : null}
-            <FilterItems filterItems={filterComposers} placeholderText={"Search composers here..."} />
+            <FilterItems filterItems={filterComposers} placeholderText={"Search composers here..."} darkModeEnabled={props.darkModeEnabled} />
           </div>
           {Object.entries(shownResults).map(([letter, composers]) => (
-            <LetterSection key={letter} letterHeaderCount={Object.keys(shownResults).length} composerArray={composers} letter={letter} />
+            <LetterSection key={letter} letterHeaderCount={Object.keys(shownResults).length} composerArray={composers} letter={letter} darkModeEnabled={props.darkModeEnabled} />
           ))}
         </div>
       </div>}

@@ -17,14 +17,24 @@ function Prompt(props) {
         config: { duration: 100 }
     })
 
+    // -------------------- Dark Mode -------------------- //
+    const promptParentDarkMode = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        border: props.darkModeEnabled ? "1px solid #e8e6e3" : "",
+    }
+    const buttonDarkMode = {
+        color: props.darkModeEnabled ? "#e8e6e3" : "",
+    }
+    // -------------------- Dark Mode -------------------- //
+
     return (
         <animated.div style={promptAnim} className={styles.promptScreenCover}>
-            <div className={styles.promptParent}>
+            <div style={promptParentDarkMode} className={styles.promptParent}>
                 <h2>{props.title}</h2>
                 <span>{props.description}</span>
                 <div className={styles.promptButtonsParent}>
-                    <div onClick={confirm} className={styles.promptButton}>{props.confirm}</div>
-                    <div onClick={cancel} className={styles.promptButton}>{props.cancel}</div>
+                    <div style={buttonDarkMode} onClick={confirm} className={styles.promptButton}>{props.confirm}</div>
+                    <div style={buttonDarkMode} onClick={cancel} className={styles.promptButton}>{props.cancel}</div>
                 </div>
             </div>
         </animated.div>

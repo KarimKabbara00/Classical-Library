@@ -17,7 +17,7 @@ function LetterSection(props) {
             {props.letterHeaderCount > 1 && props.composerArray.length > 0 && <LetterHeader letter={props.letter} />}
             <div className={styles.allCompGrid}>
                 {props.composerArray.map((composer) => (
-                    <Card key={composer.id} compID={composer.id} compPortrait={composer.portrait} compName={composer.name} goToComp={goToComp} />
+                    <Card key={composer.id} compID={composer.id} compPortrait={composer.portrait} compName={composer.name} goToComp={goToComp} darkModeEnabled={props.darkModeEnabled} />
                 ))}
             </div>
         </div >

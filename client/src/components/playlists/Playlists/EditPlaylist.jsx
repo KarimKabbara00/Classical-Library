@@ -104,10 +104,23 @@ function NewPlaylist(props) {
         [styles.applyFadeIn]: !showLoading,
     });
 
+    // -------------------- Dark Mode -------------------- //
+    const darkMode = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        color: props.darkModeEnabled ? "#e8e6e3" : "",
+        height: "94.5vh"
+    }
+    const inputDarkMode = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        color: props.darkModeEnabled ? "#e8e6e3" : "",
+        borderBottom: props.darkModeEnabled ? "1px solid #e8e6e3" : "",
+    }
+    // -------------------- Dark Mode -------------------- //
+
     return (
-        <div>
+        <div style={darkMode}>
             <div className={loadingStyling}>
-                <Loading loadingText={"Grabbing all the data..."} />
+                <Loading loadingText={"Grabbing all the data..."} darkModeEnabled={props.darkModeEnabled} />
             </div>
 
             {!showLoading && <div className={contentStyling}>
@@ -117,15 +130,15 @@ function NewPlaylist(props) {
                     <form onSubmit={editPlaylist} className={styles.newPlaylistForm}>
                         <div className={styles.newPlaylistNameParent}>
                             <label>Name</label>
-                            <input onInput={updateName} className={styles.newPlaylistName} value={playlistName} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+                            <input onInput={updateName} className={styles.newPlaylistName} style={inputDarkMode} value={playlistName} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false" />
                         </div>
 
                         <div className={styles.searchForWorkParent}>
                             <label>Works</label>
                             {worksToAdd.map((work, index) => {
-                                return <AddedWork work={work} removeWork={removeWork} key={index} />
+                                return <AddedWork work={work} removeWork={removeWork} key={index} darkModeEnabled={props.darkModeEnabled} />
                             })}
-                            <AddWorkToPlaylist addWork={addWork} allWorks={allWorks} worksToAdd={worksToAdd} />
+                            <AddWorkToPlaylist addWork={addWork} allWorks={allWorks} worksToAdd={worksToAdd} darkModeEnabled={props.darkModeEnabled} />
                         </div>
 
                         <div className={styles.buttonsParent}>

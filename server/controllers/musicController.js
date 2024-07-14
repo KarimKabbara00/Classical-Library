@@ -11,18 +11,16 @@ const music = async (req, res) => {
 
     var titles = []
     for (let i of workNames) {
-        console.log("--------------");
-        console.log(`${i.title} by ${compName}`);
         const searchTerm = `${i.title} ${compName}`
-
         const results = await ytstream.search(searchTerm);
-
-        titles.push(results[0].title)
-
-        console.log(results[0].url);
-        console.log(results[0].id);
-        console.log(results[0].title);
-        console.log("--------------");
+        if (results[0]) {
+            titles.push([i.id, results[0].url, results[0].title, compName])
+            console.log(i.id, results[0].url, results[0].title, compName)
+        }
+        else {
+            titles.push([i.id, "ERROR", "ERROR", compName])
+            console.log(i.id, "ERROR", "ERROR", compName)
+        }
     };
 
     res.send(titles)

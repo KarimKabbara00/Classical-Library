@@ -49,13 +49,23 @@ function AddWorkToPlaylist(props) {
         updateDDLOptions("");
     }
 
+    const inputDarkMode = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        color: props.darkModeEnabled ? "#e8e6e3" : "",
+        borderBottom: props.darkModeEnabled ? "1px solid #e8e6e3" : "",
+    }
+
+    const dropdownListParentDarkMode = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+    }
+
     return (
         <div>
             <div className={styles.searchForWorkItem}>
-                <input onFocus={() => setInputFieldFocused(true)} onBlur={() => setTimeout(() => setInputFieldFocused(false), 150)} onInput={updateEnteredText} className={styles.searchForWork} value={enteredText} placeholder="Search for work..." />
+                <input onFocus={() => setInputFieldFocused(true)} onBlur={() => setTimeout(() => setInputFieldFocused(false), 150)} onInput={updateEnteredText} className={styles.searchForWork} style={inputDarkMode} value={enteredText} placeholder="Search for work..." />
                 {inputFieldFocused && shownWorks.length > 0 && props.allWorks.length !== shownWorks.length &&
-                    <div className={styles.dropdownListParent}>
-                        <WorkDropdownList worksToAdd={props.worksToAdd} inputFieldFocused={inputFieldFocused} addWork={addWork} shownWorks={shownWorks} />
+                    <div style={dropdownListParentDarkMode} className={styles.dropdownListParent}>
+                        <WorkDropdownList worksToAdd={props.worksToAdd} inputFieldFocused={inputFieldFocused} addWork={addWork} shownWorks={shownWorks} darkModeEnabled={props.darkModeEnabled} />
                     </div>
                 }
             </div>

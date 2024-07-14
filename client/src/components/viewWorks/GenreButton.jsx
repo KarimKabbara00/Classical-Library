@@ -9,7 +9,7 @@ function GenreButton(props) {
         color: props.currentGenre === props.name || hovered ? "white" : "black",
         backgroundColor: props.currentGenre === props.name || hovered ? "brown" : "white",
         borderColor: props.currentGenre === props.name || hovered ? "brown" : "black",
-        cursor: "pointer"
+        cursor: "pointer",
     }
 
     function onAction() {

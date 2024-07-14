@@ -18,16 +18,14 @@ const app = express();
 const port = 3001;
 
 /* ---- Middleware ---- */
-var logger = function (req, res, next) {
-  console.log("Received request at", req.url);
-  next();
-};
-
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(logger);
 app.use(cors({ origin: "http://localhost:3000" })); // allow cors from frontend
+app.use((req, res, next) => { // logs every request received
+  console.log("Received request at", req.url);
+  next();
+});
 
 /* ---- Routes ---- */
 app.use("/api", home);

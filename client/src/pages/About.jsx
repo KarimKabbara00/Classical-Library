@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../css/about.module.css"
 import AboutSection from "../components/about/AboutSection";
 
-function About() {
+function About(props) {
     const aboutMeDescription = "Just a dude that likes classical music.";
     const apisUsed = (
         <ul>
@@ -22,9 +22,16 @@ function About() {
             <span>Remember that generative AI can make mistakes and that the data could be inaccurate.</span>
         </div>
     )
+    // -------------------- Dark Mode -------------------- //
+    const mainBodyDarkModeStyle = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        color: props.darkModeEnabled ? "#e8e6e3" : "",
+        height: "94.5vh"
+    }
+    // -------------------- Dark Mode -------------------- //
 
     return (
-        <div className={styles.mainBody}>
+        <div style={mainBodyDarkModeStyle} className={styles.mainBody}>
             <AboutSection title="About Me" description={aboutMeDescription} maxHeight="0rem" />
             <AboutSection title="API Usage" description={apisUsed} maxHeight="4.25rem" />
             <AboutSection title="Data Reliability" description={dataRelDescription} maxHeight="4.25rem" />

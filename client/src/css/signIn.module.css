@@ -52,6 +52,7 @@
     font-size: 1rem;
     padding: 0.25rem;
     text-align: center;
+    color: black;
 }
 
 .signInButton:hover {
@@ -128,6 +129,7 @@
     color: black;
     padding: 0.5rem;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px 0px;
+    background-color: white;
 }
 
 .passwordRequirements>div>div:first-child {

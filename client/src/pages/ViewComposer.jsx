@@ -14,7 +14,7 @@ import styles from "../css/viewComposer.module.css";
 import sharedStyles from "../css/shared.module.css";
 import loadingStyles from "../css/loading.module.css";
 
-function ViewComposer() {
+function ViewComposer(props) {
   const location = useLocation();
   const [allData, setAllData] = useState({});
 
@@ -44,6 +44,7 @@ function ViewComposer() {
             timeline: res.data.timeline,
           });
           setShowLoading(false);
+          setShowError(true);
         })
         .catch(function (err) {
           console.log(err);
@@ -75,33 +76,40 @@ function ViewComposer() {
     [styles.applyFadeIn]: !showLoading,
   });
 
+  // -------------------- Dark Mode -------------------- //
+  const LoadingDarkMode = {
+    height: "94.5vh",
+    backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+  }
+  // -------------------- Dark Mode -------------------- //
+
   return (
-    <div >
+    <div style={LoadingDarkMode}>
       <div className={loadingStyling}>
-        <Loading loadingText={"Grabbing composer data..."} />
+        <Loading loadingText={"Grabbing composer data..."} darkModeEnabled={props.darkModeEnabled} />
       </div>
 
       <div className={sharedStyles.errorParent}>
-        <Error showError={showError} />
+        <Error showError={showError} darkModeEnabled={props.darkModeEnabled} />
       </div>
 
       {!showLoading && !showError && <div className={contentStyling}>
         <div className={styles.left}>
           <div className={styles.composerBody}>
             <div className={styles.composerHeader}>
-              <ComposerName complete_name={allData.composerData.complete_name} />
-              <ComposerFacts born={allData.born} died={allData.died} epoch={allData.composerData.epoch} />
+              <ComposerName complete_name={allData.composerData.complete_name} darkModeEnabled={props.darkModeEnabled} />
+              <ComposerFacts born={allData.born} died={allData.died} epoch={allData.composerData.epoch} darkModeEnabled={props.darkModeEnabled} />
             </div>
             <div className={styles.composerImageAndDescription}>
               <ComposerImage portrait={allData.composerData.portrait} />
-              <ComposerDescription description={allData.description} />
+              <ComposerDescription description={allData.description} darkModeEnabled={props.darkModeEnabled} />
             </div>
           </div>
-          <ExploreWorks genres={allData.genreData} viewWorksByGenre={viewWorksByGenre} />
+          <ExploreWorks darkModeEnabled={props.darkModeEnabled} genres={allData.genreData} viewWorksByGenre={viewWorksByGenre} />
         </div>
 
         <div className={styles.right}>
-          <Timeline events={allData.timeline} />
+          <Timeline darkModeEnabled={props.darkModeEnabled} events={allData.timeline} />
         </div>
       </div>}
     </div>

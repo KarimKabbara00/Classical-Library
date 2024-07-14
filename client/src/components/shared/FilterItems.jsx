@@ -19,9 +19,15 @@ function FilterItems(props) {
         filterItems(event);
     }
 
+    // -------------------- Dark Mode -------------------- //
+    const workFilterInputDarkMode = {
+        border: props.darkModeEnabled ? "1px solid #e8e6e3" : ""
+    }
+    // -------------------- Dark Mode -------------------- //
+
     return (
         <div className={styles.workFilter}>
-            <input className={styles.workFilterInput} type="text" value={filter} placeholder={props.placeholderText} onInput={filterItems} />
+            <input style={workFilterInputDarkMode} className={styles.workFilterInput} type="text" value={filter} placeholder={props.placeholderText} onInput={filterItems} />
             {filter && <div className={styles.clearIcon} onClick={clearFilter}><FontAwesomeIcon icon={faX} /></div>}
         </div>
     )

@@ -37,21 +37,50 @@ const signUp = async (req, res) => {
     }
 };
 
-export { signIn, signUp }
+const googleAuth = async (req, res) => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+            redirectTo: 'http://localhost:3001/api/auth/callback',
+        },
+    })
 
+    if (error) {
+        res.status(400).send(error);
+    }
+    else {
+        res.status(200).send(data.url);
+    }
+}
 
-// app.post('/auth/google', async (req, res) => {
-//     const { data, error } = await supabase.auth.signInWithOAuth({
-//         provider: 'google',
-//         options: {
-//             redirectTo: 'http://localhost:3000/',
-//         },
-//     })
-//     if (error) {
-//         res.status(400).send(error);
-//     }
-//     else {
-//         res.status(200).send(data.url);
-//     }
-// })
+const callback = async (req, res) => {
+    console.log("here")
+    const code = req.query.code
+    const next = req.query.next ?? "/"
+
+    console.log(code, next)
+
+    if (code) {
+        console.log("in here")
+        const supabase = createServerClient(
+            process.env.SUPABASE_URL,
+            process.env.SUPABASE_ANON_KEY, {
+            cookies: {
+                getAll() {
+                    return parseCookieHeader(context.req.headers.cookie ?? '')
+                },
+                setAll(cookiesToSet) {
+                    cookiesToSet.forEach(({ name, value, options }) =>
+                        context.res.appendHeader('Set-Cookie', serializeCookieHeader(name, value, options))
+                    )
+                },
+            },
+        })
+        await supabase.auth.exchangeCodeForSession(code)
+    }
+
+    res.redirect(303, "http://localhost:3000/")
+}
+
+export { signIn, signUp, googleAuth, callback }
 

@@ -95,8 +95,8 @@ function App() {
               darkModeEnabled={darkModeEnabled}
             />}
           />
-          <Route path="/allComposers" element={<AllComposers />} />
-          <Route path="/viewComposer" element={<ViewComposer />} />
+          <Route path="/allComposers" element={<AllComposers darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/viewComposer" element={<ViewComposer darkModeEnabled={darkModeEnabled} />} />
           <Route path="/viewWorks" element={
             <ViewWorks
               audioObject={audioObject}
@@ -105,29 +105,30 @@ function App() {
               setCurrentSong={setCurrentSong}
               showOrHideMusicPlayer={showOrHideMusicPlayer}
               animInOut={animInOut}
+              darkModeEnabled={darkModeEnabled}
             />}
           />
 
-          <Route path="/map" element={<Map />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/map" element={<Map darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/about" element={<About darkModeEnabled={darkModeEnabled} />} />
 
           {/* Trivia Routes */}
-          <Route path="/trivia" element={<Trivia />} />
-          <Route path="/trivia/quiz" element={<TriviaQuiz />} />
+          <Route path="/trivia" element={<Trivia darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/trivia/quiz" element={<TriviaQuiz darkModeEnabled={darkModeEnabled} />} />
 
           {/* Profile Routes */}
-          <Route path="/signIn" element={<SignIn setSessionData={setSessionData} />} />
-          <Route path="/profile" element={<Profile sessionData={sessionData} />} />
-          <Route path="/profile/playlists" element={<Playlists sessionData={sessionData} />} />
-          <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist sessionData={sessionData} />} />
-          <Route path="/profile/playlists/editPlaylist" element={<EditPlaylist sessionData={sessionData} />} />
+          <Route path="/signIn" element={<SignIn setSessionData={setSessionData} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/profile" element={<Profile sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/profile/playlists" element={<Playlists sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/profile/playlists/editPlaylist" element={<EditPlaylist sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
 
         </Routes>
         {/* <Footer /> */}
       </BrowserRouter>
 
 
-      {showMusicPlayer && <MusicPlayer audioObject={audioObject} setAudioObject={setAudioObject} volume={volume} setVolume={setVolume} currentSong={currentSong} setCurrentSong={setCurrentSong} animInOut={animInOut} showOrHideMusicPlayer={showOrHideMusicPlayer} />}
+      {showMusicPlayer && <MusicPlayer audioObject={audioObject} setAudioObject={setAudioObject} volume={volume} setVolume={setVolume} currentSong={currentSong} setCurrentSong={setCurrentSong} animInOut={animInOut} showOrHideMusicPlayer={showOrHideMusicPlayer} darkModeEnabled={darkModeEnabled}/>}
       <div>
         <Toaster
           position="top-left"

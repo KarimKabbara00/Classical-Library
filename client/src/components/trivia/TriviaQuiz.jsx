@@ -12,6 +12,7 @@ import loadingStyles from "../../css/loading.module.css";
 import BackToTop from "../../components/shared/BackToTop";
 import arrowLeftBlack from "../../images/arrow-left-black.svg"
 import arrowLeftBrown from "../../images/arrow-left-brown.svg"
+import arrowLeftWhite from "../../images/arrow-left-white.svg" // dark mode
 
 function countScore(selectedAnswersObject, correctAnswers, originalQnA) {
     var score = 0;
@@ -55,7 +56,7 @@ function formatTime(seconds) {
     return `${hours}${minutes}${seconds}`
 }
 
-function Trivia() {
+function Trivia(props) {
 
     const [triviaQuestions, setTriviaQuestions] = useState([]); // array of objects that include questions and array of answers
     const [triviaAnswers, setTriviaAnswers] = useState([]); // array of strings of answers
@@ -153,8 +154,6 @@ function Trivia() {
         return () => clearInterval(timer);
     }, [showLoading, quizComplete])
 
-    const [arrowSVG, setArrowSVG] = useState(arrowLeftBlack);
-
     // slide up or down loading
     const loadingStyling = classNames({
         [loadingStyles.loadingParent]: true,
@@ -178,14 +177,26 @@ function Trivia() {
         config: { tension: 400, friction: 30, }
     })
 
+    // -------------------- Dark Mode -------------------- //
+    const triviaMainParentDarkMode = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        color: props.darkModeEnabled ? "#e8e6e3" : ""
+    }
+
+    const [arrowSVG, setArrowSVG] = useState(arrowLeftBlack);
+    useEffect(() => {
+        props.darkModeEnabled ? setArrowSVG(arrowLeftWhite) : setArrowSVG(arrowLeftBlack)
+    }, [props.darkModeEnabled])
+    // -------------------- Dark Mode -------------------- //
+
     return (
-        <div id="triviaMainParent" className={contentStyling}>
+        <div id="triviaMainParent" className={contentStyling} style={triviaMainParentDarkMode}>
             <div className={loadingStyling}>
-                <Loading loadingText={"Generating trivia questions..."} />
+                <Loading loadingText={"Generating trivia questions..."} darkModeEnabled={props.darkModeEnabled} />
             </div>
 
             <div className={sharedStyles.errorParent}>
-                <Error showError={showError} />
+                <Error showError={showError} darkModeEnabled={props.darkModeEnabled} />
             </div>
 
 
@@ -207,6 +218,7 @@ function Trivia() {
                                 highlightedAnswerIndex={selectedAnswers[currentQuestionIndex]}
                                 state={state}
                                 quizComplete={false}
+                                darkModeEnabled={props.darkModeEnabled}
                             />
                         })}
                         <div className={styles.buttonParent}>
@@ -230,7 +242,7 @@ function Trivia() {
                 <animated.div style={showResultAnim} className={styles.finalResultParent}>
                     <BackToTop elementId={"triviaMainParent"} triggerAtY={200} />
                     <div className={styles.scoreAndRestart}>
-                        <span onMouseEnter={() => setArrowSVG(arrowLeftBrown)} onMouseLeave={() => setArrowSVG(arrowLeftBlack)} onClick={restartQuiz} className={styles.restartQuiz}>
+                        <span onMouseEnter={() => setArrowSVG(arrowLeftBrown)} onMouseLeave={() => setArrowSVG(props.darkModeEnabled ? arrowLeftWhite : arrowLeftBlack)} onClick={restartQuiz} className={styles.restartQuiz}>
                             <img src={arrowSVG} width="20px" />
                             <span className={styles.restartQuizText}>Again!</span>
                         </span>
@@ -243,7 +255,7 @@ function Trivia() {
                             {formatTime(timeElapsed)}
                         </span>
                     </div>
-                    <div className={styles.separator}></div>
+                    <div style={props.darkModeEnabled ? { border: "1px solid #e8e6e3" } : {}} className={styles.separator}></div>
                     <div className={styles.allQuiz}>
                         {triviaQuestions.map((_, index1) => {
                             return (
@@ -259,6 +271,7 @@ function Trivia() {
                                             state={state}
                                             quizComplete={true}
                                             correctAnswer={triviaAnswers[index1]}
+                                            darkModeEnabled={props.darkModeEnabled}
                                         />
                                     })}
                                 </div>

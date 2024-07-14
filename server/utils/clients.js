@@ -13,6 +13,9 @@ const openAI = new OpenAI({
 // Supabase
 const supabaseURL = process.env.SUPABASE_DB;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseURL, supabaseAnonKey);
+const supabase = createClient(supabaseURL, supabaseAnonKey, {
+    detectSessionInUrl: true,
+    flowType: 'pkce',
+});
 
 export { openAI, supabase };

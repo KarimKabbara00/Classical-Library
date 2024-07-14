@@ -17,9 +17,13 @@ function AddedWork(props) {
         props.removeWork(props.work);
     }
 
+    const addedWorkDarkMode = {
+        borderBottom: props.darkModeEnabled ? "1px solid #e8e6e3" : "",
+    }
+
     return (
         <div>
-            <div className={styles.addedWork}>
+            <div style={addedWorkDarkMode} className={styles.addedWork}>
                 <span>{title}</span>
                 <span>{completeName}</span>
                 <span className={styles.deleteButton} onClick={() => removeWork(props.workID)} onMouseEnter={() => setXHovered(true)} onMouseLeave={() => setXHovered(false)}>

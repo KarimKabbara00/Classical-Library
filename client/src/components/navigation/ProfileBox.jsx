@@ -20,9 +20,18 @@ function ProfileBox(props) {
         navigate("/")
     }
 
+    // -------------------- Dark Mode -------------------- //
+    const profileBoxDarkMode = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        color: props.darkModeEnabled ? "#e8e6e3" : "",
+        border: props.darkModeEnabled ? "1px solid #e8e6e3" : ""
+    }
+    // -------------------- Dark Mode -------------------- //
+
+
     return (
         <div className={styles.hiddenProfileBox}>
-            <div className={styles.profileBox}>
+            <div style={profileBoxDarkMode} className={styles.profileBox}>
                 <div onClick={goToProfile}><ProfileButton text={"Profile"} /></div>
                 <div onClick={goToPlaylists}><ProfileButton text={"Playlists"} /></div>
                 <div onClick={logout}><ProfileButton text={"Logout"} /></div>

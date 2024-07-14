@@ -23,9 +23,13 @@ function Button(props) {
         props.buttonAction("all");
     }
 
+    const ButtonDarkMode = {
+        border: props.darkModeEnabled ? "1px solid #e8e6e3" : ""
+    }
+
     return (
         <form method="POST" autoComplete="off">
-            <button type="button" className={styles.button} onMouseEnter={changeSVGHover} onMouseLeave={changeSVGHover} onClick={grabAllComposers}><img className={styles.buttonImage} alt={props.buttonText} src={svgIcon} width="20px" />{props.buttonText}</button>
+            <button type="button" className={styles.button} style={ButtonDarkMode} onMouseEnter={changeSVGHover} onMouseLeave={changeSVGHover} onClick={grabAllComposers}><img className={styles.buttonImage} alt={props.buttonText} src={svgIcon} width="20px" />{props.buttonText}</button>
         </form>
     )
 

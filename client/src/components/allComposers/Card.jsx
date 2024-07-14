@@ -7,11 +7,17 @@ function Card(props) {
         props.goToComp(props.compID)
     }
 
+    // 
+    const allCompItemNameDarkMode = {
+        color: props.darkModeEnabled ? "#e8e6e3" : ""
+    }
+    
+
     return (
         <span onClick={goToComposerPage} className={styles.allCompItemLink}>
             <div className={styles.allCompItem}>
                 <img className={styles.allCompItemImage} alt="composer portrait" src={props.compPortrait} width="100px" />
-                <span className={styles.allCompItemName}>{props.compName}</span>
+                <span className={styles.allCompItemName} style={allCompItemNameDarkMode}>{props.compName}</span>
             </div>
         </span>
     )

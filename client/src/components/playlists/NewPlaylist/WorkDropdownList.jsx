@@ -7,10 +7,14 @@ function WorkDropdownList(props) {
         props.addWork(workID, title, complete_name);
     }
 
+    const darkMode = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+    }
+
     return (
-        <div>
+        <div style={darkMode}>
             {props.shownWorks.map((work, index) => {
-                return <DropDownListItem shownWorks={props.shownWorks} worksToAdd={props.worksToAdd} work={work} addWork={addWork} key={index} />
+                return <DropDownListItem shownWorks={props.shownWorks} worksToAdd={props.worksToAdd} work={work} addWork={addWork} key={index} darkModeEnabled={props.darkModeEnabled} />
             })}
         </div>
     )

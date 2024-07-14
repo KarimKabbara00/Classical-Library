@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import sharp from "../../images/sharp.svg";
+import sharpDark from "../../images/sharpDark.svg";
+import sharpLight from "../../images/sharpLight.svg";
 import back from "../../images/arrow-left-brown.svg";
 import styles from "../../css/shared.module.css";
 import classNames from "classnames";
@@ -9,7 +10,7 @@ function Error(props) {
 
     const navigate = useNavigate();
 
-    const accidentalOne = classNames({  
+    const accidentalOne = classNames({
         [styles.errorAccidentalOne]: true,
         [styles.applySlideDown]: true,
     })
@@ -33,8 +34,19 @@ function Error(props) {
         navigate(-1);
     }
 
+    const [sharp, setSharp] = useState(sharpDark);
+    useEffect(() => {
+        props.darkModeEnabled ? setSharp(sharpLight) : setSharp(sharpDark)
+    }, [props.darkModeEnabled])
+
+    // -------------------- Dark Mode -------------------- //
+    const darkMode = {
+        color: props.darkModeEnabled ? "#e8e6e3" : "",
+    }
+    // -------------------- Dark Mode -------------------- //
+
     return (
-        <div>
+        <div style={darkMode}>
             {
                 props.showError && <div>
                     <div className={accidentalOne}><img src={sharp} width="60px" /></div>

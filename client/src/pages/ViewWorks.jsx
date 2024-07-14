@@ -146,38 +146,42 @@ function ViewWorks(props) {
     [styles.applyFadeIn]: !showLoading,
   });
 
-  // screen height when loading or not
-  const dynamicHeight = {
-    minHeight: "90vh",
-    height: showLoading ? "90vh" : ""
-  };
+  // -------------------- Dark Mode -------------------- //
+  const LoadingDarkMode = {
+    height: "94.5vh",
+    backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+  }
+  const textDarkMode = {
+    color: props.darkModeEnabled ? "#e8e6e3" : ""
+  }
+  // -------------------- Dark Mode -------------------- //
 
   return (
-    <div id="worksBody" className={styles.worksMainBody} style={dynamicHeight}>
+    <div id="worksBody" className={styles.worksMainBody} style={LoadingDarkMode}>
       <div className={loadingStyling}>
-        <Loading loadingText={"Grabbing all works..."} />
+        <Loading loadingText={"Grabbing all works..."} darkModeEnabled={props.darkModeEnabled} />
       </div>
 
       <div className={sharedStyles.errorParent}>
-        <Error showError={showError} />
+        <Error showError={showError} darkModeEnabled={props.darkModeEnabled} />
       </div>
 
       {!showLoading && !showError && <div className={contentStyling}>
         <BackToTop elementId={"worksBody"} triggerAtY={300} />
-        <div className={styles.workTitle}>
+        <div className={styles.workTitle} style={textDarkMode}>
           {currentGenre} works by <span style={{ color: "brown" }}>&nbsp;{composer}</span>
         </div>
 
         <div className={styles.filterWorksHeader}>
           <div className={styles.allGenresParent}>
             {allGenres.map((genre, index) => {
-              return <GenreButton key={index} name={genre} currentGenre={currentGenre} onGenreButtonClick={onGenreButtonClick} />
+              return <GenreButton key={index} name={genre} currentGenre={currentGenre} onGenreButtonClick={onGenreButtonClick} darkModeEnabled={props.darkModeEnabled} />
             })}
           </div>
-          <FilterItems filterItems={filterWorks} placeholderText={"Filter works here..."} />
+          <FilterItems filterItems={filterWorks} placeholderText={"Filter works here..."} darkModeEnabled={props.darkModeEnabled} />
         </div>
 
-        <WorkHeader currentGenre={currentGenre} sortWorks={sortWorks} />
+        <WorkHeader currentGenre={currentGenre} sortWorks={sortWorks} darkModeEnabled={props.darkModeEnabled} />
         {shownWorks.map((work, index) => {
           return (
             <WorkCard
@@ -194,6 +198,7 @@ function ViewWorks(props) {
               audioObject={props.audioObject}
               setAudioObject={props.setAudioObject}
               animInOut={props.animInOut}
+              darkModeEnabled={props.darkModeEnabled}
             />
           );
         })}

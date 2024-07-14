@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSpring, animated } from "@react-spring/web";
@@ -13,6 +13,9 @@ import editBrown from "../../../images/playlists/edit-brown.svg"
 import editBlack from "../../../images/playlists/edit-black.svg"
 import deleteBrown from "../../../images/playlists/delete-brown.svg"
 import deleteBlack from "../../../images/playlists/delete-black.svg"
+import playWhite from "../../../images/playlists/play-white.svg"
+import editWhite from "../../../images/playlists/edit-white.svg"
+import deleteWhite from "../../../images/playlists/delete-white.svg"
 import Prompt from "../../shared/Prompt";
 
 function PlaylistItem(props) {
@@ -30,13 +33,17 @@ function PlaylistItem(props) {
     // ---------- Play ---------- //
     const [playSVG, setPlaySVG] = useState(playBlack);
     function onPlayHoverEvent(hovered) {
-        hovered ? setPlaySVG(playBrown) : setPlaySVG(playBlack);
+        props.darkModeEnabled ?
+            hovered ? setPlaySVG(playBrown) : setPlaySVG(playWhite) :
+            hovered ? setPlaySVG(playBrown) : setPlaySVG(playBlack);
     }
 
     // ---------- Edit ---------- //
     const [editSVG, setEditSVG] = useState(editBlack);
     function onEditHoverEvent(hovered) {
-        hovered ? setEditSVG(editBrown) : setEditSVG(editBlack);
+        props.darkModeEnabled ?
+            hovered ? setEditSVG(editBrown) : setEditSVG(editWhite) :
+            hovered ? setEditSVG(editBrown) : setEditSVG(editBlack);
     }
 
     const navigate = useNavigate();
@@ -51,11 +58,21 @@ function PlaylistItem(props) {
         })
     }
 
+    // when dark mode changes, force event to change unhovered color
+    useEffect(() => {
+        onPlayHoverEvent(false);
+        onEditHoverEvent(false);
+        onDeleteHoverEvent(false);
+    }, [props.darkModeEnabled])
+
     // ---------- Delete ---------- //
     const [deleteSVG, setDeleteSVG] = useState(deleteBlack);
     function onDeleteHoverEvent(hovered) {
-        hovered ? setDeleteSVG(deleteBrown) : setDeleteSVG(deleteBlack);
+        props.darkModeEnabled ?
+            hovered ? setDeleteSVG(deleteBrown) : setDeleteSVG(deleteWhite) :
+            hovered ? setDeleteSVG(deleteBrown) : setDeleteSVG(deleteBlack);
     }
+
 
     const [promptDelete, setPromptDelete] = useState(false);
     function deletePlaylist(confirmDelete) {
@@ -92,9 +109,9 @@ function PlaylistItem(props) {
                         <img onClick={onArrowClick} className={styles.playlistTitleArrow} src={arrowSVG} width="25px" alt="arrowRightDownIcon" />
                     </div>
                     <div className={styles.playlistActionsParent}>
-                        <img src={playSVG} onMouseEnter={() => onPlayHoverEvent(true)} onMouseLeave={() => onPlayHoverEvent(false)} width="20px" alt="playIcon"/>
-                        <img src={editSVG} onClick={editPlaylist} onMouseEnter={() => onEditHoverEvent(true)} onMouseLeave={() => onEditHoverEvent(false)} width="20px" alt="editIcon"/>
-                        <img src={deleteSVG} onClick={() => setPromptDelete(true)} onMouseEnter={() => onDeleteHoverEvent(true)} onMouseLeave={() => onDeleteHoverEvent(false)} width="20px" alt="deleteIcon"/>
+                        <img src={playSVG} onMouseEnter={() => onPlayHoverEvent(true)} onMouseLeave={() => onPlayHoverEvent(false)} width="20px" alt="playIcon" />
+                        <img src={editSVG} onClick={editPlaylist} onMouseEnter={() => onEditHoverEvent(true)} onMouseLeave={() => onEditHoverEvent(false)} width="20px" alt="editIcon" />
+                        <img src={deleteSVG} onClick={() => setPromptDelete(true)} onMouseEnter={() => onDeleteHoverEvent(true)} onMouseLeave={() => onDeleteHoverEvent(false)} width="20px" alt="deleteIcon" />
                     </div>
                 </div>
 
@@ -111,6 +128,7 @@ function PlaylistItem(props) {
                 confirm="Delete"
                 cancel="Cancel"
                 callback={deletePlaylist}
+                darkModeEnabled={props.darkModeEnabled}
             />}
 
         </div>

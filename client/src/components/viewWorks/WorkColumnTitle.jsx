@@ -20,10 +20,16 @@ function WorkColumnTitle(props) {
         setArrowPressed(false);
         setArrowSVG(arrowRight);
         props.sortWorks(props.colTitle.toLocaleLowerCase(), false);
-    }, [props.currentGenre]); 
+    }, [props.currentGenre]);
+
+    // -------------------- Dark Mode -------------------- //
+    const textDarkMode = {
+        color: props.darkModeEnabled ? "#e8e6e3" : ""
+    }
+    // -------------------- Dark Mode -------------------- //
 
     return (
-        <span onClick={changeSVGIcon} className={styles.workHeaderField}>{props.colTitle}<img alt="sortArrow" src={arrowSVG} width="25px" /></span>
+        <span style={textDarkMode} onClick={changeSVGIcon} className={styles.workHeaderField}>{props.colTitle}<img alt="sortArrow" src={arrowSVG} width="25px" /></span>
     )
 }
 

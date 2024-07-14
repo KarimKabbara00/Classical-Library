@@ -45,7 +45,7 @@ function Header(props) {
             profileIconSize = "lg";
         }
         else {
-            sidebarHeight = "94vh"
+            sidebarHeight = "94.5vh"
             collapsedWidth = "4rem";
             expandedWidth = "15rem";
             iconSize = "40rem";
@@ -83,7 +83,7 @@ function Header(props) {
                 </span>
                 {!props.sessionData && <div className={styles.signIn} onClick={() => { navigate("/signIn") }}>Sign In</div>}
                 {props.sessionData && <div onMouseEnter={toggleHover} onMouseLeave={toggleHover} className={styles.profileIcon}><FontAwesomeIcon icon={faUser} size={styling.profileIconSize} style={{ color: "#a52a2a" }} />
-                    {profileHovered && <ProfileBox logout={props.logout} />}
+                    {profileHovered && <ProfileBox logout={props.logout} darkModeEnabled={props.darkModeEnabled} />}
                 </div>}
             </nav>
             <animated.div style={{ ...sidebarAnimation, height: styling.sidebarHeight }} onMouseEnter={() => { setShowSidebar(true) }} onMouseLeave={() => { setShowSidebar(false) }} className={styles.sidebarParent}>

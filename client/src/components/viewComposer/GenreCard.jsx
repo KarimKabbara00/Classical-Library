@@ -7,8 +7,12 @@ function GenreCard(props) {
         props.viewWorksByGenre(props.genre)
     }
 
+    const textDarkMode = {
+        color: props.darkModeEnabled ? "#e8e6e3" : ""
+    }
+
     return (
-        <span onClick={viewWorksByGenre} className={styles.genreCard}>{props.genre}</span>
+        <span style={textDarkMode} onClick={viewWorksByGenre} className={styles.genreCard}>{props.genre}</span>
     )
 }
 

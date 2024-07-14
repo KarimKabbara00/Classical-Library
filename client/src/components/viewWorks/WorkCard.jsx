@@ -4,9 +4,15 @@ import PlayMusic from "../shared/PlayMusic";
 
 function WorkCard(props) {
 
+  // -------------------- Dark Mode -------------------- //
+  const textDarkMode = {
+    color: props.darkModeEnabled ? "#e8e6e3" : ""
+  }
+  // -------------------- Dark Mode -------------------- //
+
   return (
     <div id="workCardsList">
-      <div className={styles.workCard} name="workCard">
+      <div style={textDarkMode} className={styles.workCard} name="workCard">
         <span>{props.title}</span>
         <span>{props.genre}</span>
         <span>{props.duration}</span>

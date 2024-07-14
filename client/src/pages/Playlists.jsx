@@ -18,7 +18,7 @@ function Playlists(props) {
 
         if (!props.sessionData) {
             navigate("/signIn");
-        } 
+        }
         else {
             setShowLoading(true); // when state change is forced, show loading
             axios.post("http://localhost:3001/api/viewPlaylists", {
@@ -50,11 +50,19 @@ function Playlists(props) {
         [styles.applyFadeIn]: !showLoading,
     });
 
+    // -------------------- Dark Mode -------------------- //
+    const darkMode = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        color: props.darkModeEnabled ? "#e8e6e3" : "",
+        height: "94.5vh"
+    }
+    // -------------------- Dark Mode -------------------- //
+
     return (
 
-        <div>
+        <div style={darkMode}>
             <div className={loadingStyling}>
-                <Loading loadingText={"Grabbing your playlists..."} />
+                <Loading loadingText={"Grabbing your playlists..."} darkModeEnabled={props.darkModeEnabled} />
             </div>
             {!showLoading && <div className={contentStyling}>
                 <h1 className={styles.title}>Playlists</h1>
@@ -66,6 +74,7 @@ function Playlists(props) {
                                 key={index}
                                 playlist={playlist}
                                 forceUpdate={forceUpdate}
+                                darkModeEnabled={props.darkModeEnabled}
                             />
                         })}
                         {playlists.length !== 0 &&

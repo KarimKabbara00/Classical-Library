@@ -180,6 +180,11 @@
     margin-bottom: 5rem;
 }
 
+.createButton:hover {
+    background-color: rgb(141, 36, 36);
+    border-color: rgb(141, 36, 36);
+}
+
 .cancelButton {
     color: brown;
     background-color: white;
@@ -192,9 +197,8 @@
     margin-bottom: 5rem;
 }
 
-.createButton:hover {
-    background-color: rgb(141, 36, 36);
-    border-color: rgb(141, 36, 36);
+.cancelButton:hover {
+    color: white;
 }
 
 .searchForWorkParent {
