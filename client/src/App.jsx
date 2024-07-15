@@ -74,6 +74,7 @@ function App() {
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
   function toggleDarkMode(enabled) {
     setDarkModeEnabled(enabled);
+    localStorage.setItem("darkModeEnabled", enabled); // queried in SideBarItem.jsx
   }
   /* ------------------------------ Dark Mode ------------------------------ */
 
@@ -128,7 +129,7 @@ function App() {
       </BrowserRouter>
 
 
-      {showMusicPlayer && <MusicPlayer audioObject={audioObject} setAudioObject={setAudioObject} volume={volume} setVolume={setVolume} currentSong={currentSong} setCurrentSong={setCurrentSong} animInOut={animInOut} showOrHideMusicPlayer={showOrHideMusicPlayer} darkModeEnabled={darkModeEnabled}/>}
+      {showMusicPlayer && <MusicPlayer audioObject={audioObject} setAudioObject={setAudioObject} volume={volume} setVolume={setVolume} currentSong={currentSong} setCurrentSong={setCurrentSong} animInOut={animInOut} showOrHideMusicPlayer={showOrHideMusicPlayer} darkModeEnabled={darkModeEnabled} />}
       <div>
         <Toaster
           position="top-left"

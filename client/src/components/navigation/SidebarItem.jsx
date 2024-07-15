@@ -47,6 +47,15 @@ function SidebarItem(props) {
         props.toggleDarkMode(newState);
     }
 
+    // local storage dark mode en/dis
+    useEffect(() => {
+        if (props.text === "Dark Mode") {
+            let darkModeEnabled = JSON.parse(localStorage.getItem("darkModeEnabled"));
+            setChecked(darkModeEnabled);
+            props.toggleDarkMode(darkModeEnabled);
+        }
+    }, [props.text])
+
     // resize dark mode switch
     const is1280Px = useMediaQuery("only screen and (max-width : 1280px)");
 
