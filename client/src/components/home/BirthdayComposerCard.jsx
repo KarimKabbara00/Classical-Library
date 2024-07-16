@@ -8,14 +8,14 @@ function BirthdayCard(props) {
         <div id={props.index} style={{ minWidth: "100%", padding: "1rem" }}>
             <div className={styles.birthdayCardHeader}>
                 <div className={styles.birthdayCardComposerName}>{props.composer.complete_name}</div>
-                <div>{props.composer.birth}</div>
+                <div>{props.composer.dob}</div>
             </div>
             <div className={styles.portraitAndWorks}>
                 <img src={props.composer.portrait} width="200px" />
                 <div style={{ width: "75%" }}>
                     <div className={styles.recommendedWorksTitle}>Recommended Works</div>
                     <div className={styles.recommendedWorksParent}>
-                        {props.recommendedWorks.map((work, index) => {
+                        {props.fourWorks.map((work, index) => {
                             return <BirthdayWorkCard
                                 key={index}
                                 work={work}

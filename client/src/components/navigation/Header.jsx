@@ -38,7 +38,7 @@ function Header(props) {
         // go from smallest to largest
         if (is1280Px) {
             sidebarHeight = "92vh"
-            collapsedWidth = "3rem";
+            collapsedWidth = "3.25rem";
             expandedWidth = "12rem";
             iconSize = "30rem";
             fontSize = "1.1rem";
@@ -86,7 +86,7 @@ function Header(props) {
                     {profileHovered && <ProfileBox logout={props.logout} darkModeEnabled={props.darkModeEnabled} />}
                 </div>}
             </nav>
-            <animated.div style={{ ...sidebarAnimation, height: styling.sidebarHeight }} onMouseEnter={() => { setShowSidebar(true) }} onMouseLeave={() => { setShowSidebar(false) }} className={styles.sidebarParent}>
+            <animated.div style={{ ...sidebarAnimation, height: styling.sidebarHeight, borderRight: props.darkModeEnabled ? "1px solid #e8e6e3" : "" }} onMouseEnter={() => { setShowSidebar(true) }} onMouseLeave={() => { setShowSidebar(false) }} className={styles.sidebarParent}>
                 <Sidebar styling={styling} toggleDarkMode={props.toggleDarkMode} darkModeEnabled={props.darkModeEnabled} />
             </animated.div>
         </div>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { openAI } from "../utils/clients.js";
+import { openAI, supabase } from "../utils/clients.js";
 
 async function askGPT(query) {
     const openAIResponse = await openAI.chat.completions.create({
@@ -14,8 +14,8 @@ async function askGPT(query) {
     return openAIResponse;
 }
 
-function processTime(seconds) {
-    return new Date(seconds * 1000).toISOString().slice(11, 19);
+function processTime(seconds, as_ms = false) {
+    return new Date(seconds * (as_ms ? 1 : 1000)).toISOString().slice(11, 19);
 }
 
 function sleep(ms) {
@@ -25,37 +25,41 @@ function sleep(ms) {
 }
 
 function formatDate(date) {
-    // change 1926/07/01 to July 1, 1926
-    const months = {
-        "1": "January",
-        "2": "February",
-        "3": "March",
-        "4": "April",
-        "5": "May",
-        "6": "June",
-        "7": "July",
-        "8": "August",
-        "9": "September",
-        "10": "October",
-        "11": "November",
-        "12": "December",
-    }
-    date = date.split("/")
-    const day = parseInt(date[2]).toString();
-    const month = parseInt(date[1]).toString();
-    const year = date[0]
+    // change date obj to format: July 1, 1926
 
-    return `${months[month]} ${day}, ${year}`
+    const months = {
+        0: "January",
+        1: "February",
+        2: "March",
+        3: "April",
+        4: "May",
+        5: "June",
+        6: "July",
+        7: "August",
+        8: "September",
+        9: "October",
+        10: "November",
+        11: "December",
+    }
+
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+
+    return `${month} ${day}, ${year}`
 }
 
 async function fetchFourWorks(composerId) {
     const workResponse = await axios.get(`https://api.openopus.org/work/list/composer/${composerId}/genre/all.json`);
-    // add duration to every work
+
+    // grab four works from all works
     var works = workResponse.data.works.slice(0, 4);
-    works.forEach((item) => {
-        item["composerId"] = composerId;
-        item["url"] = "https://www.youtube.com/watch?v=vyDpyXsyOkE";
-    })
+
+    // for each work, find its yt_link
+    for (let i of works) {
+        const { data, error } = await supabase.from("youtube_work_links").select("yt_link").eq("work_id", i.id);
+        i.url = error ? "" : data[0].yt_link;
+    }
 
     return works;
 }

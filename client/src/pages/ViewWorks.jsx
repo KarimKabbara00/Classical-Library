@@ -126,10 +126,19 @@ function ViewWorks(props) {
   function sortWorks(column, ascending = false) {
     ascending = ascending ? -1 : 1;
     const sortedWorks = [...shownWorks].sort(function (a, b) { // [...shownWorks] creates a copy so react can rerender
-      if (column === "duration")
-        return ascending * a[column] < (b[column]);
-      else
+      if (column === "duration") {
+        // convert hh:mm:ss to ms then sort
+        let a_split = a[column].split(":");
+        let b_split = b[column].split(":");
+        let a_ms = ((parseInt(a_split[0]) * 3600) + (parseInt(a_split[1]) * 60) + (parseInt(a_split[2]))) * 1000;
+        let b_ms = ((parseInt(b_split[0]) * 3600) + (parseInt(b_split[1]) * 60) + (parseInt(b_split[2]))) * 1000;
+        console.log(a_ms, b_ms);
+        return ascending * b_ms - a_ms;
+      }
+      else {
         return ascending * a[column].localeCompare(b[column]);
+      }
+
     })
     setShownWorks(sortedWorks);
   }

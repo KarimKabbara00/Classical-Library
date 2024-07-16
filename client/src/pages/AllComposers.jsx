@@ -10,6 +10,8 @@ import BackToTop from "../components/shared/BackToTop";
 import deburr from 'lodash/deburr';
 import LetterSection from "../components/allComposers/LetterSection";
 import Button from "../components/allComposers/Button";
+import sharedStyles from "../css/shared.module.css";
+import Error from "../components/shared/Error";
 
 function sortWorks(works) {
 
@@ -73,6 +75,7 @@ function AllComposers(props) {
   const [shownResults, setShownResults] = useState([]);
   const [composerCount, setComposerCount] = useState(0);
   const [showLoading, setShowLoading] = useState(true);
+  const [showError, setShowError] = useState(false);
   useEffect(() => {
 
     window.scrollTo({
@@ -80,22 +83,19 @@ function AllComposers(props) {
       behavior: "smooth"
     })
 
-    axios
-      .get("http://localhost:3001/api/allComposers")
-      .then(function (res) {
-        // sort composers by last name initial
-        let sortedResults = sortWorks(res.data.allComposers);
-        setAllResults(sortedResults);
-        setShownResults(sortedResults);
-        setFilteredResultsCount(countFilteredResults(sortedResults));
-        setComposerCount(res.data.allComposers.length);
-        setShowLoading(false);
-      })
-      .catch(function (err) {
-        console.log(err)
-        navigate("/", { state: { error: true, errorMsg: err.response.data.allComposers } });
-      });
-  }, [navigate]);
+    axios.get("http://localhost:3001/api/allComposers").then(function (res) {
+      // sort composers by last name initial
+      let sortedResults = sortWorks(res.data.allComposers);
+      setAllResults(sortedResults);
+      setShownResults(sortedResults);
+      setFilteredResultsCount(countFilteredResults(sortedResults));
+      setComposerCount(res.data.allComposers.length);
+      setShowLoading(false);
+    }).catch(function (err) {
+      console.log(err);
+      setShowError(true);
+    });
+  }, []);
 
   function filterComposers(filter) {
     if (!filter) {
@@ -155,7 +155,11 @@ function AllComposers(props) {
         <Loading loadingText={"Grabbing all composers..."} darkModeEnabled={props.darkModeEnabled} />
       </div>
 
-      {!showLoading && <div className={contentStyling} >
+      <div className={sharedStyles.errorParent}>
+        <Error showError={showError} darkModeEnabled={props.darkModeEnabled} />
+      </div>
+
+      {!showLoading && !showError && <div className={contentStyling} >
         <BackToTop elementId={"allCompMainBody"} triggerAtY={300} />
         <h1 className={styles.allCompTitle}>All Composers</h1>
         <div className={styles.allCompBody}>

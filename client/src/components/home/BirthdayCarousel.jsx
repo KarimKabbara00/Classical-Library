@@ -10,6 +10,7 @@ function BirthdayCarousel(props) {
     useEffect(() => {
         axios.get("http://localhost:3001/api/birthday")
             .then(res => {
+                console.log(res.data.composerData)
                 setComposerInfo(res.data.composerData);
             }).catch(err => {
                 console.log(err)
@@ -21,7 +22,7 @@ function BirthdayCarousel(props) {
     const [visibleIndex, setVisibleIndex] = useState(0)
     function changeIndex(index) {
         setVisibleIndex(index);
-        document.getElementById(index.toString()).scrollIntoView({ behavior: "smooth" });
+        document.getElementById(index.toString()).scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
     }
 
     // -------------------- Dark Mode -------------------- //
@@ -40,12 +41,11 @@ function BirthdayCarousel(props) {
                         return <BirthdayCard
                             key={index}
                             composer={composer}
-                            recommendedWorks={composerInfo[index].recommendedWorks}
+                            fourWorks={composerInfo[index].fourWorks}
                             index={index}
                             visibleIndex={visibleIndex}
                             darkModeEnabled={props.darkModeEnabled}
                             // music stuff
-                            url={composerInfo[index].recommendedWorks.url}
                             audioObject={props.audioObject}
                             setAudioObject={props.setAudioObject}
                             currentSong={props.currentSong}

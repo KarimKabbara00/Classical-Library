@@ -36,7 +36,7 @@ function MusicPlayer(props) {
   /* ---------------------- Volume Box Control ---------------------- */
 
   /* ---------------------- FontAwesome Icon Control ---------------------- */
-  const defaultStyle = { fontSize: "1.25rem", color: "black" };
+  const defaultStyle = { fontSize: "1.25rem", color: props.darkModeEnabled ? "#e8e6e3" : "black" };
   const hoveredStyle = { fontSize: "1.25rem", color: "brown" };
 
   const [rewindHovered, setRewindHovered] = useState(false);
@@ -59,6 +59,14 @@ function MusicPlayer(props) {
     sePpHovered((prev) => !prev);
     !ppHovered ? setPpStyle(hoveredStyle) : setPpStyle(defaultStyle);
   }
+
+  // update icon colors for dark mode
+  useEffect(() => {
+    setRewindStyle(defaultStyle);
+    setForwardStyle(defaultStyle);
+    setPpStyle(defaultStyle);
+    setXStyling(unhoveredX);
+  }, [props.darkModeEnabled])
 
   const [ppPressed, setPpPressed] = useState(true); // music auto plays when the play button is pressed
   const [ppIcon, setPpIcon] = useState(faPause);
@@ -119,7 +127,7 @@ function MusicPlayer(props) {
     props.showOrHideMusicPlayer(false); // false means hide
   }
 
-  const unhoveredX = { fontSize: "0.75rem", cursor: "pointer", color: "#000000" };
+  const unhoveredX = { fontSize: "0.75rem", cursor: "pointer", color: props.darkModeEnabled ? "#e8e6e3" : "#000000" };
   const hoveredX = { fontSize: "0.75rem", cursor: "pointer", color: "#a52a2a" };
   const [isXHovered, setIsXHovered] = useState(false);
   const [xStyling, setXStyling] = useState(unhoveredX);
@@ -183,16 +191,24 @@ function MusicPlayer(props) {
   }
   /* ---------------------- Time Control ---------------------- */
 
-  const anim = useSpring({
+  // slide music player
+  const slideAnim = useSpring({
     from: { transform: props.animInOut ? "translateX(-200%)" : "translateX(0%)" },
     to: { transform: props.animInOut ? "translateX(0%)" : "translateX(-200%)" },
     config: { tension: 200, friction: 30 },
   });
 
+  // -------------------- Dark Mode -------------------- //
+  const musicPlayerDarkMode = {
+    backgroundColor: props.darkModeEnabled ? "#1e2021" : "",
+    color: props.darkModeEnabled ? "#e8e6e3" : ""
+  }
+  // -------------------- Dark Mode -------------------- //
+
   return (
-    <animated.div style={anim} className={styles.musicPlayerBody} onMouseEnter={toggleVolBoxShown} onMouseLeave={toggleVolBoxShown}>
+    <animated.div style={slideAnim} className={styles.musicPlayerBody} onMouseEnter={toggleVolBoxShown} onMouseLeave={toggleVolBoxShown}>
       <div className={styles.musicPlayer}>
-        <div className={styles.musicPlayerBox}>
+        <div style={musicPlayerDarkMode} className={styles.musicPlayerBox}>
           <div className={styles.composerPortrait}>
             <img src={props.currentSong.portrait} alt="composer portrait" width="95px" />
           </div>
@@ -223,11 +239,11 @@ function MusicPlayer(props) {
               </div>
             </div>
           </div>
-          <div onClick={closeMusicPlayer} onMouseEnter={changeXStyling} onMouseLeave={changeXStyling}>
+          <div className={styles.closeButton} onClick={closeMusicPlayer} onMouseEnter={changeXStyling} onMouseLeave={changeXStyling}>
             <FontAwesomeIcon icon={faX} style={xStyling} />
           </div>
         </div>
-        {<VolumeBox volBoxShown={volBoxShown} volume={props.volume} volumeIcon={volumeIcon} changeVolume={changeVolume} />}
+        {<VolumeBox volBoxShown={volBoxShown} volume={props.volume} volumeIcon={volumeIcon} changeVolume={changeVolume} darkModeEnabled={props.darkModeEnabled} />}
       </div>
     </animated.div>
   );

@@ -24,7 +24,7 @@
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.12.0",
     "vlc-player": "^2.0.0",
-    "yt-stream": "^1.6.0",
+    "yt-stream": "^1.6.5",
     "ytdl-core": "^4.11.5"
   }
 }

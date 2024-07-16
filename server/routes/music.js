@@ -1,8 +1,9 @@
 import express from "express";
-import { music } from "../controllers/musicController.js";
+import { musicByURL, musicByID } from "../controllers/musicController.js";
 
 const router = express.Router();
 
-router.post("/music", music);
+router.post("/musicByURL", musicByURL);
+router.post("/musicByID", musicByID);
 
 export default router;

@@ -6,58 +6,49 @@ import { askGPT, fetchFourWorks, formatDate } from "../utils/helperFunctions.js"
 
 const birthday = async (req, res) => {
 
-  const today = new Date();
-  const todayMs = today.setUTCHours(0, 0, 0, 0);
-  const { data, error } = await supabase.from("composer_dates").select("id, composer_dob");
-  if (!error) {
-    var ids = [];
+  try {
+    const today = new Date();
+    const todayMs = today.setUTCHours(0, 0, 0, 0);
+    const { data, error } = await supabase.from("composer_dates").select("composer_id, composer_dob");
+
+    if (error)
+      throw error;
+
+    var datesGreaterThanToday = []; // holds all dates after today
     for (let i of data) {
-      if (i.composer_dob.includes("/0/0"))
+      let noYear = i.composer_dob.slice(4, i.composer_dob.length);
+
+      // unknown exact dob
+      if (noYear === "/0/0")
         continue
 
-      let modifiedDate = (today.getFullYear() + i.composer_dob.slice(4, i.composer_dob.length)).split("/")
-      let modifiedDateMs = new Date(parseInt(modifiedDate[0]), parseInt(modifiedDate[1]) - 1, parseInt(modifiedDate[2])).setUTCHours(0, 0, 0, 0);
+      let modifiedDate = today.getFullYear().toString() + noYear;
+      let date = new Date(modifiedDate).setUTCHours(0, 0, 0, 0); // the ms of the composer DOB modified to the current year
 
-      // only keep dates greater than today  
-      if (modifiedDateMs >= todayMs) {
-        i.ms = modifiedDateMs // store modified ms
-        ids.push(i);
+      if (date >= todayMs) {
+        datesGreaterThanToday.push({ compID: i.composer_id, dob: date });
       }
     }
-    // sort bday (ms) by ascending order and keep the first three, then resort by id
-    ids = ids.sort((a, b) => a.ms - b.ms).slice(0, 3).sort((a, b) => a.id - b.id);
 
-    // get their composer Ids
-    const composerOne = ids[0].id;
-    const composerTwo = ids[1].id;
-    const composerThree = ids[2].id;
+    // three closest birthdays to today (including today)
+    const nextThreeDOBs = datesGreaterThanToday.sort((a, b) => a.dob - b.dob).slice(0, 3);
 
-    // gather information about them
-    var compResponse = await axios.get(`https://api.openopus.org/composer/list/ids/${composerOne},${composerTwo},${composerThree}.json`);
-
-    // Gather 4 works for each composer
-    // it appears the data comes back backwards hence the reversed composer variables
-    compResponse.data.composers[0]["recommendedWorks"] = await fetchFourWorks(composerThree);
-    compResponse.data.composers[1]["recommendedWorks"] = await fetchFourWorks(composerTwo);
-    compResponse.data.composers[2]["recommendedWorks"] = await fetchFourWorks(composerOne);
-
-    // sort by id to merge 'var ids' and composerData
-    var composerData = compResponse.data.composers.sort((a, b) => a.id - b.id);
-
-    // format dates
-    composerData[0].birth = formatDate(ids[0].composer_dob);
-    composerData[1].birth = formatDate(ids[1].composer_dob);
-    composerData[2].birth = formatDate(ids[2].composer_dob);
-
-    // finally resort by birth
-    composerData.sort((a, b) => new Date(a.birth).setUTCHours(0, 0, 0, 0) - new Date(b.birth).setUTCHours(0, 0, 0, 0))
+    // for three composers, extract necessary information for bday carousel
+    for (let i of nextThreeDOBs) {
+      const compResponse = await axios.get(`https://api.openopus.org/composer/list/ids/${i.compID}.json`);
+      i.dob = formatDate(new Date(i.dob));
+      i.complete_name = compResponse.data.composers[0].complete_name;
+      i.portrait = compResponse.data.composers[0].portrait;
+      i.fourWorks = await fetchFourWorks(i.compID);
+    }
 
     res.status(200).send({
-      composerData: composerData,
+      composerData: nextThreeDOBs
     })
   }
-  else {
-    res.status(400).send(error)
+  catch (e) {
+    console.log(e)
+    res.status(400).send(e)
   }
 };
 

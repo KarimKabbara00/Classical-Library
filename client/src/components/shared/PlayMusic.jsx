@@ -7,6 +7,7 @@ function PlayMusic(props) {
 
     const [svgIcon, setSvgIcon] = useState(faCirclePlay);
 
+
     const handleFetchAudio = async () => {
         // if another song is played while something already is playing, reset time.
         if (props.audioObject !== null) {
@@ -22,21 +23,33 @@ function PlayMusic(props) {
         }
 
         setSvgIcon(faSpinner);
-        // send url
-        const response = await fetch("http://localhost:3001/api/music", {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ url: props.url })
-        });
+
+        var response;
+        if (props.url !== undefined) {  // send url
+            response = await fetch("http://localhost:3001/api/musicByURL", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: props.url })
+            });
+        }
+        else {
+            response = await fetch("http://localhost:3001/api/musicByID", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ workID: props.workID })
+            });
+        }
 
         if (response.ok) {
             const audioBlob = await response.blob();
             const audioUrl = await URL.createObjectURL(audioBlob);
             const audioObject = new Audio(audioUrl);
-
             props.setCurrentSong({ title: props.title, composer: props.composer, portrait: props.portrait });
             props.showOrHideMusicPlayer(true);
             props.setAudioObject(audioObject);

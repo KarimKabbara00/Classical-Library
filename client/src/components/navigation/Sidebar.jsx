@@ -17,7 +17,7 @@ function Sidebar(props) {
     }
 
     function goToAllWorks() {
-        return;
+        navigate("/allWorks");
     }
 
     function goToTrivia() {

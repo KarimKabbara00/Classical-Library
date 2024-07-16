@@ -10,7 +10,7 @@ const viewComposer = async (req, res) => {
     const compResponse = await axios.get(`https://api.openopus.org/genre/list/composer/${id}.json`);
 
     if (compResponse.data.status.success == "false") {
-        res.status(400).send({}) // sending nothing will cause catch to be executed on the frontend
+        res.status(400).send({})
     }
     else {
         try {
@@ -31,6 +31,7 @@ const viewComposer = async (req, res) => {
             const { data, error } = await supabase.from("composer_dates").select("composer_dob, composer_dod").eq("composer_id", id);
             if (error || data.length === 0) {
                 const requestError = !error ? "No match found" : error
+                console.log(requestError);
                 res.status(400).send(requestError);
             }
             else {

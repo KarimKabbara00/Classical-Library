@@ -20,11 +20,11 @@ function VolumeBox(props) {
   return (
     <animated.div style={anim} onMouseEnter={props.toggleVolumeBox} onMouseLeave={props.toggleVolumeBox} className={styles.volumeBox}>
       <div>
-        <FontAwesomeIcon icon={props.volumeIcon} />
+        <FontAwesomeIcon icon={props.volumeIcon} color={props.darkModeEnabled ? "#e8e6e3" : "black"} />
       </div>
       <div>
         <Stack sx={{ height: 75 }} spacing={1} direction="row">
-          <Slider onChange={changeVolume} aria-label="Volume" orientation="vertical" value={props.volume} className={styles.slider} />
+          <Slider onChange={changeVolume} aria-label="Volume" orientation="vertical" value={props.volume} />
         </Stack>
       </div>
     </animated.div>

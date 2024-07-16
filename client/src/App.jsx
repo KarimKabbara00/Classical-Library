@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Map from "./pages/Map";
 import About from "./pages/About";
 import AllComposers from "./pages/AllComposers";
+import AllWorks from "./pages/AllWorks";
 import ViewComposer from "./pages/ViewComposer";
 import MusicPlayer from "./components/musicPlayer/MusicPlayer";
 import ViewWorks from "./pages/ViewWorks";
@@ -97,6 +98,16 @@ function App() {
             />}
           />
           <Route path="/allComposers" element={<AllComposers darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/allWorks" element={
+            <AllWorks
+              audioObject={audioObject}
+              setAudioObject={setAudioObject}
+              currentSong={currentSong}
+              setCurrentSong={setCurrentSong}
+              showOrHideMusicPlayer={showOrHideMusicPlayer}
+              darkModeEnabled={darkModeEnabled}
+            />}
+          />
           <Route path="/viewComposer" element={<ViewComposer darkModeEnabled={darkModeEnabled} />} />
           <Route path="/viewWorks" element={
             <ViewWorks
@@ -129,7 +140,19 @@ function App() {
       </BrowserRouter>
 
 
-      {showMusicPlayer && <MusicPlayer audioObject={audioObject} setAudioObject={setAudioObject} volume={volume} setVolume={setVolume} currentSong={currentSong} setCurrentSong={setCurrentSong} animInOut={animInOut} showOrHideMusicPlayer={showOrHideMusicPlayer} darkModeEnabled={darkModeEnabled} />}
+      {showMusicPlayer &&
+        <MusicPlayer
+          audioObject={audioObject}
+          setAudioObject={setAudioObject}
+          volume={volume}
+          setVolume={setVolume}
+          currentSong={currentSong}
+          setCurrentSong={setCurrentSong}
+          animInOut={animInOut}
+          showOrHideMusicPlayer={showOrHideMusicPlayer}
+          darkModeEnabled={darkModeEnabled}
+        />}
+
       <div>
         <Toaster
           position="top-left"

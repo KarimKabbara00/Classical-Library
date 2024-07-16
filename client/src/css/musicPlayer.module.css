@@ -27,6 +27,12 @@
   z-index: 20;
 }
 
+.closeButton {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.25rem;
+}
+
 .composerPortrait {
   display: flex;
   flex-direction: column;
@@ -145,5 +151,5 @@
 }
 
 .slider {
-  margin-right: "10px";
+  margin-right: 10000px;
 }

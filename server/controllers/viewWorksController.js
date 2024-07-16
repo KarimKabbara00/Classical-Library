@@ -1,5 +1,6 @@
 import axios from "axios";
 import { sleep, processTime } from "../utils/helperFunctions.js";
+import { supabase } from "../utils/clients.js";
 
 const viewWorks = async (req, res) => {
     var id = req.query.id;
@@ -14,12 +15,21 @@ const viewWorks = async (req, res) => {
     else {
         await sleep(2000);
 
-        // TODO: QUERY SUPABASE DB FOR DURATION AND URL
+        const composerName = response.data.composer.complete_name;
 
-        // add duration to every work
+        // grab all work yt links
+        const { data, error } = await supabase.from("youtube_work_links").select("*").eq("composer_name", composerName);
+
+        // convert data from list of objects to one big object with workID as key and everything else as value
+        var worksDict = {}
+        data.forEach(work => {
+            worksDict[work.work_id] = work;
+        });
+
+        // add duration and yt link to every work
         response.data.works.forEach((item) => {
-            item["duration"] = processTime(0);
-            item["url"] = "https://www.youtube.com/watch?v=vyDpyXsyOkE";
+            item["duration"] = processTime(worksDict[item.id].duration_ms, true);
+            item["url"] = worksDict[item.id].yt_link;
         })
 
         res.status(200).send({

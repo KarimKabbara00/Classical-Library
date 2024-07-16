@@ -44,7 +44,6 @@ function ViewComposer(props) {
             timeline: res.data.timeline,
           });
           setShowLoading(false);
-          setShowError(true);
         })
         .catch(function (err) {
           console.log(err);
