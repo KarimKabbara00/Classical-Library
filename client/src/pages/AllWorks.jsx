@@ -9,6 +9,7 @@ import sharedStyles from "../css/shared.module.css";
 import Error from "../components/shared/Error";
 import Search from "../components/allWorks/Search";
 import WorkItem from "../components/allWorks/WorkItem";
+import deburr from 'lodash/deburr';
 
 function AllWorks(props) {
 
@@ -18,7 +19,6 @@ function AllWorks(props) {
     useEffect(() => {
         axios.get("http://localhost:3001/api/allWorks").then(res => {
             setAllWorks(res.data);
-            console.log(res.data)
             setShowLoading(false);
         }).catch(err => {
             console.log(err);
@@ -27,6 +27,23 @@ function AllWorks(props) {
     }, []);
 
     const [shownWorks, setShownWorks] = useState([]);
+    function indexGiganticString(inputText) {
+        let splitAllWorks = allWorks.split("^__^");
+        let shownWorksObject = []; // works to show
+        for (let i in splitAllWorks) {
+            let deburred = deburr(splitAllWorks[i]).toLocaleLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
+            if (deburred.includes(inputText)) {
+                let splitDeburred = splitAllWorks[i].split("$$")
+                shownWorksObject.push({
+                    workID: splitDeburred[0],
+                    workTitle: splitDeburred[1],
+                    complete_name: splitDeburred[2],
+                    portrait: splitDeburred[3]
+                })
+            }
+        }
+        setShownWorks(shownWorksObject);
+    }
 
     // slide up or down loading
     const loadingStyling = classNames({
@@ -40,8 +57,16 @@ function AllWorks(props) {
         [styles.applyFadeIn]: !showLoading,
     });
 
+    // -------------------- Dark Mode -------------------- //
+    const allWorksMainBodyDarkMode = {
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
+        color: props.darkModeEnabled ? "#e8e6e3" : "",
+        height: "94.5vh"
+    }
+    // -------------------- Dark Mode -------------------- //
+
     return (
-        <div id="allWorksMainBody" className={styles.allWorksMainBody}>
+        <div id="allWorksMainBody" className={styles.allWorksMainBody} style={allWorksMainBodyDarkMode}>
             <div className={loadingStyling}>
                 <Loading loadingText={"Grabbing all works..."} darkModeEnabled={props.darkModeEnabled} />
             </div>
@@ -54,7 +79,7 @@ function AllWorks(props) {
                 <BackToTop elementId={"allWorksMainBody"} triggerAtY={300} />
                 <h1 className={styles.allWorksTitle}>All Works</h1>
 
-                <Search allWorks={allWorks} setShownWorks={setShownWorks} />
+                <Search allWorks={allWorks} setShownWorks={setShownWorks} indexGiganticString={indexGiganticString} darkModeEnabled={props.darkModeEnabled} />
 
                 <div className={styles.allWorksBody}>
                     <div className={styles.searchResult}>
@@ -66,12 +91,8 @@ function AllWorks(props) {
                                     completeName={work.complete_name}
                                     workID={work.workID}
                                     work={work}
-                                    audioObject={props.audioObject}
-                                    setAudioObject={props.setAudioObject}
-                                    currentSong={props.currentSong}
-                                    setCurrentSong={props.setCurrentSong}
-                                    showOrHideMusicPlayer={props.showOrHideMusicPlayer}
                                     darkModeEnabled={props.darkModeEnabled}
+                                    fetchAudio={props.fetchAudio}
                                 />
                             )
                         })}

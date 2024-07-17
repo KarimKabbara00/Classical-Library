@@ -40,15 +40,24 @@
     position: relative;
     padding: 0.25rem;
     font-size: 1.1rem;
+    width: 15vw;
     border-radius: 5px;
     transition: all ease-in-out 200ms;
+    border: none;
+    outline: none;
+    -webkit-box-sizing: border-box;
+    /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;
+    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    /* Opera/IE 8+ */
 }
 
 .signInButton {
     background-color: white;
     border-radius: 5px;
     border: 1px solid lightgray;
-    width: 13.7rem;
+    width: 15vw;
     font-size: 1rem;
     padding: 0.25rem;
     text-align: center;
@@ -180,16 +189,11 @@
     }
 
     .signInField {
-        padding: 0.25rem;
         font-size: 1rem;
-        height: 1.15rem;
-        width: 12rem;
     }
 
     .signInButton {
-        width: 12.6rem;
         font-size: 1rem;
-        padding: 0.25rem;
     }
 
     .askUserText {

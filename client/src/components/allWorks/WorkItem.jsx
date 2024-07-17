@@ -3,25 +3,22 @@ import PlayMusic from "../shared/PlayMusic"
 import styles from "../../css/allWorks.module.css";
 
 function WorkItem(props) {
-    console.log(props.work)
+
+    const workCardDarkMode = {
+        borderBottom: props.darkModeEnabled ? "1px solid #e8e6e3" : "",
+    }
+
     return (
-        <div className={styles.workCard}>
-            <span>{props.workTitle}</span>
-            <span>{props.completeName}</span>
-            <PlayMusic
-                audioObject={props.audioObject}
-                setAudioObject={props.setAudioObject}
-                showOrHideMusicPlayer={props.showOrHideMusicPlayer}
-                url={props.url}
-                workID={props.workID}
-                currentSong={props.currentSong}
-                setCurrentSong={props.setCurrentSong}
-                title={props.work.workTitle}
-                composer={props.complete_name}
-                portrait={props.work.portrait}
-                darkModeEnabled={props.darkModeEnabled}
-            />
-        </div>
+        <>
+            {props.workID !== -1 && <div className={styles.workCard} style={workCardDarkMode}>
+                <span>{props.workTitle}</span>
+                <span>{props.completeName}</span>
+                <PlayMusic urlOrID={props.workID} title={props.workTitle} composer={props.completeName} fetchAudio={props.fetchAudio} byUrl={false} />
+            </div>}
+            {props.workID === -1 && <div className={styles.noResults}>
+                <span>{props.workTitle}</span>
+            </div>}
+        </>
     )
 }
 

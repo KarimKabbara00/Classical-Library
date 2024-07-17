@@ -42,7 +42,7 @@ function formatDate(date) {
         11: "December",
     }
 
-    const day = date.getDate();
+    const day = (parseInt(date.getDate()) + 1).toString(); // for some reason its off by 1
     const month = months[date.getMonth()];
     const year = date.getFullYear();
 

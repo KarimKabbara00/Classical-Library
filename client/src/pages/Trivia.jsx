@@ -12,7 +12,7 @@ function Trivia(props) {
 
     // -------------------- Dark Mode -------------------- //
     const triviaIntroMainBodyDarkMode = {
-        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
         color: props.darkModeEnabled ? "#e8e6e3" : ""
     }
     // -------------------- Dark Mode -------------------- //

@@ -5,8 +5,47 @@ import styles from "../../css/musicPlayer.module.css";
 import VolumeBox from "./VolumeBox";
 import ProgressBar from "./ProgressBar";
 import { animated, useSpring } from "@react-spring/web";
+import handleFetchAudio from "./handleFetchAudio";
 
 function MusicPlayer(props) {
+
+  const [showMusicPlayer, setShowMusicPlayer] = useState(false);
+  const [audioObject, setAudioObject] = useState(null);
+  const [currentSong, setCurrentSong] = useState({
+    title: "",
+    composerName: "",
+    portrait: ""
+  });
+  useEffect(() => {
+    if (props.musicRequest) {                           // when a request comes in
+
+      if (audioObject !== null) {                       // if song is playing, stop
+        audioObject.pause();
+        audioObject.currentTime = 0;
+        setAudioObject(null);
+      }
+
+      let byURL = props.musicRequest[0];                // is it by url or work id
+      let urlOrID = props.musicRequest[1];              // the url or work id
+      handleFetchAudio(byURL, urlOrID).then(res => {
+        // res returns Audio Object and song info 
+        setAudioObject(res[0]);
+        setCurrentSong(res[1]);
+        setShowMusicPlayer(true);
+        res[0].play();
+      }).catch(err => {
+        console.log(err);
+      })
+    }
+  }, [props.musicRequest]);
+
+  function closeMusicPlayer() {
+    audioObject.pause();
+    audioObject.currentTime = 0;
+    setAudioObject(null);
+    setShowMusicPlayer(false);
+  }
+
   /* ---------------------- Volume Box Control ---------------------- */
   // Trigger animation to show or hide vol box
   const [volBoxShown, setVolBoxShown] = useState(false);
@@ -15,17 +54,12 @@ function MusicPlayer(props) {
   }
 
   // receive from child volumeBox
+  const [volume, setVolume] = useState(50); // volume in top level to keep state on unrender
   function changeVolume(newVolume) {
-    props.setVolume(newVolume);
+    setVolume(newVolume);
     changeVolumeIcon(newVolume);
-    props.audioObject.volume = newVolume / 100;
+    audioObject.volume = newVolume / 100;
   }
-
-  useEffect(() => {
-    // on render, set volume to what it was last
-    props.audioObject.volume = props.volume / 100;
-    changeVolumeIcon(props.volume);
-  }, [props.audioObject, props.volume]);
 
   const [volumeIcon, setVolumeIcon] = useState(faVolumeLow);
   function changeVolumeIcon(newVolume) {
@@ -89,9 +123,9 @@ function MusicPlayer(props) {
   /* ---------------------- Music Box Control ---------------------- */
   function playOrPauseMusic(playOrPause) {  // can be merged instead of a separate function
     if (playOrPause === "play") {           // separated on purpose for clarity.
-      props.audioObject.play();
+      audioObject.play();
     } else if (playOrPause === "pause") {
-      props.audioObject.pause();
+      audioObject.pause();
     }
   }
 
@@ -112,20 +146,14 @@ function MusicPlayer(props) {
   const [currentCarouselStyling, setCurrentCarouselStyling] = useState(null);
   useEffect(() => {
     // animate title or not
-    if (props.currentSong.title.length > 40) {
+    if (currentSong.title.length > 40) {
       setAnimateTitle(true);
       setCurrentCarouselStyling(animatedCarouselStyling);
     } else {
       setAnimateTitle(false);
       setCurrentCarouselStyling(staticCarouselStyling);
     }
-  }, [props.currentSong.title]);
-
-  function closeMusicPlayer() {
-    props.audioObject.pause();
-    props.audioObject.currentTime = 0;
-    props.showOrHideMusicPlayer(false); // false means hide
-  }
+  }, [currentSong]);
 
   const unhoveredX = { fontSize: "0.75rem", cursor: "pointer", color: props.darkModeEnabled ? "#e8e6e3" : "#000000" };
   const hoveredX = { fontSize: "0.75rem", cursor: "pointer", color: "#a52a2a" };
@@ -143,23 +171,27 @@ function MusicPlayer(props) {
   const [remainingTime, setRemainingTime] = useState(null);
   const [progressPercentage, setProgressPercentage] = useState(0);
   useEffect(() => {
+
+    if (!audioObject)
+      return
+
     var timeHandlerInterval = setInterval(() => {
       // update current time
-      let rawCurrentTime = props.audioObject.currentTime;
+      let rawCurrentTime = audioObject.currentTime;
       let processedCurrentTime = rawCurrentTime < 3600 ? new Date(rawCurrentTime * 1000).toISOString().substring(14, 19) : new Date(rawCurrentTime * 1000).toISOString().substring(11, 16);
       setTimeElapsed(processedCurrentTime);
 
       // update elapsed time
-      let rawElapsedTime = props.audioObject.duration - props.audioObject.currentTime;
+      let rawElapsedTime = audioObject.duration - audioObject.currentTime;
       let processedElapsedTime = rawElapsedTime < 3600 ? new Date(rawElapsedTime * 1000).toISOString().substring(14, 19) : new Date(rawElapsedTime * 1000).toISOString().substring(11, 16);
       setRemainingTime(processedElapsedTime);
 
       // update percentage complete (for progress bar)
-      let remainingPercentage = 100 - (rawElapsedTime / props.audioObject.duration) * 100;
+      let remainingPercentage = 100 - (rawElapsedTime / audioObject.duration) * 100;
       setProgressPercentage(remainingPercentage);
 
       // change icon to play when song finishes
-      if (rawCurrentTime >= props.audioObject.duration) {
+      if (rawCurrentTime >= audioObject.duration) {
         changePpIcon("play");
       }
     }, 200);
@@ -167,40 +199,40 @@ function MusicPlayer(props) {
     return () => {
       clearInterval(timeHandlerInterval); // clear interval when unmounted
     };
-  }, [props.audioObject]);
+  }, [audioObject]);
 
   function fastforward10() {
-    if (props.audioObject.currentTime + 10 >= props.audioObject.duration) {
-      props.audioObject.currentTime = props.audioObject.duration;
+    if (audioObject.currentTime + 10 >= audioObject.duration) {
+      audioObject.currentTime = audioObject.duration;
     } else {
-      props.audioObject.currentTime += 10;
+      audioObject.currentTime += 10;
     }
   }
 
   function rewind10() {
-    if (props.audioObject.currentTime - 10 <= 0) {
-      props.audioObject.currentTime = 0;
+    if (audioObject.currentTime - 10 <= 0) {
+      audioObject.currentTime = 0;
     } else {
-      props.audioObject.currentTime -= 10;
+      audioObject.currentTime -= 10;
     }
   }
 
   // called by progress bar click/drag event
   function updateTime(percentage) {
-    props.audioObject.currentTime = props.audioObject.duration * (percentage / 100);
+    audioObject.currentTime = audioObject.duration * (percentage / 100);
   }
   /* ---------------------- Time Control ---------------------- */
 
   // slide music player
   const slideAnim = useSpring({
-    from: { transform: props.animInOut ? "translateX(-200%)" : "translateX(0%)" },
-    to: { transform: props.animInOut ? "translateX(0%)" : "translateX(-200%)" },
+    from: { transform: showMusicPlayer ? "translateX(-200%)" : "translateX(0%)" },
+    to: { transform: showMusicPlayer ? "translateX(0%)" : "translateX(-200%)" },
     config: { tension: 200, friction: 30 },
   });
 
   // -------------------- Dark Mode -------------------- //
   const musicPlayerDarkMode = {
-    backgroundColor: props.darkModeEnabled ? "#1e2021" : "",
+    backgroundColor: props.darkModeEnabled ? "#242728" : "",
     color: props.darkModeEnabled ? "#e8e6e3" : ""
   }
   // -------------------- Dark Mode -------------------- //
@@ -210,21 +242,21 @@ function MusicPlayer(props) {
       <div className={styles.musicPlayer}>
         <div style={musicPlayerDarkMode} className={styles.musicPlayerBox}>
           <div className={styles.composerPortrait}>
-            <img src={props.currentSong.portrait} alt="composer portrait" width="95px" />
+            <img src={currentSong.portrait} alt="composer portrait" width="95px" />
           </div>
           <div className={styles.songInfo}>
             <div className={styles.songHeader}>
               <div className={styles.songTitle} style={{ justifyContent: animateTitle ? "flex-start" : "center" }}>
                 <div className={styles.songTitleAnim} style={currentCarouselStyling}>
-                  {props.currentSong.title}
+                  {currentSong.title}
                 </div>
                 {animateTitle && ( // only render a second title if the text is long enough
                   <div className={styles.songTitleAnim} style={currentCarouselStyling}>
-                    {props.currentSong.title}
+                    {currentSong.title}
                   </div>
                 )}
               </div>
-              <div className={styles.songArtist}>{props.currentSong.composer}</div>
+              <div className={styles.songArtist}>{currentSong.composerName}</div>
             </div>
             <div className={styles.songPlayer}>
               <div className={styles.songDuration}>
@@ -243,7 +275,7 @@ function MusicPlayer(props) {
             <FontAwesomeIcon icon={faX} style={xStyling} />
           </div>
         </div>
-        {<VolumeBox volBoxShown={volBoxShown} volume={props.volume} volumeIcon={volumeIcon} changeVolume={changeVolume} darkModeEnabled={props.darkModeEnabled} />}
+        {<VolumeBox volBoxShown={volBoxShown} volume={volume} volumeIcon={volumeIcon} changeVolume={changeVolume} darkModeEnabled={props.darkModeEnabled} />}
       </div>
     </animated.div>
   );

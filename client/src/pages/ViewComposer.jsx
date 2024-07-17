@@ -78,7 +78,7 @@ function ViewComposer(props) {
   // -------------------- Dark Mode -------------------- //
   const LoadingDarkMode = {
     height: "94.5vh",
-    backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+    backgroundColor: props.darkModeEnabled ? "#242728" : "",
   }
   // -------------------- Dark Mode -------------------- //
 

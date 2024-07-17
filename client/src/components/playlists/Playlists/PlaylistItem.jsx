@@ -17,6 +17,7 @@ import playWhite from "../../../images/playlists/play-white.svg"
 import editWhite from "../../../images/playlists/edit-white.svg"
 import deleteWhite from "../../../images/playlists/delete-white.svg"
 import Prompt from "../../shared/Prompt";
+import PlayPlaylist from "./PlayPlaylist";
 
 function PlaylistItem(props) {
 
@@ -36,6 +37,21 @@ function PlaylistItem(props) {
         props.darkModeEnabled ?
             hovered ? setPlaySVG(playBrown) : setPlaySVG(playWhite) :
             hovered ? setPlaySVG(playBrown) : setPlaySVG(playBlack);
+    }
+
+    const [queue, setQueue] = useState([]);
+    const [beginPlaylist, setBeginPlaylist] = useState(false);
+    function playPlaylist() {
+        axios.post("http://localhost:3001/api/createPlaylistQueue", {
+            userID: props.user_id,
+            playlistName: props.playlist.playlistName
+        }).then(res => {
+            setQueue(res.data);
+            setBeginPlaylist(true);
+        }).catch(err => {
+            toast.error("Error fetching works")
+            console.log(err);
+        })
     }
 
     // ---------- Edit ---------- //
@@ -73,7 +89,6 @@ function PlaylistItem(props) {
             hovered ? setDeleteSVG(deleteBrown) : setDeleteSVG(deleteBlack);
     }
 
-
     const [promptDelete, setPromptDelete] = useState(false);
     function deletePlaylist(confirmDelete) {
 
@@ -109,7 +124,7 @@ function PlaylistItem(props) {
                         <img onClick={onArrowClick} className={styles.playlistTitleArrow} src={arrowSVG} width="25px" alt="arrowRightDownIcon" />
                     </div>
                     <div className={styles.playlistActionsParent}>
-                        <img src={playSVG} onMouseEnter={() => onPlayHoverEvent(true)} onMouseLeave={() => onPlayHoverEvent(false)} width="20px" alt="playIcon" />
+                        <img src={playSVG} onClick={playPlaylist} onMouseEnter={() => onPlayHoverEvent(true)} onMouseLeave={() => onPlayHoverEvent(false)} width="20px" alt="playIcon" />
                         <img src={editSVG} onClick={editPlaylist} onMouseEnter={() => onEditHoverEvent(true)} onMouseLeave={() => onEditHoverEvent(false)} width="20px" alt="editIcon" />
                         <img src={deleteSVG} onClick={() => setPromptDelete(true)} onMouseEnter={() => onDeleteHoverEvent(true)} onMouseLeave={() => onDeleteHoverEvent(false)} width="20px" alt="deleteIcon" />
                     </div>
@@ -128,6 +143,17 @@ function PlaylistItem(props) {
                 confirm="Delete"
                 cancel="Cancel"
                 callback={deletePlaylist}
+                darkModeEnabled={props.darkModeEnabled}
+            />}
+
+            {/* Utility component that does not render anything. It plays the playlists. Similar to PlayMusic.jsx which renders the play button */}
+            {beginPlaylist && <PlayPlaylist
+                queue={queue}
+                audioObject={props.audioObject}
+                setAudioObject={props.setAudioObject}
+                showOrHideMusicPlayer={props.showOrHideMusicPlayer}
+                currentSong={props.currentSong}
+                setCurrentSong={props.setCurrentSong}
                 darkModeEnabled={props.darkModeEnabled}
             />}
 

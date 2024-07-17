@@ -8,7 +8,7 @@ function WorkDropdownList(props) {
     }
 
     const darkMode = {
-        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
     }
 
     return (

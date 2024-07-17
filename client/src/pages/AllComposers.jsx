@@ -143,7 +143,7 @@ function AllComposers(props) {
 
   // -------------------- Dark Mode -------------------- //
   const allCompMainBodyDarkMode = {
-    backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+    backgroundColor: props.darkModeEnabled ? "#242728" : "",
     color: props.darkModeEnabled ? "#e8e6e3" : "",
     height: "94.5vh"
   }

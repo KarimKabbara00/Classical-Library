@@ -16,18 +16,7 @@ function WorkCard(props) {
         <span>{props.title}</span>
         <span>{props.genre}</span>
         <span>{props.duration}</span>
-
-        <PlayMusic
-          audioObject={props.audioObject}
-          setAudioObject={props.setAudioObject}
-          showOrHideMusicPlayer={props.showOrHideMusicPlayer}
-          url={props.url}
-          currentSong={props.currentSong}
-          setCurrentSong={props.setCurrentSong}
-          title={props.title}
-          composer={props.composer}
-          portrait={props.portrait}
-        />
+        <PlayMusic urlOrID={props.url} title={props.workTitle} composer={props.completeName} fetchAudio={props.fetchAudio} byUrl={true} />
       </div>
     </div>
   );

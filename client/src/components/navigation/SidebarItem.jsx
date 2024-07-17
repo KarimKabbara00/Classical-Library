@@ -65,7 +65,7 @@ function SidebarItem(props) {
         fontSize: props.styling.fontSize,
     }
     const sidebarItemDarkMode = {
-        border: props.darkModeEnabled ? "1px solid #181a1b" : "",
+        border: props.darkModeEnabled ? "1px solid #242728" : "",
     }
     // -------------------- Dark Mode -------------------- //
 

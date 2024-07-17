@@ -158,7 +158,7 @@ function ViewWorks(props) {
   // -------------------- Dark Mode -------------------- //
   const LoadingDarkMode = {
     height: "94.5vh",
-    backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+    backgroundColor: props.darkModeEnabled ? "#242728" : "",
   }
   const textDarkMode = {
     color: props.darkModeEnabled ? "#e8e6e3" : ""
@@ -200,14 +200,8 @@ function ViewWorks(props) {
               duration={work.duration}
               url={work.url}
               composer={composer}
-              portrait={portrait}
-              showOrHideMusicPlayer={props.showOrHideMusicPlayer}
-              currentSong={props.currentSong}
-              setCurrentSong={props.setCurrentSong}
-              audioObject={props.audioObject}
-              setAudioObject={props.setAudioObject}
-              animInOut={props.animInOut}
               darkModeEnabled={props.darkModeEnabled}
+              fetchAudio={props.fetchAudio}
             />
           );
         })}

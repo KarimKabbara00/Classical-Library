@@ -6,6 +6,8 @@ import styles from "../css/playlists.module.css";
 import PlaylistItem from "../components/playlists/Playlists/PlaylistItem";
 import Loading from "../components/shared/Loading";
 import loadingStyles from "../css/loading.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function Playlists(props) {
 
@@ -52,7 +54,7 @@ function Playlists(props) {
 
     // -------------------- Dark Mode -------------------- //
     const darkMode = {
-        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
         color: props.darkModeEnabled ? "#e8e6e3" : "",
         height: "94.5vh"
     }
@@ -60,7 +62,7 @@ function Playlists(props) {
 
     return (
 
-        <div style={darkMode}>
+        <div style={darkMode} className={styles.playlistParent}>
             <div className={loadingStyling}>
                 <Loading loadingText={"Grabbing your playlists..."} darkModeEnabled={props.darkModeEnabled} />
             </div>
@@ -75,11 +77,18 @@ function Playlists(props) {
                                 playlist={playlist}
                                 forceUpdate={forceUpdate}
                                 darkModeEnabled={props.darkModeEnabled}
+                                // music stuff
+                                audioObject={props.audioObject}
+                                setAudioObject={props.setAudioObject}
+                                showOrHideMusicPlayer={props.showOrHideMusicPlayer}
+                                currentSong={props.currentSong}
+                                setCurrentSong={props.setCurrentSong}
                             />
                         })}
                         {playlists.length !== 0 &&
                             <div style={{ marginTop: "0.5rem", alignSelf: "flex-start" }} onClick={newPlaylist} className={styles.createPlaylist}>
-                                + Create playlist
+                                <FontAwesomeIcon icon={faPlus} color={props.darkModeEnabled ? "#e8e6e3" : "white"} fontSize="15px" />
+                                <span>Create playlist</span>
                             </div>
                         }
                     </div>

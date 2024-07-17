@@ -53,7 +53,7 @@ function Map(props) {
 
     // -------------------- Dark Mode -------------------- //
     const DarkMode = {
-        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
         height: "94.5vh"
     }
     // -------------------- Dark Mode -------------------- //

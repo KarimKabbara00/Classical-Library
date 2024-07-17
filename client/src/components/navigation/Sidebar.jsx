@@ -34,7 +34,7 @@ function Sidebar(props) {
 
     // -------------------- Dark Mode -------------------- //
     const sidebarStyling = {
-        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
     }
     // -------------------- Dark Mode -------------------- //
 

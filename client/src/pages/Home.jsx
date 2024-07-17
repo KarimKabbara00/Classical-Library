@@ -16,12 +16,12 @@ function Home(props) {
 
   // -------------------- Dark Mode -------------------- //
   const homeBodyDarkMode = {
-    backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+    backgroundColor: props.darkModeEnabled ? "#242728" : "",
     color: props.darkModeEnabled ? "#e8e6e3" : ""
   }
 
   const secondRowDarkMode = {
-    backgroundColor: props.darkModeEnabled ? "#1e2021" : "",
+    backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
     color: props.darkModeEnabled ? "#e8e6e3" : ""
   }
 
@@ -40,14 +40,7 @@ function Home(props) {
       </div>
 
       <animated.div style={secondRowStyling} className={styles.secondRow}>
-        <BirthdayCarousel
-          audioObject={props.audioObject}
-          setAudioObject={props.setAudioObject}
-          currentSong={props.currentSong}
-          setCurrentSong={props.setCurrentSong}
-          showOrHideMusicPlayer={props.showOrHideMusicPlayer}
-          darkModeEnabled={props.darkModeEnabled}
-        />
+        <BirthdayCarousel darkModeEnabled={props.darkModeEnabled} fetchAudio={props.fetchAudio} />
         <QOTD darkModeEnabled={props.darkModeEnabled} />
       </animated.div>
 

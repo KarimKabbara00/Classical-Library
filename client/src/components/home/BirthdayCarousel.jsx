@@ -10,14 +10,13 @@ function BirthdayCarousel(props) {
     useEffect(() => {
         axios.get("http://localhost:3001/api/birthday")
             .then(res => {
-                console.log(res.data.composerData)
                 setComposerInfo(res.data.composerData);
             }).catch(err => {
                 console.log(err)
                 setShowError(true);
             })
         document.getElementById("birthdayCarousel").onmousedown = function (e) { if (e.button === 1) return false; }
-    }, [])
+    }, []);
 
     const [visibleIndex, setVisibleIndex] = useState(0)
     function changeIndex(index) {
@@ -27,7 +26,7 @@ function BirthdayCarousel(props) {
 
     // -------------------- Dark Mode -------------------- //
     const birthdayCarouselDarkMode = {
-        backgroundColor: props.darkModeEnabled ? "#1e2021" : "",
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
         border: props.darkModeEnabled ? "1px solid #e8e6e3" : ""
     }
     // -------------------- Dark Mode -------------------- //
@@ -45,12 +44,7 @@ function BirthdayCarousel(props) {
                             index={index}
                             visibleIndex={visibleIndex}
                             darkModeEnabled={props.darkModeEnabled}
-                            // music stuff
-                            audioObject={props.audioObject}
-                            setAudioObject={props.setAudioObject}
-                            currentSong={props.currentSong}
-                            setCurrentSong={props.setCurrentSong}
-                            showOrHideMusicPlayer={props.showOrHideMusicPlayer}
+                            fetchAudio={props.fetchAudio}
                         />
                     })}
                 </div>

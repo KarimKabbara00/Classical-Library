@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../../css/playlists.module.css";
 import WorkDropdownList from "./WorkDropdownList";
-import Fuse from "fuse.js";
+import searchBlack from "../../../images/searchBlack.svg";
+import searchWhite from "../../../images/searchWhite.svg";
 
 function AddWorkToPlaylist(props) {
 
@@ -23,17 +24,8 @@ function AddWorkToPlaylist(props) {
                 setShownWorks([{ workID: -1, workTitle: "Search term too short", complete_name: "" }]);
             }
             else {
-                const options = {
-                    keys: ["workTitle"],    // filter by this key
-                    threshold: 0.2,         // 0 - 1, 0 being exact, 1 being anything
-                    shouldSort: true        // sort by most matching
-                }
-                const fuse = new Fuse(props.allWorks, options); // create fuse object with all the works, and the options
-                const result = fuse.search(inputText);  // search
-
-                // const result is a list of objects about the query. Eahc object contains the key item which is the work object
-                const filteredResults = result.map(item => item.item);
-                setShownWorks(filteredResults);
+                let filteredWorks = props.indexGiganticString(inputText)
+                setShownWorks(filteredWorks)
             }
 
         }
@@ -50,19 +42,28 @@ function AddWorkToPlaylist(props) {
     }
 
     const inputDarkMode = {
-        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
         color: props.darkModeEnabled ? "#e8e6e3" : "",
         borderBottom: props.darkModeEnabled ? "1px solid #e8e6e3" : "",
     }
 
     const dropdownListParentDarkMode = {
-        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
     }
+
+    const [searchSVG, setSearchSVG] = useState(searchBlack);
+    useEffect(() => {
+        props.darkModeEnabled ? setSearchSVG(searchWhite) : setSearchSVG(searchBlack)
+    }, [props.darkModeEnabled])
 
     return (
         <div>
             <div className={styles.searchForWorkItem}>
-                <input onFocus={() => setInputFieldFocused(true)} onBlur={() => setTimeout(() => setInputFieldFocused(false), 150)} onInput={updateEnteredText} className={styles.searchForWork} style={inputDarkMode} value={enteredText} placeholder="Search for work..." />
+                <div className={styles.searchParent}>
+                    <input onFocus={() => setInputFieldFocused(true)} onBlur={() => setTimeout(() => setInputFieldFocused(false), 150)} onInput={updateEnteredText} className={styles.searchForWork} style={inputDarkMode} value={enteredText} placeholder="Search for work..." />
+                    <img className={styles.searchIcon} src={searchSVG} width="22px" />
+                </div>
+
                 {inputFieldFocused && shownWorks.length > 0 && props.allWorks.length !== shownWorks.length &&
                     <div style={dropdownListParentDarkMode} className={styles.dropdownListParent}>
                         <WorkDropdownList worksToAdd={props.worksToAdd} inputFieldFocused={inputFieldFocused} addWork={addWork} shownWorks={shownWorks} darkModeEnabled={props.darkModeEnabled} />

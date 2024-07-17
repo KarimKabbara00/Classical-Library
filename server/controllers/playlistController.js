@@ -47,8 +47,6 @@ const createPlaylist = async (req, res) => {
         const { userID, playlistName, playlistData } = req.body;
         let workIDs = playlistData.map(work => work.workID);
 
-        console.log(playlistData)
-
         const { data, error } = await supabase.from("users").select("id").eq("id", userID);
 
         // double check only 1 email exists
@@ -75,13 +73,12 @@ const createPlaylist = async (req, res) => {
 };
 
 const allWorks = async (req, res) => {
-    try {
-        const response = await getAllWorks();
-        res.status(200).send(response)
+    const data = await getAllWorks();
+    let giganticString = "^__^";
+    for (let i of data) {
+        giganticString += `${i.workID}$$${i.workTitle}$$${i.complete_name}^__^`;
     }
-    catch (e) {
-        res.status(400).send(e)
-    }
+    res.status(200).send(giganticString)
 }
 
 const deletePlaylist = async (req, res) => {
@@ -110,7 +107,7 @@ const checkPlaylistRecord = async (req, res) => {
             associated_uid: userID,
             playlist_name: newPlaylistName
         })
-        console.log(data)
+
         if (error) { // both should be null
             throw error;
         }
@@ -130,7 +127,7 @@ const checkPlaylistRecord = async (req, res) => {
 const fetchPlaylist = async (req, res) => {
     try {
         const { userID, playlistName } = req.body;
-        console.log(userID, playlistName)
+
         const { data, error } = await supabase.from("playlists").select("playlist_work_ids").match({
             associated_uid: userID,
             playlist_name: playlistName
@@ -191,4 +188,44 @@ const editPlaylist = async (req, res) => {
     }
 }
 
-export { viewPlaylists, createPlaylist, allWorks, deletePlaylist, checkPlaylistRecord, fetchPlaylist, editPlaylist }
+const createPlaylistQueue = async (req, res) => {
+    try {
+        const { userID, playlistName } = req.body;
+
+        // grab work ids from selected playlist
+        const { data, error } = await supabase.from("playlists").select("playlist_work_ids").match({
+            associated_uid: userID,
+            playlist_name: playlistName
+        });
+        const workIDs = data[0].playlist_work_ids;  // work ID list
+        const joinedWorkIDs = workIDs.join(",");    // work IDs as string
+
+        // grab data
+        const worksResponse = await axios.get(`https://api.openopus.org/work/list/ids/${joinedWorkIDs}.json`);
+
+        const works = [];
+        let portraitCounter = 0;
+        for (let id of workIDs) {
+            let workDetail = worksResponse.data.works[`w:${id}`];
+            works.push({
+                id: id,
+                title: workDetail.title,
+                composer: workDetail.composer.complete_name,
+                portrait: worksResponse.data.abstract.composers.portraits[portraitCounter] // for some reason portrait links are here
+            });
+            portraitCounter++;
+        }
+
+        if (error)
+            throw error
+
+        res.status(200).send(works);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(400).send(e);
+    }
+
+}
+
+export { viewPlaylists, createPlaylist, allWorks, deletePlaylist, checkPlaylistRecord, fetchPlaylist, editPlaylist, createPlaylistQueue }

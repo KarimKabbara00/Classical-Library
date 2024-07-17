@@ -8,6 +8,7 @@ import Loading from "../../shared/Loading";
 import styles from "../../../css/playlists.module.css";
 import loadingStyles from "../../../css/loading.module.css";
 import classNames from "classnames";
+import deburr from 'lodash/deburr';
 
 function NewPlaylist(props) {
 
@@ -88,6 +89,23 @@ function NewPlaylist(props) {
         }
     }
 
+    function indexGiganticString(inputText) {
+        let splitAllWorks = allWorks.split("^__^");
+        let shownWorksObject = []; // works to show
+        for (let i in splitAllWorks) {
+            let deburred = deburr(splitAllWorks[i]).toLocaleLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
+            if (deburred.includes(inputText)) {
+                let splitDeburred = splitAllWorks[i].split("$$")
+                shownWorksObject.push({
+                    workID: splitDeburred[0],
+                    workTitle: splitDeburred[1],
+                    complete_name: splitDeburred[2],
+                })
+            }
+        }
+        return shownWorksObject
+    }
+
     function goBack() {
         navigate("/profile/playlists/")
     }
@@ -106,12 +124,12 @@ function NewPlaylist(props) {
 
     // -------------------- Dark Mode -------------------- //
     const darkMode = {
-        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
         color: props.darkModeEnabled ? "#e8e6e3" : "",
         height: "94.5vh"
     }
     const inputDarkMode = {
-        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
         color: props.darkModeEnabled ? "#e8e6e3" : "",
         borderBottom: props.darkModeEnabled ? "1px solid #e8e6e3" : "",
     }
@@ -125,7 +143,7 @@ function NewPlaylist(props) {
 
             {!showLoading && <div className={contentStyling}>
                 <div className={styles.newPlaylistBody}>
-                    <h1 className={styles.title}>New Playlist</h1>
+                    <h1 className={styles.title}>Edit Playlist</h1>
 
                     <form onSubmit={editPlaylist} className={styles.newPlaylistForm}>
                         <div className={styles.newPlaylistNameParent}>
@@ -138,7 +156,7 @@ function NewPlaylist(props) {
                             {worksToAdd.map((work, index) => {
                                 return <AddedWork work={work} removeWork={removeWork} key={index} darkModeEnabled={props.darkModeEnabled} />
                             })}
-                            <AddWorkToPlaylist addWork={addWork} allWorks={allWorks} worksToAdd={worksToAdd} darkModeEnabled={props.darkModeEnabled} />
+                            <AddWorkToPlaylist addWork={addWork} allWorks={allWorks} worksToAdd={worksToAdd} indexGiganticString={indexGiganticString} darkModeEnabled={props.darkModeEnabled} />
                         </div>
 
                         <div className={styles.buttonsParent}>

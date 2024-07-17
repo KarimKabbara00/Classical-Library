@@ -19,15 +19,12 @@ function BirthdayCard(props) {
                             return <BirthdayWorkCard
                                 key={index}
                                 work={work}
-                                url={work.url}
                                 darkModeEnabled={props.darkModeEnabled}
-                                audioObject={props.audioObject}
-                                setAudioObject={props.setAudioObject}
-                                currentSong={props.currentSong}
-                                setCurrentSong={props.setCurrentSong}
-                                showOrHideMusicPlayer={props.showOrHideMusicPlayer}
                                 composerName={props.composer.complete_name}
                                 composerPortrait={props.composer.portrait}
+                                // music stuff
+                                url={work.url}
+                                fetchAudio={props.fetchAudio}
                             />
                         })}
                     </div>

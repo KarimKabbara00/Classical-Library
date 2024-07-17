@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import Header from "./components/navigation/Header";
-// import Footer from "./components//Footer";
 import Home from "./pages/Home";
 import Map from "./pages/Map";
 import About from "./pages/About";
@@ -42,23 +41,9 @@ function App() {
   /* -------------------------------- User Session -------------------------------- */
 
   /* -------------------------------- Music Player -------------------------------- */
-  const [currentSong, setCurrentSong] = useState({ title: "", composer: "", portrait: "" });
-  const [audioObject, setAudioObject] = useState(null);
-  const [volume, setVolume] = useState(50); // volume in top level to keep state on unrender
-  const [showMusicPlayer, setShowMusicPlayer] = useState(false); // render or unrender music player
-  const [animInOut, setAnimInOut] = useState(true); // hide or show music player before render/unrender
-  function showOrHideMusicPlayer(showOrHide) {
-    setAnimInOut(showOrHide); // true shows it, false hides it
-    if (showOrHide === true) {
-      setShowMusicPlayer(true);
-    } else {
-      // hide
-      setTimeout(() => {
-        setShowMusicPlayer(false);
-        setCurrentSong({ title: "", composer: "", portrait: "" });
-        setAudioObject(null); // destroy object
-      }, 200);
-    }
+  const [musicRequest, setMusicRequest] = useState(null);
+  function fetchAudio(byURL, urlOrID) {
+    setMusicRequest([byURL, urlOrID])
   }
   /* -------------------------------- Music Player -------------------------------- */
 
@@ -85,41 +70,11 @@ function App() {
       <BrowserRouter>
         <Header sessionData={sessionData} logout={logout} toggleDarkMode={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
         <Routes>
-          <Route path="/" element={
-            <Home
-              setSessionData={setSessionData}
-              firstLoad={firstLoad}
-              audioObject={audioObject}
-              setAudioObject={setAudioObject}
-              currentSong={currentSong}
-              setCurrentSong={setCurrentSong}
-              showOrHideMusicPlayer={showOrHideMusicPlayer}
-              darkModeEnabled={darkModeEnabled}
-            />}
-          />
+          <Route path="/" element={<Home setSessionData={setSessionData} firstLoad={firstLoad} darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} />} />
           <Route path="/allComposers" element={<AllComposers darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/allWorks" element={
-            <AllWorks
-              audioObject={audioObject}
-              setAudioObject={setAudioObject}
-              currentSong={currentSong}
-              setCurrentSong={setCurrentSong}
-              showOrHideMusicPlayer={showOrHideMusicPlayer}
-              darkModeEnabled={darkModeEnabled}
-            />}
-          />
+          <Route path="/allWorks" element={<AllWorks darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} />} />
           <Route path="/viewComposer" element={<ViewComposer darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/viewWorks" element={
-            <ViewWorks
-              audioObject={audioObject}
-              setAudioObject={setAudioObject}
-              currentSong={currentSong}
-              setCurrentSong={setCurrentSong}
-              showOrHideMusicPlayer={showOrHideMusicPlayer}
-              animInOut={animInOut}
-              darkModeEnabled={darkModeEnabled}
-            />}
-          />
+          <Route path="/viewWorks" element={<ViewWorks fetchAudio={fetchAudio} darkModeEnabled={darkModeEnabled} />} />
 
           <Route path="/map" element={<Map darkModeEnabled={darkModeEnabled} />} />
           <Route path="/about" element={<About darkModeEnabled={darkModeEnabled} />} />
@@ -136,27 +91,12 @@ function App() {
           <Route path="/profile/playlists/editPlaylist" element={<EditPlaylist sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
 
         </Routes>
-        {/* <Footer /> */}
       </BrowserRouter>
 
-
-      {showMusicPlayer &&
-        <MusicPlayer
-          audioObject={audioObject}
-          setAudioObject={setAudioObject}
-          volume={volume}
-          setVolume={setVolume}
-          currentSong={currentSong}
-          setCurrentSong={setCurrentSong}
-          animInOut={animInOut}
-          showOrHideMusicPlayer={showOrHideMusicPlayer}
-          darkModeEnabled={darkModeEnabled}
-        />}
+      <MusicPlayer musicRequest={musicRequest} darkModeEnabled={darkModeEnabled} />
 
       <div>
-        <Toaster
-          position="top-left"
-          reverseOrder={false}
+        <Toaster position="top-left" reverseOrder={false}
           containerStyle={{
             position: "absolute",
             top: 80,

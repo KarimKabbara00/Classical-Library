@@ -18,6 +18,7 @@ function AddedWork(props) {
     }
 
     const addedWorkDarkMode = {
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
         borderBottom: props.darkModeEnabled ? "1px solid #e8e6e3" : "",
     }
 
@@ -27,7 +28,7 @@ function AddedWork(props) {
                 <span>{title}</span>
                 <span>{completeName}</span>
                 <span className={styles.deleteButton} onClick={() => removeWork(props.workID)} onMouseEnter={() => setXHovered(true)} onMouseLeave={() => setXHovered(false)}>
-                    <FontAwesomeIcon icon={faX} color={xHovered ? "red" : "black"} fontSize="15px" />
+                    <FontAwesomeIcon icon={faX} color={xHovered ? "red" : props.darkModeEnabled ? "#e8e6e3" : "black"} fontSize="15px" />
                 </span>
             </div>
         </div >

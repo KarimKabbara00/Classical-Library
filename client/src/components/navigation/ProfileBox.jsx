@@ -22,7 +22,7 @@ function ProfileBox(props) {
 
     // -------------------- Dark Mode -------------------- //
     const profileBoxDarkMode = {
-        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
         color: props.darkModeEnabled ? "#e8e6e3" : "",
         border: props.darkModeEnabled ? "1px solid #e8e6e3" : ""
     }

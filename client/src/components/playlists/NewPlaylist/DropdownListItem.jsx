@@ -8,7 +8,7 @@ function WorkDropdownList(props) {
     const enabledStyle = {
         cursor: "pointer",
         backgroundColor: props.darkModeEnabled ?
-            hovered ? "brown" : "#181a1b" :
+            hovered ? "brown" : "#242728" :
             hovered ? "brown" : "white",
 
         color: props.darkModeEnabled ? "#e8e6e3" :
@@ -19,7 +19,7 @@ function WorkDropdownList(props) {
     const disabledStyle = {
         cursor: "not-allowed",
         backgroundColor: props.darkModeEnabled ?
-            hovered ? disabledColor : "#181a1b" :
+            hovered ? disabledColor : "#242728" :
             hovered ? disabledColor : "white",
         color: props.darkModeEnabled ? "#e8e6e3" :
             hovered ? "white" : "black"
@@ -27,15 +27,9 @@ function WorkDropdownList(props) {
 
     const termTooShortStyle = {
         cursor: "default",
-        backgroundColor: props.darkModeEnabled ? "#181a1b" : "white ",
+        backgroundColor: props.darkModeEnabled ? "#242728" : "white ",
         color: props.darkModeEnabled ? "#e8e6e3" : "black",
     }
-
-
-    // const inputDarkMode = {
-    //     backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
-    //     color: props.darkModeEnabled ? "#e8e6e3" : "",
-    // }
 
     const [disabled, setDisabled] = useState(false);
     useEffect(() => {

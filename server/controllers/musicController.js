@@ -1,5 +1,6 @@
 import ytdl from "@distube/ytdl-core";
 import { supabase } from "../utils/clients.js";
+import axios from "axios";
 
 const musicByURL = async (req, res) => {
     const url = req.body.url
@@ -35,4 +36,35 @@ const musicByID = async (req, res) => {
 
 };
 
-export { musicByURL, musicByID }
+const musicMetadata = async (req, res) => {
+    try {
+        const { byURL, urlOrID } = req.body;
+
+        var workID = urlOrID; // if the if statement fails, we already have workID, otherwise this gets reassigned
+        if (byURL === true) {
+            const { data, error } = await supabase.from("youtube_work_links").select("work_id").eq("yt_link", urlOrID);
+            if (error)
+                throw error;
+            workID = data[0].work_id;
+        }
+        const metaDataResponse = await axios.get(`https://api.openopus.org//work/list/ids/${workID}.json`);
+
+        // extract meta data
+        const title = metaDataResponse.data.works[`w:${workID}`].title;
+        const composerName = metaDataResponse.data.works[`w:${workID}`].composer.complete_name;
+        const portrait = metaDataResponse.data.abstract.composers.portraits[0];
+
+        res.status(200).send({
+            title: title,
+            composerName: composerName,
+            portrait: portrait
+        })
+    }
+
+    catch (e) {
+        console.log(e);
+        res.status(400).send(e);
+    }
+}
+
+export { musicByURL, musicByID, musicMetadata }
