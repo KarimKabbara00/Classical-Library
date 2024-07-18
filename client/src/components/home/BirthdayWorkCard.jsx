@@ -7,7 +7,15 @@ function BirthdayWorkCard(props) {
         <div style={{ minWidth: "100%" }}>
             <div className={styles.recommendedWorks}>
                 <span>{props.work.title}</span>
-                <PlayMusic urlOrID={props.url} title={props.workTitle} composer={props.completeName} fetchAudio={props.fetchAudio} byUrl={true} />
+                <PlayMusic
+                    urlOrID={props.url}
+                    title={props.workTitle}
+                    composer={props.completeName}
+                    fetchAudio={props.fetchAudio}
+                    byUrl={true}
+                    audioObject={props.audioObject}
+                    setAnotherRequest={props.setAnotherRequest}
+                />
             </div>
         </div>
     )

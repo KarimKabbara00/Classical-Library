@@ -39,6 +39,7 @@ const musicByID = async (req, res) => {
 const musicMetadata = async (req, res) => {
     try {
         const { byURL, urlOrID } = req.body;
+        console.log(urlOrID)
 
         var workID = urlOrID; // if the if statement fails, we already have workID, otherwise this gets reassigned
         if (byURL === true) {

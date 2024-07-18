@@ -16,7 +16,15 @@ function WorkCard(props) {
         <span>{props.title}</span>
         <span>{props.genre}</span>
         <span>{props.duration}</span>
-        <PlayMusic urlOrID={props.url} title={props.workTitle} composer={props.completeName} fetchAudio={props.fetchAudio} byUrl={true} />
+        <PlayMusic
+          urlOrID={props.url}
+          title={props.workTitle}
+          composer={props.completeName}
+          fetchAudio={props.fetchAudio}
+          byUrl={true}
+          audioObject={props.audioObject}
+          setAnotherRequest={props.setAnotherRequest}
+        />
       </div>
     </div>
   );

@@ -42,6 +42,8 @@ function App() {
 
   /* -------------------------------- Music Player -------------------------------- */
   const [musicRequest, setMusicRequest] = useState(null);
+  const [audioObject, setAudioObject] = useState(null);
+  const [anotherRequest, setAnotherRequest] = useState(false); // did another request come in, or just closing music player
   function fetchAudio(byURL, urlOrID) {
     setMusicRequest([byURL, urlOrID])
   }
@@ -66,16 +68,15 @@ function App() {
 
   return (
     <div>
-      {/* <div>session is : {sessionData}</div> */}
       <BrowserRouter>
         <Header sessionData={sessionData} logout={logout} toggleDarkMode={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
         <Routes>
-          <Route path="/" element={<Home setSessionData={setSessionData} firstLoad={firstLoad} darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} />} />
+          {/* Nav Bar Routes */}
+          <Route path="/" element={<Home setSessionData={setSessionData} firstLoad={firstLoad} darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} />} />
           <Route path="/allComposers" element={<AllComposers darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/allWorks" element={<AllWorks darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} />} />
+          <Route path="/allWorks" element={<AllWorks darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} />} />
           <Route path="/viewComposer" element={<ViewComposer darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/viewWorks" element={<ViewWorks fetchAudio={fetchAudio} darkModeEnabled={darkModeEnabled} />} />
-
+          <Route path="/viewWorks" element={<ViewWorks darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} />} />
           <Route path="/map" element={<Map darkModeEnabled={darkModeEnabled} />} />
           <Route path="/about" element={<About darkModeEnabled={darkModeEnabled} />} />
 
@@ -86,25 +87,15 @@ function App() {
           {/* Profile Routes */}
           <Route path="/signIn" element={<SignIn setSessionData={setSessionData} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile" element={<Profile sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile/playlists" element={<Playlists sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/profile/playlists" element={<Playlists sessionData={sessionData} fetchAudio={fetchAudio} setAnotherRequest={setAnotherRequest} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile/playlists/editPlaylist" element={<EditPlaylist sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
-
         </Routes>
       </BrowserRouter>
 
-      <MusicPlayer musicRequest={musicRequest} darkModeEnabled={darkModeEnabled} />
-
+      <MusicPlayer musicRequest={musicRequest} audioObject={audioObject} setAudioObject={setAudioObject} anotherRequest={anotherRequest} darkModeEnabled={darkModeEnabled} />
       <div>
-        <Toaster position="top-left" reverseOrder={false}
-          containerStyle={{
-            position: "absolute",
-            top: 80,
-            left: 80,
-            bottom: 20,
-            right: 20,
-          }}
-        />
+        <Toaster position="top-left" reverseOrder={false} containerStyle={{ position: "absolute", top: 80, left: 80, bottom: 20, right: 20, }} />
       </div>
     </div>
   );

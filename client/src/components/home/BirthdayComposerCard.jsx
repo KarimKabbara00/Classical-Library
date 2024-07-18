@@ -22,9 +22,11 @@ function BirthdayCard(props) {
                                 darkModeEnabled={props.darkModeEnabled}
                                 composerName={props.composer.complete_name}
                                 composerPortrait={props.composer.portrait}
-                                // music stuff
+                                // music
                                 url={work.url}
                                 fetchAudio={props.fetchAudio}
+                                audioObject={props.audioObject}
+                                setAnotherRequest={props.setAnotherRequest}
                             />
                         })}
                     </div>

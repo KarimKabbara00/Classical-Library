@@ -13,7 +13,15 @@ function WorkItem(props) {
             {props.workID !== -1 && <div className={styles.workCard} style={workCardDarkMode}>
                 <span>{props.workTitle}</span>
                 <span>{props.completeName}</span>
-                <PlayMusic urlOrID={props.workID} title={props.workTitle} composer={props.completeName} fetchAudio={props.fetchAudio} byUrl={false} />
+                <PlayMusic
+                    urlOrID={props.workID}
+                    title={props.workTitle}
+                    composer={props.completeName}
+                    byUrl={false}
+                    fetchAudio={props.fetchAudio}
+                    audioObject={props.audioObject}
+                    setAnotherRequest={props.setAnotherRequest}
+                />
             </div>}
             {props.workID === -1 && <div className={styles.noResults}>
                 <span>{props.workTitle}</span>

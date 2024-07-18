@@ -202,6 +202,8 @@ function ViewWorks(props) {
               composer={composer}
               darkModeEnabled={props.darkModeEnabled}
               fetchAudio={props.fetchAudio}
+              audioObject={props.audioObject}
+              setAnotherRequest={props.setAnotherRequest}
             />
           );
         })}

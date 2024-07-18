@@ -40,7 +40,7 @@ function Home(props) {
       </div>
 
       <animated.div style={secondRowStyling} className={styles.secondRow}>
-        <BirthdayCarousel darkModeEnabled={props.darkModeEnabled} fetchAudio={props.fetchAudio} />
+        <BirthdayCarousel darkModeEnabled={props.darkModeEnabled} fetchAudio={props.fetchAudio} audioObject={props.audioObject} setAnotherRequest={props.setAnotherRequest} />
         <QOTD darkModeEnabled={props.darkModeEnabled} />
       </animated.div>
 

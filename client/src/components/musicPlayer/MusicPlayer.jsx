@@ -10,41 +10,73 @@ import handleFetchAudio from "./handleFetchAudio";
 function MusicPlayer(props) {
 
   const [showMusicPlayer, setShowMusicPlayer] = useState(false);
-  const [audioObject, setAudioObject] = useState(null);
-  const [currentSong, setCurrentSong] = useState({
-    title: "",
-    composerName: "",
-    portrait: ""
-  });
+  const [currentSong, setCurrentSong] = useState({ title: "", composerName: "", portrait: "" });
+
+  // playing song
+  const [playlistQueueIndex, setPlaylistQueueIndex] = useState(0);
+  const [queueLength, setQueueLength] = useState(0);
   useEffect(() => {
     if (props.musicRequest) {                           // when a request comes in
+      let byURL = props.musicRequest[0];
+      let workQueue = props.musicRequest[1];
+      setQueueLength(workQueue.length);
 
-      if (audioObject !== null) {                       // if song is playing, stop
-        audioObject.pause();
-        audioObject.currentTime = 0;
-        setAudioObject(null);
-      }
+      let identfier; // id or url
+      console.log(workQueue[playlistQueueIndex])
+      // if (byPlaylist === true);
+      //   identfier = workQueue[playlistQueueIndex];
+      // else
+      identfier = workQueue[playlistQueueIndex];
 
-      let byURL = props.musicRequest[0];                // is it by url or work id
-      let urlOrID = props.musicRequest[1];              // the url or work id
-      handleFetchAudio(byURL, urlOrID).then(res => {
-        // res returns Audio Object and song info 
-        setAudioObject(res[0]);
+
+
+      handleFetchAudio(byURL, identfier).then(res => {    // res = [Audio object, song metadata] 
+        props.setAudioObject(res[0]);
         setCurrentSong(res[1]);
-        setShowMusicPlayer(true);
         res[0].play();
       }).catch(err => {
         console.log(err);
       })
+
+      // }
+      // one song
+      // else {
+      //   if (props.audioObject !== null) {                 // if song is playing, stop
+      //     props.audioObject.pause();
+      //     props.audioObject.currentTime = 0;
+      //     props.setAudioObject(null);
+      //   }
+      //   let byURL = props.musicRequest[0];                // is it by url or work id
+      //   let urlOrID = props.musicRequest[1];              // the url or work id
+      //   handleFetchAudio(byURL, urlOrID).then(res => {    // res = [Audio object, song metadata] 
+      //     props.setAudioObject(res[0]);
+      //     setCurrentSong(res[1]);
+      //     res[0].play();
+      //   }).catch(err => {
+      //     console.log(err);
+      //   })
+      // }
     }
-  }, [props.musicRequest]);
+  }, [props.musicRequest, playlistQueueIndex]);
 
   function closeMusicPlayer() {
-    audioObject.pause();
-    audioObject.currentTime = 0;
-    setAudioObject(null);
+    props.audioObject.pause();
+    props.audioObject.currentTime = 0;
+    props.setAudioObject(null);
+    setCurrentSong({ title: "", composerName: "", portrait: "" });
     setShowMusicPlayer(false);
   }
+
+  // show or hide music player if we make another request
+  useEffect(() => {
+    if (props.anotherRequest && currentSong.title !== "") {
+      setShowMusicPlayer(true);
+    }
+    else if (!props.anotherRequest && currentSong.title !== "") {
+      setCurrentSong({ title: "", composerName: "", portrait: "" });
+      closeMusicPlayer();
+    }
+  }, [props.anotherRequest, currentSong])
 
   /* ---------------------- Volume Box Control ---------------------- */
   // Trigger animation to show or hide vol box
@@ -58,7 +90,7 @@ function MusicPlayer(props) {
   function changeVolume(newVolume) {
     setVolume(newVolume);
     changeVolumeIcon(newVolume);
-    audioObject.volume = newVolume / 100;
+    props.audioObject.volume = newVolume / 100;
   }
 
   const [volumeIcon, setVolumeIcon] = useState(faVolumeLow);
@@ -105,7 +137,7 @@ function MusicPlayer(props) {
   const [ppPressed, setPpPressed] = useState(true); // music auto plays when the play button is pressed
   const [ppIcon, setPpIcon] = useState(faPause);
   function changePpIcon() {
-    setPpPressed(!ppPressed);
+    // setPpPressed(!ppPressed);
     if (ppPressed) {
       // if was playing, pause
       setPpPressed(false);
@@ -123,9 +155,9 @@ function MusicPlayer(props) {
   /* ---------------------- Music Box Control ---------------------- */
   function playOrPauseMusic(playOrPause) {  // can be merged instead of a separate function
     if (playOrPause === "play") {           // separated on purpose for clarity.
-      audioObject.play();
+      props.audioObject.play();
     } else if (playOrPause === "pause") {
-      audioObject.pause();
+      props.audioObject.pause();
     }
   }
 
@@ -166,32 +198,31 @@ function MusicPlayer(props) {
   /* ---------------------- Music Box Control ---------------------- */
 
   /* ---------------------- Time Control ---------------------- */
-  // deal with time
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [remainingTime, setRemainingTime] = useState(null);
   const [progressPercentage, setProgressPercentage] = useState(0);
   useEffect(() => {
 
-    if (!audioObject)
+    if (!props.audioObject)
       return
 
     var timeHandlerInterval = setInterval(() => {
       // update current time
-      let rawCurrentTime = audioObject.currentTime;
+      let rawCurrentTime = props.audioObject.currentTime;
       let processedCurrentTime = rawCurrentTime < 3600 ? new Date(rawCurrentTime * 1000).toISOString().substring(14, 19) : new Date(rawCurrentTime * 1000).toISOString().substring(11, 16);
       setTimeElapsed(processedCurrentTime);
 
       // update elapsed time
-      let rawElapsedTime = audioObject.duration - audioObject.currentTime;
+      let rawElapsedTime = props.audioObject.duration - props.audioObject.currentTime;
       let processedElapsedTime = rawElapsedTime < 3600 ? new Date(rawElapsedTime * 1000).toISOString().substring(14, 19) : new Date(rawElapsedTime * 1000).toISOString().substring(11, 16);
       setRemainingTime(processedElapsedTime);
 
       // update percentage complete (for progress bar)
-      let remainingPercentage = 100 - (rawElapsedTime / audioObject.duration) * 100;
+      let remainingPercentage = 100 - (rawElapsedTime / props.audioObject.duration) * 100;
       setProgressPercentage(remainingPercentage);
 
       // change icon to play when song finishes
-      if (rawCurrentTime >= audioObject.duration) {
+      if (rawCurrentTime >= props.audioObject.duration && playlistQueueIndex === queueLength - 1) {
         changePpIcon("play");
       }
     }, 200);
@@ -199,30 +230,42 @@ function MusicPlayer(props) {
     return () => {
       clearInterval(timeHandlerInterval); // clear interval when unmounted
     };
-  }, [audioObject]);
+  }, [props.audioObject]);
 
   function fastforward10() {
-    if (audioObject.currentTime + 10 >= audioObject.duration) {
-      audioObject.currentTime = audioObject.duration;
+    if (props.audioObject.currentTime + 10 >= props.audioObject.duration) {
+      props.audioObject.currentTime = props.audioObject.duration;
     } else {
-      audioObject.currentTime += 10;
+      props.audioObject.currentTime += 10;
     }
   }
 
   function rewind10() {
-    if (audioObject.currentTime - 10 <= 0) {
-      audioObject.currentTime = 0;
+    if (props.audioObject.currentTime - 10 <= 0) {
+      props.audioObject.currentTime = 0;
     } else {
-      audioObject.currentTime -= 10;
+      props.audioObject.currentTime -= 10;
     }
   }
 
   // called by progress bar click/drag event
   function updateTime(percentage) {
-    audioObject.currentTime = audioObject.duration * (percentage / 100);
+    props.audioObject.currentTime = props.audioObject.duration * (percentage / 100);
   }
   /* ---------------------- Time Control ---------------------- */
 
+  /* ---------------------- Playlist Control ---------------------- */
+  // go to next song when timer is up
+  useEffect(() => {
+    if (remainingTime && remainingTime.toString() === "00:00") {
+      if (playlistQueueIndex !== queueLength - 1)
+        setPlaylistQueueIndex(prev => prev + 1);
+      console.log(playlistQueueIndex, queueLength - 1)
+    }
+  }, [remainingTime])
+  /* ---------------------- Playlist Control ---------------------- */
+
+  /* ---------------------- Styling ---------------------- */
   // slide music player
   const slideAnim = useSpring({
     from: { transform: showMusicPlayer ? "translateX(-200%)" : "translateX(0%)" },
@@ -230,13 +273,11 @@ function MusicPlayer(props) {
     config: { tension: 200, friction: 30 },
   });
 
-  // -------------------- Dark Mode -------------------- //
   const musicPlayerDarkMode = {
     backgroundColor: props.darkModeEnabled ? "#242728" : "",
     color: props.darkModeEnabled ? "#e8e6e3" : ""
   }
-  // -------------------- Dark Mode -------------------- //
-
+  /* ---------------------- Styling ---------------------- */
   return (
     <animated.div style={slideAnim} className={styles.musicPlayerBody} onMouseEnter={toggleVolBoxShown} onMouseLeave={toggleVolBoxShown}>
       <div className={styles.musicPlayer}>

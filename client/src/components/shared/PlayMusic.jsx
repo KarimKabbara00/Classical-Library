@@ -8,8 +8,27 @@ function PlayMusic(props) {
     const [svgIcon, setSvgIcon] = useState(faCirclePlay);
 
     function playSong(byURL, urlOrID) {
-        props.fetchAudio(byURL, urlOrID);
+        if (svgIcon === faCircleStop) {     // if button is pressed and icon is stop
+            props.setAnotherRequest(false); // did not make another request, hide player. 
+            setSvgIcon(faCirclePlay)        // icon play
+            return;
+        }
+        // otherwise
+        props.fetchAudio(byURL, [urlOrID]);   // fetch song
+        props.setAnotherRequest(true);      // made another request, keep player open.
+        setSvgIcon(faSpinner);              // icon spin
     }
+
+    useEffect(() => {
+        // when the song is fetched, and the current icon is spinning, set it to stop icon
+        if (props.audioObject !== null && svgIcon === faSpinner) {
+            setSvgIcon(faCircleStop);
+        }
+        // when the song is stopped, and the current icon is stop, set it to play icon
+        else if (props.audioObject === null && svgIcon === faCircleStop) {
+            setSvgIcon(faCirclePlay);
+        }
+    }, [props.audioObject])
 
     return (
         // byUrl is a boolean

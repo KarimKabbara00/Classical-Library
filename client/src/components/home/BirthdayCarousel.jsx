@@ -44,7 +44,10 @@ function BirthdayCarousel(props) {
                             index={index}
                             visibleIndex={visibleIndex}
                             darkModeEnabled={props.darkModeEnabled}
+                            // music
                             fetchAudio={props.fetchAudio}
+                            audioObject={props.audioObject}
+                            setAnotherRequest={props.setAnotherRequest}
                         />
                     })}
                 </div>

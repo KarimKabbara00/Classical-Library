@@ -7,7 +7,7 @@ function About(props) {
     const apisUsed = (
         <ul>
             <li><span style={{ fontWeight: "bold" }}>OpenOpus: </span>classical music metadata.</li>
-            <li style={{ marginTop: "0.75rem", marginBottom: "0.75rem" }}><span style={{ fontWeight: "bold" }}>ChatGPT: </span>unique composer descriptions and trivia questions.</li>
+            <li style={{ marginTop: "0.75rem", marginBottom: "0.75rem" }}><span style={{ fontWeight: "bold" }}>ChatGPT: </span>unique composer descriptions, daily quotes, and trivia questions.</li>
             <li><span style={{ fontWeight: "bold" }}>Google Maps: </span>interactive map for composer birth locations.</li>
         </ul>
     );

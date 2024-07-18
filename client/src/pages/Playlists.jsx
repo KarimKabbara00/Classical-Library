@@ -61,7 +61,6 @@ function Playlists(props) {
     // -------------------- Dark Mode -------------------- //
 
     return (
-
         <div style={darkMode} className={styles.playlistParent}>
             <div className={loadingStyling}>
                 <Loading loadingText={"Grabbing your playlists..."} darkModeEnabled={props.darkModeEnabled} />
@@ -77,12 +76,8 @@ function Playlists(props) {
                                 playlist={playlist}
                                 forceUpdate={forceUpdate}
                                 darkModeEnabled={props.darkModeEnabled}
-                                // music stuff
-                                audioObject={props.audioObject}
-                                setAudioObject={props.setAudioObject}
-                                showOrHideMusicPlayer={props.showOrHideMusicPlayer}
-                                currentSong={props.currentSong}
-                                setCurrentSong={props.setCurrentSong}
+                                fetchAudio={props.fetchAudio}
+                                setAnotherRequest={props.setAnotherRequest}
                             />
                         })}
                         {playlists.length !== 0 &&

@@ -17,7 +17,6 @@ import playWhite from "../../../images/playlists/play-white.svg"
 import editWhite from "../../../images/playlists/edit-white.svg"
 import deleteWhite from "../../../images/playlists/delete-white.svg"
 import Prompt from "../../shared/Prompt";
-import PlayPlaylist from "./PlayPlaylist";
 
 function PlaylistItem(props) {
 
@@ -39,15 +38,13 @@ function PlaylistItem(props) {
             hovered ? setPlaySVG(playBrown) : setPlaySVG(playBlack);
     }
 
-    const [queue, setQueue] = useState([]);
-    const [beginPlaylist, setBeginPlaylist] = useState(false);
     function playPlaylist() {
         axios.post("http://localhost:3001/api/createPlaylistQueue", {
             userID: props.user_id,
             playlistName: props.playlist.playlistName
         }).then(res => {
-            setQueue(res.data);
-            setBeginPlaylist(true);
+            props.fetchAudio(res.data)
+            props.setAnotherRequest(true);
         }).catch(err => {
             toast.error("Error fetching works")
             console.log(err);
@@ -145,18 +142,6 @@ function PlaylistItem(props) {
                 callback={deletePlaylist}
                 darkModeEnabled={props.darkModeEnabled}
             />}
-
-            {/* Utility component that does not render anything. It plays the playlists. Similar to PlayMusic.jsx which renders the play button */}
-            {beginPlaylist && <PlayPlaylist
-                queue={queue}
-                audioObject={props.audioObject}
-                setAudioObject={props.setAudioObject}
-                showOrHideMusicPlayer={props.showOrHideMusicPlayer}
-                currentSong={props.currentSong}
-                setCurrentSong={props.setCurrentSong}
-                darkModeEnabled={props.darkModeEnabled}
-            />}
-
         </div>
 
     )
