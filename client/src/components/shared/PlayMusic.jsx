@@ -14,7 +14,7 @@ function PlayMusic(props) {
             return;
         }
         // otherwise
-        props.fetchAudio(byURL, [urlOrID]);   // fetch song
+        props.fetchAudio(byURL, [urlOrID]); // fetch song
         props.setAnotherRequest(true);      // made another request, keep player open.
         setSvgIcon(faSpinner);              // icon spin
     }

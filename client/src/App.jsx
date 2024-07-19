@@ -10,6 +10,7 @@ import AllComposers from "./pages/AllComposers";
 import AllWorks from "./pages/AllWorks";
 import ViewComposer from "./pages/ViewComposer";
 import MusicPlayer from "./components/musicPlayer/MusicPlayer";
+import DockedMusicPlayer from "./components/dockedMusicPlayer/DockedMusicPlayer";
 import ViewWorks from "./pages/ViewWorks";
 import SignIn from "./pages/SignIn";
 import Playlists from "./pages/Playlists";
@@ -18,7 +19,6 @@ import EditPlaylist from "./components/playlists/Playlists/EditPlaylist";
 import Profile from "./pages/Profile";
 import Trivia from "./pages/Trivia";
 import TriviaQuiz from "./components/trivia/TriviaQuiz";
-
 
 function App() {
 
@@ -43,9 +43,16 @@ function App() {
   /* -------------------------------- Music Player -------------------------------- */
   const [musicRequest, setMusicRequest] = useState(null);
   const [audioObject, setAudioObject] = useState(null);
+  const [currentSong, setCurrentSong] = useState({ title: "", composerName: "", portrait: "" });
   const [anotherRequest, setAnotherRequest] = useState(false); // did another request come in, or just closing music player
+  const [playlistQueueIndex, setPlaylistQueueIndex] = useState(0);
+  const [queueLength, setQueueLength] = useState(0);
+  const [playerDocked, setPlayerDocked] = useState(false);
   function fetchAudio(byURL, urlOrID) {
     setMusicRequest([byURL, urlOrID])
+  }
+  function togglePlayerType(isDocked) {
+    setPlayerDocked(isDocked);
   }
   /* -------------------------------- Music Player -------------------------------- */
 
@@ -58,13 +65,13 @@ function App() {
   }, 2000)
   /* ------------------------------ Homepage On Load ------------------------------ */
 
-  /* ------------------------------ Dark Mode ------------------------------ */
+  /* --------------------------------- Dark Mode --------------------------------- */
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
   function toggleDarkMode(enabled) {
     setDarkModeEnabled(enabled);
     localStorage.setItem("darkModeEnabled", enabled); // queried in SideBarItem.jsx
   }
-  /* ------------------------------ Dark Mode ------------------------------ */
+  /* --------------------------------- Dark Mode --------------------------------- */
 
   return (
     <div>
@@ -87,13 +94,14 @@ function App() {
           {/* Profile Routes */}
           <Route path="/signIn" element={<SignIn setSessionData={setSessionData} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile" element={<Profile sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile/playlists" element={<Playlists sessionData={sessionData} fetchAudio={fetchAudio} setAnotherRequest={setAnotherRequest} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/profile/playlists" element={<Playlists sessionData={sessionData} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile/playlists/editPlaylist" element={<EditPlaylist sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
         </Routes>
       </BrowserRouter>
 
-      <MusicPlayer musicRequest={musicRequest} audioObject={audioObject} setAudioObject={setAudioObject} anotherRequest={anotherRequest} darkModeEnabled={darkModeEnabled} />
+      <MusicPlayer musicRequest={musicRequest} audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} anotherRequest={anotherRequest} playlistQueueIndex={playlistQueueIndex} setPlaylistQueueIndex={setPlaylistQueueIndex} queueLength={queueLength} setQueueLength={setQueueLength} togglePlayerType={togglePlayerType} playerDocked={playerDocked} darkModeEnabled={darkModeEnabled} />
+      <DockedMusicPlayer musicRequest={musicRequest} audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} anotherRequest={anotherRequest} playlistQueueIndex={playlistQueueIndex} setPlaylistQueueIndex={setPlaylistQueueIndex} queueLength={queueLength} setQueueLength={setQueueLength} togglePlayerType={togglePlayerType} playerDocked={playerDocked} darkModeEnabled={darkModeEnabled} />
       <div>
         <Toaster position="top-left" reverseOrder={false} containerStyle={{ position: "absolute", top: 80, left: 80, bottom: 20, right: 20, }} />
       </div>

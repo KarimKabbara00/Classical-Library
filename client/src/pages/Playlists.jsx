@@ -77,6 +77,7 @@ function Playlists(props) {
                                 forceUpdate={forceUpdate}
                                 darkModeEnabled={props.darkModeEnabled}
                                 fetchAudio={props.fetchAudio}
+                                audioObject={props.audioObject}
                                 setAnotherRequest={props.setAnotherRequest}
                             />
                         })}

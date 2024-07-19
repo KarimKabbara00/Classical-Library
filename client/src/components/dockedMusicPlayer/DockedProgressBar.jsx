@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import styles from "../../css/musicPlayer.module.css";
 
-function ProgressBar(props) {
+function DockedProgressBar(props) {
 
   const [mouseClicked, setMouseClicked] = useState(false);
   const progressBarFillStyle = {
     background: `linear-gradient(90deg, brown ${props.progressPercentage}%, ${props.darkModeEnabled ? "#e8e6e3" : "white"} 0%)`,
+    width: props.is1280Px ? "20vw" : "37vw",
+    height: "1vh"
   };
 
   function calcPercentage(event) {
@@ -43,4 +45,4 @@ function ProgressBar(props) {
   )
 }
 
-export default ProgressBar;
+export default DockedProgressBar;

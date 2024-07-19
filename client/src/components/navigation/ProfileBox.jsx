@@ -17,7 +17,8 @@ function ProfileBox(props) {
 
     function logout() {
         props.logout();
-        navigate("/")
+        if (window.location.href.includes("profile"))
+            navigate("/")
     }
 
     // -------------------- Dark Mode -------------------- //

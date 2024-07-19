@@ -17,6 +17,8 @@ import playWhite from "../../../images/playlists/play-white.svg"
 import editWhite from "../../../images/playlists/edit-white.svg"
 import deleteWhite from "../../../images/playlists/delete-white.svg"
 import Prompt from "../../shared/Prompt";
+import { faS, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function PlaylistItem(props) {
 
@@ -38,12 +40,19 @@ function PlaylistItem(props) {
             hovered ? setPlaySVG(playBrown) : setPlaySVG(playBlack);
     }
 
+    useEffect(() => {
+        if (props.audioObject !== null) {
+            onPlayHoverEvent(false);
+        }
+    }, [props.audioObject])
+
     function playPlaylist() {
+        setPlaySVG(faSpinner)
         axios.post("http://localhost:3001/api/createPlaylistQueue", {
             userID: props.user_id,
             playlistName: props.playlist.playlistName
         }).then(res => {
-            props.fetchAudio(res.data)
+            props.fetchAudio(false, res.data)
             props.setAnotherRequest(true);
         }).catch(err => {
             toast.error("Error fetching works")
@@ -121,7 +130,11 @@ function PlaylistItem(props) {
                         <img onClick={onArrowClick} className={styles.playlistTitleArrow} src={arrowSVG} width="25px" alt="arrowRightDownIcon" />
                     </div>
                     <div className={styles.playlistActionsParent}>
-                        <img src={playSVG} onClick={playPlaylist} onMouseEnter={() => onPlayHoverEvent(true)} onMouseLeave={() => onPlayHoverEvent(false)} width="20px" alt="playIcon" />
+                        {playSVG === faSpinner ?
+                            <FontAwesomeIcon icon={playSVG} className="fa-spin" style={{ fontSize: "1.1rem", marginRight: "0.1rem" }} />
+                            :
+                            <img src={playSVG} onClick={playPlaylist} onMouseEnter={() => onPlayHoverEvent(true)} onMouseLeave={() => onPlayHoverEvent(false)} width="20px" alt="playIcon" />
+                        }
                         <img src={editSVG} onClick={editPlaylist} onMouseEnter={() => onEditHoverEvent(true)} onMouseLeave={() => onEditHoverEvent(false)} width="20px" alt="editIcon" />
                         <img src={deleteSVG} onClick={() => setPromptDelete(true)} onMouseEnter={() => onDeleteHoverEvent(true)} onMouseLeave={() => onDeleteHoverEvent(false)} width="20px" alt="deleteIcon" />
                     </div>
