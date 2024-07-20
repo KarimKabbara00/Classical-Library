@@ -17,7 +17,7 @@ import playWhite from "../../../images/playlists/play-white.svg"
 import editWhite from "../../../images/playlists/edit-white.svg"
 import deleteWhite from "../../../images/playlists/delete-white.svg"
 import Prompt from "../../shared/Prompt";
-import { faS, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faShuffle, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function PlaylistItem(props) {
@@ -40,17 +40,24 @@ function PlaylistItem(props) {
             hovered ? setPlaySVG(playBrown) : setPlaySVG(playBlack);
     }
 
+    const [shuffleSVG, setShuffleSVG] = useState(faShuffle);
+    const [shuffleHovered, setShuffleHovered] = useState(false);
+
     useEffect(() => {
         if (props.audioObject !== null) {
             onPlayHoverEvent(false);
+            setShuffleSVG(faShuffle);
         }
     }, [props.audioObject])
 
-    function playPlaylist() {
-        setPlaySVG(faSpinner)
+    function playPlaylist(event, shuffle) {
+        const { id } = event.target;
+        id === "play" ? setPlaySVG(faSpinner) : setShuffleSVG(faSpinner)
+
         axios.post("http://localhost:3001/api/createPlaylistQueue", {
             userID: props.user_id,
-            playlistName: props.playlist.playlistName
+            playlistName: props.playlist.playlistName,
+            shuffle: shuffle
         }).then(res => {
             props.fetchAudio(false, res.data)
             props.setAnotherRequest(true);
@@ -85,6 +92,7 @@ function PlaylistItem(props) {
         onPlayHoverEvent(false);
         onEditHoverEvent(false);
         onDeleteHoverEvent(false);
+        setShuffleSVG(faShuffle);
     }, [props.darkModeEnabled])
 
     // ---------- Delete ---------- //
@@ -125,16 +133,25 @@ function PlaylistItem(props) {
         <div>
             <div className={styles.playlistItem}>
                 <div className={styles.playlistTitleParent}>
-                    <div className={styles.playlistTitleAndArrow}>
+                    <div onClick={onArrowClick} className={styles.playlistTitleAndArrow}>
                         <h2>{props.playlist.playlistName}</h2>
-                        <img onClick={onArrowClick} className={styles.playlistTitleArrow} src={arrowSVG} width="25px" alt="arrowRightDownIcon" />
+                        <img src={arrowSVG} width="25px" alt="arrowRightDownIcon" />
                     </div>
                     <div className={styles.playlistActionsParent}>
                         {playSVG === faSpinner ?
                             <FontAwesomeIcon icon={playSVG} className="fa-spin" style={{ fontSize: "1.1rem", marginRight: "0.1rem" }} />
                             :
-                            <img src={playSVG} onClick={playPlaylist} onMouseEnter={() => onPlayHoverEvent(true)} onMouseLeave={() => onPlayHoverEvent(false)} width="20px" alt="playIcon" />
+                            <img src={playSVG} id="play" onClick={(e) => playPlaylist(e, false)} onMouseEnter={() => onPlayHoverEvent(true)} onMouseLeave={() => onPlayHoverEvent(false)} width="20px" alt="playIcon" />
                         }
+
+                        {shuffleSVG === faSpinner ?
+                            <FontAwesomeIcon icon={shuffleSVG} className="fa-spin" style={{ fontSize: "1.1rem", marginRight: "0.1rem" }} />
+                            :
+                            <div onClick={(e) => playPlaylist(e, true)} onMouseEnter={() => setShuffleHovered(true)} onMouseLeave={() => setShuffleHovered(false)} >
+                                <FontAwesomeIcon id="shuffle" icon={shuffleSVG} style={{ fontSize: "1.1rem", marginRight: "0.1rem", paddingTop: "0.1rem", color: shuffleHovered ? "brown" : "black" }} />
+                            </div>
+                        }
+
                         <img src={editSVG} onClick={editPlaylist} onMouseEnter={() => onEditHoverEvent(true)} onMouseLeave={() => onEditHoverEvent(false)} width="20px" alt="editIcon" />
                         <img src={deleteSVG} onClick={() => setPromptDelete(true)} onMouseEnter={() => onDeleteHoverEvent(true)} onMouseLeave={() => onDeleteHoverEvent(false)} width="20px" alt="deleteIcon" />
                     </div>

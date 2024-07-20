@@ -11,8 +11,8 @@ function DockedVolumeBox(props) {
   }
 
   const anim = useSpring({
-    from: { transform: !props.volBoxShown ? "translateY(-95%)" : "translateY(200%)" },
-    to: { transform: !props.volBoxShown ? "translateY(200%)" : "translateY(-95%)" },
+    from: { transform: !props.volBoxShown ? "translateY(-110%)" : "translateY(200%)" },
+    to: { transform: !props.volBoxShown ? "translateY(200%)" : "translateY(-110%)" },
     config: { tension: 200, friction: 20 },
   });
 

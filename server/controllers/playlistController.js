@@ -1,6 +1,6 @@
 import axios from "axios";
 import { supabase } from "../utils/clients.js";
-import { sleep, getAllWorks } from "../utils/helperFunctions.js";
+import { sleep, getAllWorks, shuffleWorks } from "../utils/helperFunctions.js";
 
 const viewPlaylists = async (req, res) => {
     const { data, error } = await supabase.from("playlists").select("playlist_name, playlist_work_ids").eq("associated_uid", req.body.user_id);
@@ -190,7 +190,7 @@ const editPlaylist = async (req, res) => {
 
 const createPlaylistQueue = async (req, res) => {
     try {
-        const { userID, playlistName } = req.body;
+        const { userID, playlistName, shuffle } = req.body;
 
         // grab work ids from selected playlist
         const { data, error } = await supabase.from("playlists").select("playlist_work_ids").match({
@@ -203,21 +203,30 @@ const createPlaylistQueue = async (req, res) => {
         // grab data
         const worksResponse = await axios.get(`https://api.openopus.org/work/list/ids/${joinedWorkIDs}.json`);
 
-        const works = [];
+        var works = [];
         let portraitCounter = 0;
         for (let id of workIDs) {
             let workDetail = worksResponse.data.works[`w:${id}`];
+
+            let composerData = workDetail.composer;
+            let composerName = composerData.name;
+            let composerAbstract = worksResponse.data.abstract.composers;
+            let portraitIndex = composerAbstract.names.indexOf(composerName);
+            let portrait = portraitIndex !== -1 ? composerAbstract.portraits[portraitIndex] : undefined;
+
             works.push({
                 id: id,
                 title: workDetail.title,
                 composer: workDetail.composer.complete_name,
-                portrait: worksResponse.data.abstract.composers.portraits[portraitCounter] // for some reason portrait links are here
+                portrait: portrait
             });
             portraitCounter++;
         }
 
         if (error)
             throw error
+
+        works = shuffle ? shuffleWorks(works) : works;
 
         res.status(200).send(works);
     }

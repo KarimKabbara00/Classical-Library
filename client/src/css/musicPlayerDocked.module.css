@@ -92,7 +92,12 @@
 .controls {
     display: flex;
     align-items: center;
-    gap: 1.75rem;
+    /* gap: 1.75rem; */
+    padding-right: 1rem;
+}
+
+.controls > * {
+    padding-left: 1rem;
     padding-right: 1rem;
 }
 
@@ -113,15 +118,18 @@
     position: absolute;
     min-width: 4rem;
     min-height: 12rem;
-    top: -285%;
+    transform: translateY(-95%);
     z-index: 1;
-    background-color: transparent;
 }
 
 .volumeBar {
     position: absolute;
-    transform: translateY(-110%);
+    transform: translateY(-120%);
     z-index: 2;
+    background-color: white;
+    border: 2px solid brown;
+    border-radius: 10px;
+    padding: 1.5rem 0.5rem 0.75rem 0.5rem;
 }
 
 .upNextParent {
@@ -137,7 +145,6 @@
     border: 2px solid brown;
     border-radius: 10px;
     background-color: white;
-    padding: 1rem;
     min-height: 15rem;
     max-height: 15rem;
     min-width: 30rem;
@@ -145,7 +152,6 @@
     box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 5px 0px;
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
     z-index: 2;
 }
 
@@ -158,12 +164,32 @@
     position: absolute;
     width: 32.5rem;
     height: 20rem;
-    transform: translate(-15%, -95%);
+    transform: translate(-18%, -97%);
     padding-top: 1rem;
     z-index: 1;
 }
 
+.upNextTitleWrapper {
+    position: absolute;
+    width: calc(100% - 1rem);
+    z-index: 10;
+    background-color: white;
+    padding-left: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+    border-radius: 10px;
+}
+
+.upNextContent {
+    overflow-y: scroll;
+    padding-top: 1.75rem;
+    z-index: 1;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
 .queuedSong {
+    position: relative;
     margin-top: 1rem;
     border-bottom: 1px solid gray;
     padding-bottom: 0.25rem;

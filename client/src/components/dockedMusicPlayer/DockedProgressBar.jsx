@@ -13,12 +13,10 @@ function DockedProgressBar(props) {
   function calcPercentage(event) {
     setMouseClicked(true);
     const progressBarWidth = event.currentTarget.offsetWidth; // the width of the progress bar
-    const clickedX = event.clientX - event.currentTarget.offsetLeft; // where the user clicked relative to the progress bar
+    const clickedX = event.clientX - event.currentTarget.getBoundingClientRect().left; // where the user clicked relative to the progress bar
     const percentageClicked = (clickedX / progressBarWidth) * 100; // % of where user clicked relative to progress bar
-    const adjustedPercentage = ((percentageClicked - 7.965) / (107.5 - 7.965)) * 100; // percentage is skewed. Scale down between 0 and 100
-    const clampedPercentage = Math.min(100, Math.max(0, adjustedPercentage)); // make sure % doesnt go below 0 or above 100
-    props.setProgressPercentage(clampedPercentage);
-    props.updateTime(clampedPercentage);
+    props.setProgressPercentage(percentageClicked);
+    props.updateTime(percentageClicked);
   }
 
   function mouseReleased() {
