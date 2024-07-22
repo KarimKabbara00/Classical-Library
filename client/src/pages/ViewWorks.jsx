@@ -10,9 +10,9 @@ import styles from "../css/viewWorks.module.css";
 import loadingStyles from "../css/loading.module.css";
 import sharedStyles from "../css/shared.module.css";
 import BackToTop from "../components/shared/BackToTop";
-import deburr from 'lodash/deburr';
 import GenreButton from "../components/viewWorks/GenreButton";
 import Error from "../components/shared/Error";
+import matchQueryToTitle from "../components/shared/helperFunctions";
 
 function ViewWorks(props) {
   const location = useLocation();
@@ -108,15 +108,6 @@ function ViewWorks(props) {
       // filter works based on input
       let filteredWorks = allWorks.filter((work) => {
         // create modified titles to relax constraint on matching query to title
-        function matchQueryToTitle(title, query) {
-          // remove diactritcs and accents
-          title = deburr(title).toLocaleLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
-          let modifiedTitleA = title.replace("no. ", "").replaceAll("op. ", "").replaceAll(".", "").replaceAll(",", "").replaceAll('"', "").replace("in ", ""); // as basic as possible
-          let modifiedTitleB = title.replace("no. ", "").replaceAll("op. ", "").replaceAll(".", "").replaceAll(",", "").replaceAll('"', ""); // keep 'in'
-          let modifiedTitleC = title.replace("no. ", "number ").replace("op. ", "opus "); // lengthened abbreviations.
-          let modifiedTitleD = title.replace("no. ", "no ").replace("op. ", "op "); // alternate abbreviations.
-          return title.includes(query) || modifiedTitleA.includes(query) || modifiedTitleB.includes(query) || modifiedTitleC.includes(query) || modifiedTitleD.includes(query);
-        }
         return matchQueryToTitle(work.title, filter.toLocaleLowerCase());
       });
       setShownWorks(filteredWorks);
@@ -191,10 +182,10 @@ function ViewWorks(props) {
         </div>
 
         <WorkHeader currentGenre={currentGenre} sortWorks={sortWorks} darkModeEnabled={props.darkModeEnabled} />
-        {shownWorks.map((work, index) => {
+        {shownWorks.map((work) => {
           return (
             <WorkCard
-              key={index}
+              key={work.title} // intentionally not index
               title={work.title}
               genre={work.genre}
               duration={work.duration}

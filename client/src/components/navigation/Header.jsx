@@ -12,8 +12,12 @@ import { useMediaQuery } from "@uidotdev/usehooks";
 function Header(props) {
 
     const navigate = useNavigate();
-    // rerender header on sign in
-    useEffect(() => { }, [props.sessionData])
+
+    // signed in if we have access token
+    const [signedIn, setSignedIn] = useState(false)
+    useEffect(() => {
+        setSignedIn(props.accessToken !== null);
+    }, [props.accessToken])
 
     // programatic media queries
     const is1280Px = useMediaQuery("only screen and (max-width : 1280px)");
@@ -81,8 +85,8 @@ function Header(props) {
                     <img className={styles.navTitleLogo} src={logo} alt="Treble Clef Icon" />
                     <span>Classical Library</span>
                 </span>
-                {!props.sessionData && <div className={styles.signIn} onClick={() => { navigate("/signIn") }}>Sign In</div>}
-                {props.sessionData && <div onMouseEnter={toggleHover} onMouseLeave={toggleHover} className={styles.profileIcon}><FontAwesomeIcon icon={faUser} size={styling.profileIconSize} style={{ color: "#a52a2a" }} />
+                {!signedIn && <div className={styles.signIn} onClick={() => { navigate("/signIn") }}>Sign In</div>}
+                {signedIn && <div onMouseEnter={toggleHover} onMouseLeave={toggleHover} className={styles.profileIcon}><FontAwesomeIcon icon={faUser} size={styling.profileIconSize} style={{ color: "#a52a2a" }} />
                     {profileHovered && <ProfileBox logout={props.logout} darkModeEnabled={props.darkModeEnabled} />}
                 </div>}
             </nav>

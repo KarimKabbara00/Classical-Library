@@ -17,27 +17,27 @@ function Playlists(props) {
     const [playlists, setPlaylists] = useState([]);
     const [showLoading, setShowLoading] = useState(true);
     useEffect(() => {
-
-        if (!props.sessionData) {
+        if (!props.accessToken) {
             navigate("/signIn");
         }
         else {
             setShowLoading(true); // when state change is forced, show loading
-            axios.post("http://localhost:3001/api/viewPlaylists", {
-                user_id: props.sessionData.user.id
+            axios.get("http://localhost:3001/api/viewPlaylists", {
+                headers: {
+                    accessToken: `Bearer ${props.accessToken}`
+                }
             }).then(res => {
                 setPlaylists(res.data)
                 setShowLoading(false);
             }).catch(err => {
                 console.log(err);
                 setShowLoading(false);
-            })
+            });
         }
-
-    }, [state])
+    }, [state, props.accessToken])
 
     function newPlaylist() {
-        navigate("/profile/playlists/newPlaylist", { state: { userID: props.sessionData.user.id } });
+        navigate("/profile/playlists/newPlaylist");
     }
 
     // slide up or down loading
@@ -71,7 +71,7 @@ function Playlists(props) {
                     <div className={styles.playlists}>
                         {playlists.length !== 0 && playlists.map((playlist, index) => {
                             return <PlaylistItem
-                                user_id={props.sessionData.user.id}
+                                accessToken={props.accessToken}
                                 key={index}
                                 playlist={playlist}
                                 forceUpdate={forceUpdate}
@@ -88,12 +88,11 @@ function Playlists(props) {
                             </div>
                         }
                     </div>
-                    {playlists.length === 0 && <div className={styles.noPlaylists}>
-                        <span>You have no playlists.</span>
-                        <div onClick={newPlaylist} className={styles.createPlaylist}>Create playlist</div>
-                    </div>}
-
                 </div>
+                {playlists.length === 0 && <div className={styles.noPlaylists}>
+                    <span>You have no playlists.</span>
+                    <div onClick={newPlaylist} className={styles.createPlaylist}>Create playlist</div>
+                </div>}
             </div>}
         </div>
 

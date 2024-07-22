@@ -23,11 +23,11 @@ import TriviaQuiz from "./components/trivia/TriviaQuiz";
 function App() {
 
   /* -------------------------------- User Session -------------------------------- */
-  const [sessionData, setSessionData] = useState(null)
+  const [accessToken, setAccessToken] = useState(null)
   function logout() {
     try {
-      Cookies.remove('sessionData');
-      setSessionData(null);
+      Cookies.remove('accessToken');
+      setAccessToken(null);
       toast.success("Logged out")
     }
     catch (err) {
@@ -36,8 +36,15 @@ function App() {
     }
   }
   useEffect(() => {
-    Cookies.set("sessionData", sessionData, { expires: 2 }); // 2 day expiration
-  }, [sessionData]);
+    let aT;
+    if (accessToken) {
+      Cookies.set("accessToken", accessToken, { expires: 1 }); // 1 day (matches supabase conf)
+    }
+    else if (aT = Cookies.get("accessToken")) {
+      setAccessToken(aT);
+    }
+  }, [accessToken]);
+
   /* -------------------------------- User Session -------------------------------- */
 
   /* -------------------------------- Music Player -------------------------------- */
@@ -47,12 +54,13 @@ function App() {
   const [anotherRequest, setAnotherRequest] = useState(false); // did another request come in, or just closing music player
   const [playlistQueueIndex, setPlaylistQueueIndex] = useState(0);
   const [queueLength, setQueueLength] = useState(0);
-  const [playerDocked, setPlayerDocked] = useState(false);
+  const [playerDocked, setPlayerDocked] = useState(localStorage.getItem("playerDocked") === "true" || true);
   function fetchAudio(byURL, urlOrID) {
     setMusicRequest([byURL, urlOrID])
   }
   function togglePlayerType(isDocked) {
     setPlayerDocked(isDocked);
+    localStorage.setItem("playerDocked", isDocked);
   }
   /* -------------------------------- Music Player -------------------------------- */
 
@@ -76,10 +84,10 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        <Header sessionData={sessionData} logout={logout} toggleDarkMode={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
+        <Header accessToken={accessToken} logout={logout} toggleDarkMode={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
         <Routes>
           {/* Nav Bar Routes */}
-          <Route path="/" element={<Home setSessionData={setSessionData} firstLoad={firstLoad} darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} />} />
+          <Route path="/" element={<Home firstLoad={firstLoad} darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} />} />
           <Route path="/allComposers" element={<AllComposers darkModeEnabled={darkModeEnabled} />} />
           <Route path="/allWorks" element={<AllWorks darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} />} />
           <Route path="/viewComposer" element={<ViewComposer darkModeEnabled={darkModeEnabled} />} />
@@ -92,15 +100,15 @@ function App() {
           <Route path="/trivia/quiz" element={<TriviaQuiz darkModeEnabled={darkModeEnabled} />} />
 
           {/* Profile Routes */}
-          <Route path="/signIn" element={<SignIn setSessionData={setSessionData} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile" element={<Profile sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile/playlists" element={<Playlists sessionData={sessionData} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile/playlists/editPlaylist" element={<EditPlaylist sessionData={sessionData} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/signIn" element={<SignIn setAccessToken={setAccessToken} darkModeEnabled={darkModeEnabled} />} />
+          {/* <Route path="/profile" element={<Profile accessToken={accessToken} darkModeEnabled={darkModeEnabled} />} /> */}
+          <Route path="/profile/playlists" element={<Playlists accessToken={accessToken} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist accessToken={accessToken} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/profile/playlists/editPlaylist" element={<EditPlaylist accessToken={accessToken} darkModeEnabled={darkModeEnabled} />} />
         </Routes>
       </BrowserRouter>
 
-      <MusicPlayer musicRequest={musicRequest} audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} anotherRequest={anotherRequest} playlistQueueIndex={playlistQueueIndex} setPlaylistQueueIndex={setPlaylistQueueIndex} queueLength={queueLength} setQueueLength={setQueueLength} togglePlayerType={togglePlayerType} playerDocked={playerDocked} darkModeEnabled={darkModeEnabled} />
+      {/* <MusicPlayer musicRequest={musicRequest} audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} anotherRequest={anotherRequest} playlistQueueIndex={playlistQueueIndex} setPlaylistQueueIndex={setPlaylistQueueIndex} queueLength={queueLength} setQueueLength={setQueueLength} togglePlayerType={togglePlayerType} playerDocked={playerDocked} darkModeEnabled={darkModeEnabled} /> */}
       <DockedMusicPlayer musicRequest={musicRequest} audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} anotherRequest={anotherRequest} playlistQueueIndex={playlistQueueIndex} setPlaylistQueueIndex={setPlaylistQueueIndex} queueLength={queueLength} setQueueLength={setQueueLength} togglePlayerType={togglePlayerType} playerDocked={playerDocked} darkModeEnabled={darkModeEnabled} />
       <div>
         <Toaster position="top-left" reverseOrder={false} containerStyle={{ position: "absolute", top: 80, left: 80, bottom: 20, right: 20, }} />

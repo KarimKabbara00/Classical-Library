@@ -2,44 +2,45 @@ import axios from "axios";
 
 async function handleFetchAudio(byURL, urlOrID) {
 
-    const workMetadata = await axios.post("http://localhost:3001/api/musicMetadata", {
-        byURL: byURL,
-        urlOrID: urlOrID
-    });
-    const metadata = workMetadata.data;
-
-    var response;
-    if (byURL === true) {  // send url
-        response = await fetch("http://localhost:3001/api/musicByURL", {
-            method: "POST",
+    try {
+        const metadataResp = await axios.get(`http://localhost:3001/api/musicMetadata?byURL=${byURL}&urlOrID=${urlOrID}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ url: urlOrID })
         });
-    }
-    else {
-        response = await fetch("http://localhost:3001/api/musicByID", {
-            method: "POST",
+        const metadata = metadataResp.data;
+
+        var response, endpoint, queryVar;
+        if (byURL === true) {  // send url
+            endpoint = "musicByURL";
+            queryVar = "url";
+        }
+        else {
+            endpoint = "musicByID";
+            queryVar = "workID";
+        }
+
+        response = await axios.get(`http://localhost:3001/api/${endpoint}?${queryVar}=${encodeURIComponent(urlOrID)}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ workID: urlOrID })
         });
+
+        if (!response || !endpoint || !queryVar) {
+            throw "ERROR MAKING REQUEST!";
+        }
+
+        var audioObject = new Audio();
+        audioObject.src = `http://localhost:3001/api/${endpoint}?${queryVar}=${encodeURIComponent(urlOrID)}`
+
+        return [audioObject, metadata];
+    }
+    catch (e) {
+        console.log(e);
     }
 
-    var audioObject = null;
-    if (response.ok) {
-        const audioBlob = await response.blob();
-        const audioUrl = URL.createObjectURL(audioBlob);
-        audioObject = new Audio(audioUrl);
-    }
-    else {
-        console.error("Error fetching audio");
-    }
-    return [audioObject, metadata];
 };
 
 export default handleFetchAudio;

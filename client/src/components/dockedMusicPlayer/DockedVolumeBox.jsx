@@ -17,7 +17,7 @@ function DockedVolumeBox(props) {
   });
 
   const darkModeStyle = {
-    backgroundColor: props.darkModeEnabled ? "#242728" : "",
+    backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
     border: props.darkModeEnabled ? "2px solid #e8e6e3" : "",
   }
 

@@ -38,7 +38,7 @@ const viewComposer = async (req, res) => {
                 const dob = data[0].composer_dob.replaceAll("/", "-").replace(new RegExp("\\b-0-0\\b"), ""); // unknown exact dobs will look like 1135-0-0 so only keep year
                 const dod = data[0].composer_dod ? data[0].composer_dod.replaceAll("/", "-").replace(new RegExp("\\b-0-0\\b"), "") : "N/A";
 
-                await sleep(2000);
+                // await sleep(2000);
                 res.status(200).send({
                     composerData: compResponse.data.composer,
                     genreData: compResponse.data.genres,

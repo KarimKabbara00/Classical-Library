@@ -3,8 +3,8 @@ import { musicByURL, musicByID, musicMetadata } from "../controllers/musicContro
 
 const router = express.Router();
 
-router.post("/musicByURL", musicByURL);
-router.post("/musicByID", musicByID);
-router.post("/musicMetadata", musicMetadata);
+router.get("/musicByURL", musicByURL);
+router.get("/musicByID", musicByID);
+router.get("/musicMetadata", musicMetadata);
 
 export default router;

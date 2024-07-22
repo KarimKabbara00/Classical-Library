@@ -21,7 +21,7 @@ const allComposers = async (req, res) => {
             });
         });
 
-        await sleep(2000);
+        // await sleep(2000);
         res.status(200).send({
             allComposers: composerInfo,
         });

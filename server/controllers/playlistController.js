@@ -3,7 +3,10 @@ import { supabase } from "../utils/clients.js";
 import { sleep, getAllWorks, shuffleWorks } from "../utils/helperFunctions.js";
 
 const viewPlaylists = async (req, res) => {
-    const { data, error } = await supabase.from("playlists").select("playlist_name, playlist_work_ids").eq("associated_uid", req.body.user_id);
+
+    const userID = req.userID;
+
+    const { data, error } = await supabase.from("playlists").select("playlist_name, playlist_work_ids").eq("associated_uid", userID);
     try {
         if (error) {
             throw error
@@ -33,7 +36,7 @@ const viewPlaylists = async (req, res) => {
             playlistData.push(playlistEntry);
 
         }
-        await sleep(2000);
+        // await sleep(2000);
         res.status(200).send(playlistData);
     }
     catch (e) {
@@ -44,7 +47,9 @@ const viewPlaylists = async (req, res) => {
 
 const createPlaylist = async (req, res) => {
     try {
-        const { userID, playlistName, playlistData } = req.body;
+
+        const userID = req.userID;
+        const { playlistName, playlistData } = req.body;
         let workIDs = playlistData.map(work => work.workID);
 
         const { data, error } = await supabase.from("users").select("id").eq("id", userID);
@@ -83,7 +88,8 @@ const allWorks = async (req, res) => {
 
 const deletePlaylist = async (req, res) => {
     try {
-        const { userID, playlistName } = req.body;
+        const userID = req.userID;
+        const { playlistName } = req.body;
         const { error } = await supabase.from("playlists").delete().match({
             associated_uid: userID,
             playlist_name: playlistName
@@ -101,14 +107,15 @@ const deletePlaylist = async (req, res) => {
 };
 
 const checkPlaylistRecord = async (req, res) => {
-    const { userID, newPlaylistName } = req.body;
+    const userID = req.userID;
+    const { newPlaylistName } = req.body;
     try {
         const { data, error } = await supabase.from("playlists").select("playlist_name").match({
             associated_uid: userID,
             playlist_name: newPlaylistName
         })
 
-        if (error) { // both should be null
+        if (error) { // should be null
             throw error;
         }
         if (data.length > 0) {
@@ -126,7 +133,9 @@ const checkPlaylistRecord = async (req, res) => {
 
 const fetchPlaylist = async (req, res) => {
     try {
-        const { userID, playlistName } = req.body;
+
+        const userID = req.userID;
+        const playlistName = req.query.playlistName;
 
         const { data, error } = await supabase.from("playlists").select("playlist_work_ids").match({
             associated_uid: userID,
@@ -164,7 +173,8 @@ const fetchPlaylist = async (req, res) => {
 const editPlaylist = async (req, res) => {
 
     try {
-        const { userID, oldPlaylistName, playlistName, playlistData } = req.body;
+        const userID = req.userID;
+        const { oldPlaylistName, playlistName, playlistData } = req.body;
 
         // pull work IDs
         let workIDs = playlistData.map(work => work.workID);
@@ -190,7 +200,8 @@ const editPlaylist = async (req, res) => {
 
 const createPlaylistQueue = async (req, res) => {
     try {
-        const { userID, playlistName, shuffle } = req.body;
+        const userID = req.userID;
+        const { playlistName, shuffle } = req.query;
 
         // grab work ids from selected playlist
         const { data, error } = await supabase.from("playlists").select("playlist_work_ids").match({

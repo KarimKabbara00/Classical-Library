@@ -9,7 +9,7 @@ import sharedStyles from "../css/shared.module.css";
 import Error from "../components/shared/Error";
 import Search from "../components/allWorks/Search";
 import WorkItem from "../components/allWorks/WorkItem";
-import deburr from 'lodash/deburr';
+import matchQueryToTitle from "../components/shared/helperFunctions";
 
 function AllWorks(props) {
 
@@ -31,8 +31,7 @@ function AllWorks(props) {
         let splitAllWorks = allWorks.split("^__^");
         let shownWorksObject = []; // works to show
         for (let i in splitAllWorks) {
-            let deburred = deburr(splitAllWorks[i]).toLocaleLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
-            if (deburred.includes(inputText)) {
+            if (matchQueryToTitle(splitAllWorks[i], inputText.toLocaleLowerCase())) {
                 let splitDeburred = splitAllWorks[i].split("$$")
                 shownWorksObject.push({
                     workID: splitDeburred[0],

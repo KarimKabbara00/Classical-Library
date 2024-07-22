@@ -8,7 +8,7 @@ const getMapMarkers = async (req, res) => {
         res.status(400).send({})
     }
     else {
-        await sleep(2000);
+        // await sleep(2000);
         res.status(200).send(data);
     }
 };

@@ -54,10 +54,14 @@ function PlaylistItem(props) {
         const { id } = event.target;
         id === "play" ? setPlaySVG(faSpinner) : setShuffleSVG(faSpinner)
 
-        axios.post("http://localhost:3001/api/createPlaylistQueue", {
-            userID: props.user_id,
-            playlistName: props.playlist.playlistName,
-            shuffle: shuffle
+        axios.get("http://localhost:3001/api/createPlaylistQueue", {
+            headers: {
+                accessToken: `Bearer ${props.accessToken}`,
+            },
+            params: {
+                playlistName: props.playlist.playlistName,
+                shuffle: shuffle
+            }
         }).then(res => {
             props.fetchAudio(false, res.data)
             props.setAnotherRequest(true);
@@ -77,9 +81,13 @@ function PlaylistItem(props) {
 
     const navigate = useNavigate();
     function editPlaylist() {
-        axios.post("http://localhost:3001/api/fetchPlaylist", {
-            userID: props.user_id,
-            playlistName: props.playlist.playlistName
+        axios.get("http://localhost:3001/api/fetchPlaylist", {
+            headers: {
+                accessToken: `Bearer ${props.accessToken}`,
+            },
+            params: {
+                playlistName: props.playlist.playlistName
+            }
         }).then(res => {
             navigate("/profile/playlists/editPlaylist", { state: { playlistData: res.data } })
         }).catch(err => {
@@ -111,8 +119,11 @@ function PlaylistItem(props) {
             return
 
         axios.post("http://localhost:3001/api/deletePlaylist", {
-            userID: props.user_id,
             playlistName: props.playlist.playlistName
+        }, {
+            headers: {
+                accessToken: `Bearer ${props.accessToken}`,
+            },
         }).then(res => {
             toast.success("Playlist deleted");
             props.forceUpdate();

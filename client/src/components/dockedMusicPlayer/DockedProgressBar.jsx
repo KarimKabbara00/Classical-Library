@@ -35,9 +35,6 @@ function DockedProgressBar(props) {
     }
   };
 
-  const progressBarDarkMode = {
-  }
-
   return (
     <div className={styles.progressBar} style={progressBarFillStyle} onMouseDown={calcPercentage} onMouseUp={mouseReleased} onMouseMove={handleMouseMove}></div>
   )

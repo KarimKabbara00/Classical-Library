@@ -86,22 +86,6 @@ async function getAllWorks() {
     return allWorksList
 }
 
-// function shuffleWorks(array, stopAtIndex) {
-
-//     // start at end
-//     let currentIndex = array.length;
-//     while (currentIndex !== stopAtIndex) {
-//         // rand from 0 to current index
-//         let randomIndex = Math.floor(Math.random() * (currentIndex - stopAtIndex)) + stopAtIndex;
-//         // narrow the window 
-//         currentIndex--;
-//         // swap a elements 
-//         [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-//     }
-//     return array;
-
-// }
-
 function shuffleWorks(array) {
     // start at end
     let currentIndex = array.length;

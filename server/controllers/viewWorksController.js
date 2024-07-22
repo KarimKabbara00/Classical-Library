@@ -13,7 +13,7 @@ const viewWorks = async (req, res) => {
         res.status(400).send() // 400 will throw an error at the frontend
     }
     else {
-        await sleep(2000);
+        // await sleep(2000);
 
         const composerName = response.data.composer.complete_name;
 

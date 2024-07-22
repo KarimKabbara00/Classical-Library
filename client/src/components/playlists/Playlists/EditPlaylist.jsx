@@ -8,7 +8,7 @@ import Loading from "../../shared/Loading";
 import styles from "../../../css/playlists.module.css";
 import loadingStyles from "../../../css/loading.module.css";
 import classNames from "classnames";
-import deburr from 'lodash/deburr';
+import matchQueryToTitle from "../../../components/shared/helperFunctions";
 
 function NewPlaylist(props) {
 
@@ -38,7 +38,7 @@ function NewPlaylist(props) {
             setWorksToAdd(location.state.playlistData.works);
         }
         else { // cant come here via url
-            if (props.sessionData)
+            if (props.accessToken)
                 navigate("/profile/playlists");
             else
                 navigate("/signIn");
@@ -75,10 +75,13 @@ function NewPlaylist(props) {
 
         try {
             await axios.post("http://localhost:3001/api/editPlaylist", {
-                userID: props.sessionData.user.id,
                 oldPlaylistName: oldPlaylistName,
                 playlistName: playlistName,
                 playlistData: worksToAdd
+            }, {
+                headers: {
+                    accessToken: `Bearer ${props.accessToken}`,
+                },
             })
             toast.success("Playlist edited");
             navigate("/profile/playlists");
@@ -93,8 +96,7 @@ function NewPlaylist(props) {
         let splitAllWorks = allWorks.split("^__^");
         let shownWorksObject = []; // works to show
         for (let i in splitAllWorks) {
-            let deburred = deburr(splitAllWorks[i]).toLocaleLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
-            if (deburred.includes(inputText)) {
+            if (matchQueryToTitle(splitAllWorks[i], inputText.toLocaleLowerCase())) {
                 let splitDeburred = splitAllWorks[i].split("$$")
                 shownWorksObject.push({
                     workID: splitDeburred[0],

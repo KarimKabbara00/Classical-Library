@@ -3,7 +3,7 @@ import { animated, useSpring } from "@react-spring/web";
 import DockedVolumeBox from "./DockedVolumeBox";
 import DockedProgressBar from "./DockedProgressBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause, faBackward, faForward, faVolumeXmark, faVolumeLow, faVolumeHigh, faX, faShuffle, faList, faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faPause, faBackward, faForward, faVolumeXmark, faVolumeLow, faVolumeHigh, faX, faList, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import styles from "../../css/musicPlayerDocked.module.css";
 import handleFetchAudio from "../shared/handleFetchAudio";
 import { useMediaQuery } from "@uidotdev/usehooks";
@@ -12,12 +12,11 @@ import DockedUpNext from "./DockedUpNext";
 function MusicPlayer(props) {
 
     const [showMusicPlayer, setShowMusicPlayer] = useState(false);
-
     // playing song
     useEffect(() => {
         if (props.musicRequest && props.playerDocked) {       // when a request comes in
 
-            if (props.audioObject !== null) {                 // if song is playing, stop
+            if (props.audioObject !== null) {                 //  if song is playing, stop
                 props.audioObject.pause();
                 props.audioObject.currentTime = 0;
                 props.setAudioObject(null);
@@ -37,8 +36,11 @@ function MusicPlayer(props) {
             handleFetchAudio(byURL, identfier).then(res => {    // res = [Audio object, song metadata] 
                 props.setAudioObject(res[0]);
                 props.setCurrentSong(res[1]);
+                // res[0].addEventListener('canplay', () => {
+                //     res[0].play();
+                // }, { once: true })
                 res[0].play();
-                setPpIcon(faPause)
+                setPpIcon(faPause);
             }).catch(err => {
                 console.log(err);
             })
@@ -50,9 +52,10 @@ function MusicPlayer(props) {
             props.audioObject.pause();
             props.audioObject.currentTime = 0;
         }
-        catch { void (0) }
+        catch (e) { console.log(e) }
         props.setAudioObject(null);
         props.setCurrentSong({ title: "", composerName: "", portrait: "" });
+        props.setPlaylistQueueIndex(0);
         setShowMusicPlayer(false);
     }
 
@@ -127,6 +130,7 @@ function MusicPlayer(props) {
         setForwardStyle(defaultStyle);
         setPpStyle(defaultStyle);
         setXStyling(unhoveredX);
+        setUpStyle(defaultStyle);
     }, [props.darkModeEnabled])
 
     const [ppIcon, setPpIcon] = useState(faPause);
@@ -175,6 +179,7 @@ function MusicPlayer(props) {
 
             // update elapsed time
             let rawElapsedTime = props.audioObject.duration - props.audioObject.currentTime;
+            rawElapsedTime = rawElapsedTime ? rawElapsedTime : 0
             let processedElapsedTime = rawElapsedTime < 3600 ? new Date(rawElapsedTime * 1000).toISOString().substring(14, 19) : new Date(rawElapsedTime * 1000).toISOString().substring(11, 16);
             setRemainingTime(processedElapsedTime);
 
@@ -219,9 +224,11 @@ function MusicPlayer(props) {
     /* ---------------------- Playlist Control ---------------------- */
     // go to next song when timer is up
     useEffect(() => {
-        if (remainingTime && remainingTime.toString() === "00:00") {
-            if (props.playlistQueueIndex !== props.queueLength - 1)
+        const ready = props.audioObject && props.audioObject.duration && remainingTime;
+        if (ready && remainingTime.toString() === "00:00") {
+            if (props.playlistQueueIndex !== props.queueLength - 1) {
                 props.setPlaylistQueueIndex(prev => prev + 1);
+            }
         }
     }, [remainingTime, props.playlistQueueIndex, props.queueLength])
 
@@ -254,14 +261,14 @@ function MusicPlayer(props) {
         config: { tension: 200, friction: 30 },
     });
 
-    // const musicPlayerDarkMode = {
-    //     backgroundColor: props.darkModeEnabled ? "#242728" : "",
-    //     border: props.darkModeEnabled ? "2px solid #e8e6e3" : "",
-    //     color: props.darkModeEnabled ? "#e8e6e3" : ""
-    // }
+    const musicPlayerDarkMode = {
+        backgroundColor: props.darkModeEnabled ? "#181a1b" : "",
+        borderTop: props.darkModeEnabled ? "2px solid #e8e6e3" : "",
+        color: props.darkModeEnabled ? "#e8e6e3" : ""
+    }
     /* ---------------------- Styling ---------------------- */
     return (
-        <animated.div style={dockedMusicPlayerAnim} className={styles.dockedPlayerParent} >
+        <animated.div style={{ ...dockedMusicPlayerAnim, ...musicPlayerDarkMode }} className={styles.dockedPlayerParent} >
             <div className={styles.songMetaData}>
                 <img className={styles.portrait} src={props.currentSong.portrait} width="45px" />
 
