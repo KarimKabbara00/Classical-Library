@@ -1,88 +1,108 @@
 .signInParent {
-    position: relative;
-    height: inherit;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-x: hidden;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3rem;
+}
+
+.noAccount {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.signUpHyperlink {
+    color: brown;
+}
+
+.signUpHyperlink:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .signInBox {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.25rem 0rem;
-    background-color: brown;
-    border-radius: 10px;
-    transition: all ease-in-out 200ms;
+    align-items: flex-start;
+    width: 40vw;
+    gap: 1.1rem 0rem;
+    margin-top: 0.75rem;
 }
 
-.signInForm {
+.signUpBox {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.75rem 0rem;
-    width: 16rem;
-    height: auto;
-    margin-bottom: 1rem;
-    border-radius: 10px;
-    transition: all ease-in-out 100ms;
-}
-
-.signInHeader {
-    color: white;
-    font-size: 2rem;
-    padding-top: 1.5rem;
+    width: 40vw;
+    margin-top: 0.75rem;
 }
 
 .signInField {
     position: relative;
-    padding: 0.25rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem 0rem;
+}
+
+.inputLabel {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.signInInput {
+    padding: 0.3rem;
     font-size: 1.1rem;
-    width: 15vw;
-    border-radius: 5px;
-    transition: all ease-in-out 200ms;
-    border: none;
-    outline: none;
-    -webkit-box-sizing: border-box;
-    /* Safari/Chrome, other WebKit */
-    -moz-box-sizing: border-box;
-    /* Firefox, other Gecko */
-    box-sizing: border-box;
-    /* Opera/IE 8+ */
+    border: 1px solid black;
+    border-radius: 3px;
+    background-color: whitesmoke;
+}
+
+.rememberForgot {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 0rem 0.25rem;
+}
+
+.forgot {
+    color: brown;
+}
+
+.forgot:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .signInButton {
-    background-color: white;
+    width: 100%;
+    border: 1px solid brown;
     border-radius: 5px;
-    border: 1px solid lightgray;
-    width: 15vw;
+    border: none;
+    background-color: brown;
     font-size: 1rem;
-    padding: 0.25rem;
+    padding: 0.5rem;
     text-align: center;
-    color: black;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .signInButton:hover {
     cursor: pointer;
-    background-color: lightgray;
-}
-
-.signUpHyperlink {
-    color: white;
-    text-decoration: underline;
-}
-
-.signUpHyperlink:hover {
-    cursor: pointer;
-    color: #0000FF;
+    background-color: rgb(141, 36, 36);
 }
 
 .peekPassword {
     position: absolute;
-    right: 0.6rem;
-    top: 0.47rem;
+    right: 0.5rem;
+    bottom: 0.31rem;
     color: black;
 }
 
@@ -96,6 +116,14 @@
     font-size: 1rem;
 }
 
+.separator {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.75rem;
+}
+
 .or {
     display: flex;
     align-items: center;
@@ -106,9 +134,9 @@
 }
 
 .bar {
-    height: 0.15rem;
-    width: 6rem;
-    background-color: white;
+    height: 0.1rem;
+    min-width: 45%;
+    background-color: darkgray;
     border-radius: 10px;
     margin-top: 0.1rem;
 }
@@ -116,13 +144,14 @@
 .continueWithGoogle {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0rem 0.4rem;
     background-color: white;
     border: 1px solid lightgray;
-    border-radius: 20px;
+    border-radius: 5px;
     padding: 0.5rem 1rem 0.5rem 1rem;
-    margin-top: 0.1rem;
-    margin-bottom: 1rem;
+    margin-top: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .continueWithGoogle:hover {
@@ -131,87 +160,21 @@
 }
 
 .passwordRequirements {
-    position: absolute;
-    width: 23rem;
-    border-radius: 10px;
+    width: 100%;
+    border-radius: 3px;
     border: 1px solid black;
     color: black;
     padding: 0.5rem;
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px 0px;
     background-color: white;
 }
 
-.passwordRequirements>div>div:first-child {
+.passwordReqTitle {
     font-weight: bold;
+    padding-bottom: 0.2rem;
 }
 
 .passwordReq {
     display: flex;
     align-items: center;
     gap: 0.3rem;
-}
-
-@keyframes nudgeReqBox {
-    0% {
-        transform: translate(65%, -15%);
-    }
-
-    25% {
-        transform: translate(68%, -15%);
-    }
-
-    50% {
-        transform: translate(62%, -15%);
-    }
-
-    75% {
-        transform: translate(68%, -15%);
-    }
-
-    100% {
-        transform: translate(65%, -15%);
-    }
-}
-
-.applyNudge {
-    animation: nudgeReqBox 300ms 1 normal;
-}
-
-@media (max-width: 1280px) {
-
-    .signInHeader {
-        font-size: 1.75rem;
-    }
-
-    .signInForm {
-        gap: 0.5rem 0rem;
-        width: 15rem;
-    }
-
-    .signInField {
-        font-size: 1rem;
-    }
-
-    .signInButton {
-        font-size: 1rem;
-    }
-
-    .askUserText {
-        color: white;
-        font-size: 0.9rem;
-    }
-
-    .or {
-        margin-top: 0.5rem;
-        margin-bottom: 0.55rem;
-    }
-
-    .bar {
-        width: 5.4rem;
-        margin-top: 0.1rem;
-    }
-
-    .continueWithGoogle {
-        margin-bottom: 1.35rem;
-    }
 }

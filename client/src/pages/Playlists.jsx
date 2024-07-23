@@ -8,6 +8,7 @@ import Loading from "../components/shared/Loading";
 import loadingStyles from "../css/loading.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import Cookies from 'js-cookie';
 
 function Playlists(props) {
 
@@ -17,14 +18,15 @@ function Playlists(props) {
     const [playlists, setPlaylists] = useState([]);
     const [showLoading, setShowLoading] = useState(true);
     useEffect(() => {
-        if (!props.accessToken) {
+
+        if (!Cookies.get("accessToken")) {
             navigate("/signIn");
         }
         else {
             setShowLoading(true); // when state change is forced, show loading
             axios.get("http://localhost:3001/api/viewPlaylists", {
                 headers: {
-                    accessToken: `Bearer ${props.accessToken}`
+                    accessToken: `Bearer ${Cookies.get("accessToken")}`
                 }
             }).then(res => {
                 setPlaylists(res.data)

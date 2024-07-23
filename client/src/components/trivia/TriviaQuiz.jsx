@@ -224,12 +224,12 @@ function Trivia(props) {
                         <div className={styles.buttonParent}>
 
                             {/* Disable previous button if on first question */}
-                            <button onClick={() => incrementIndex(false)} disabled={currentQuestionIndex === 0} type="button">
+                            <button className={styles.button} onClick={() => incrementIndex(false)} disabled={currentQuestionIndex === 0} type="button">
                                 Previous
                             </button>
 
                             {/* Disable submit button if on last question but selected answers < 5 */}
-                            <button onClick={() => incrementIndex(true)} disabled={currentQuestionIndex === 4 && Object.keys(selectedAnswers).length !== 5} type="button">
+                            <button className={styles.button} onClick={() => incrementIndex(true)} disabled={currentQuestionIndex === 4 && Object.keys(selectedAnswers).length !== 5} type="button">
                                 {currentQuestionIndex !== 4 ? "Next" : "Submit"}
                             </button>
                         </div>

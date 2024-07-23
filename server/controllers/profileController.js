@@ -16,25 +16,36 @@ const signIn = async (req, res) => {
 };
 
 const signUp = async (req, res) => {
-    const { displayName, email, password, confirmPassword } = req.body;
 
-    const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq("email", email);
+    try {
+        const { displayName, email, password, confirmPassword } = req.body;
 
-    if (data.length !== 0) {
-        res.status(400).send("Email already exists.");
+        const { data, error } = await supabase.from('users').select('*').eq("email", email);
+
+        if (data.length !== 0 || error || password !== confirmPassword)
+            throw "Error creating account";
+
+        supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    displayName: displayName,
+                }
+            }
+        }).then(result => {
+            res.status(201).send(result.data.user.email);
+        }).catch(err => {
+            console.log(err);
+            res.status(400).send(err);
+        });
+
     }
-    else {
-        supabase.auth.signUp({ email, password })
-            .then(result => {
-                res.status(201).send(result.data.user.email);
-            }).catch(err => {
-                console.log(err);
-                res.status(400).send(err);
-            });
+    catch (e) {
+        console.log(e)
+        res.status(400).send(e);
     }
+
 };
 
 const googleAuth = async (req, res) => {

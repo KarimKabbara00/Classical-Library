@@ -13,6 +13,7 @@ import MusicPlayer from "./components/musicPlayer/MusicPlayer";
 import DockedMusicPlayer from "./components/dockedMusicPlayer/DockedMusicPlayer";
 import ViewWorks from "./pages/ViewWorks";
 import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 import Playlists from "./pages/Playlists";
 import NewPlaylist from "./components/playlists/NewPlaylist/NewPlaylist";
 import EditPlaylist from "./components/playlists/Playlists/EditPlaylist";
@@ -24,10 +25,13 @@ function App() {
 
   /* -------------------------------- User Session -------------------------------- */
   const [accessToken, setAccessToken] = useState(null)
+  const [username, setUsername] = useState(null);
   function logout() {
     try {
       Cookies.remove('accessToken');
+      Cookies.remove('username');
       setAccessToken(null);
+      setUsername(null);
       toast.success("Logged out")
     }
     catch (err) {
@@ -36,14 +40,21 @@ function App() {
     }
   }
   useEffect(() => {
-    let aT;
+    let aT, un;
     if (accessToken) {
       Cookies.set("accessToken", accessToken, { expires: 1 }); // 1 day (matches supabase conf)
     }
     else if (aT = Cookies.get("accessToken")) {
       setAccessToken(aT);
     }
-  }, [accessToken]);
+
+    if (username) {
+      Cookies.set("username", username, { expires: 1 }); // 1 day (matches supabase conf)
+    }
+    else if (un = Cookies.get("username")) {
+      setUsername(un);
+    }
+  }, [accessToken, username]);
 
   /* -------------------------------- User Session -------------------------------- */
 
@@ -56,7 +67,8 @@ function App() {
   const [queueLength, setQueueLength] = useState(0);
   const [playerDocked, setPlayerDocked] = useState(localStorage.getItem("playerDocked") === "true" || true);
   function fetchAudio(byURL, urlOrID) {
-    setMusicRequest([byURL, urlOrID])
+    setPlaylistQueueIndex(0);
+    setMusicRequest([byURL, urlOrID]);
   }
   function togglePlayerType(isDocked) {
     setPlayerDocked(isDocked);
@@ -84,7 +96,7 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        <Header accessToken={accessToken} logout={logout} toggleDarkMode={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
+        <Header accessToken={accessToken} username={username} logout={logout} toggleDarkMode={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
         <Routes>
           {/* Nav Bar Routes */}
           <Route path="/" element={<Home firstLoad={firstLoad} darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} />} />
@@ -100,8 +112,9 @@ function App() {
           <Route path="/trivia/quiz" element={<TriviaQuiz darkModeEnabled={darkModeEnabled} />} />
 
           {/* Profile Routes */}
-          <Route path="/signIn" element={<SignIn setAccessToken={setAccessToken} darkModeEnabled={darkModeEnabled} />} />
-          {/* <Route path="/profile" element={<Profile accessToken={accessToken} darkModeEnabled={darkModeEnabled} />} /> */}
+          <Route path="/signIn" element={<SignIn setAccessToken={setAccessToken} setUsername={setUsername} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/signUp" element={<SignUp darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/profile" element={<Profile accessToken={accessToken} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile/playlists" element={<Playlists accessToken={accessToken} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist accessToken={accessToken} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile/playlists/editPlaylist" element={<EditPlaylist accessToken={accessToken} darkModeEnabled={darkModeEnabled} />} />

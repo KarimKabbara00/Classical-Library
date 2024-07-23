@@ -47,8 +47,8 @@ function PasswordReq(props) {
     }, [props.currentPass, props.currentConfPass])
 
     return (
-        <div >
-            <div>Password must:</div>
+        <div className={styles.passwordRequirements}>
+            <div className={styles.passwordReqTitle}>Password must:</div>
             <div className={styles.passwordReq}><img src={charLengthCheck ? check : x} width="13px" />Contain 8 to 30 characters</div>
             <div className={styles.passwordReq}><img src={charCaseCheck ? check : x} width="13px" />Contain both uppercase and lowercase letters</div>
             <div className={styles.passwordReq}><img src={numCheck ? check : x} width="13px" />Contain 1 number</div>

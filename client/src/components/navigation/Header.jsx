@@ -86,9 +86,14 @@ function Header(props) {
                     <span>Classical Library</span>
                 </span>
                 {!signedIn && <div className={styles.signIn} onClick={() => { navigate("/signIn") }}>Sign In</div>}
-                {signedIn && <div onMouseEnter={toggleHover} onMouseLeave={toggleHover} className={styles.profileIcon}><FontAwesomeIcon icon={faUser} size={styling.profileIconSize} style={{ color: "#a52a2a" }} />
-                    {profileHovered && <ProfileBox logout={props.logout} darkModeEnabled={props.darkModeEnabled} />}
+
+                {signedIn && <div className={styles.usernameAndSilhouette}>
+                    <div>{props.username}</div>
+                    <div onMouseEnter={toggleHover} onMouseLeave={toggleHover} className={styles.profileIcon}><FontAwesomeIcon icon={faUser} size={styling.profileIconSize} style={{ color: "#a52a2a" }} />
+                        {profileHovered && <ProfileBox logout={props.logout} darkModeEnabled={props.darkModeEnabled} />}
+                    </div>
                 </div>}
+
             </nav>
             <animated.div style={{ ...sidebarAnimation, height: styling.sidebarHeight, borderRight: props.darkModeEnabled ? "1px solid #e8e6e3" : "" }} onMouseEnter={() => { setShowSidebar(true) }} onMouseLeave={() => { setShowSidebar(false) }} className={styles.sidebarParent}>
                 <Sidebar styling={styling} toggleDarkMode={props.toggleDarkMode} darkModeEnabled={props.darkModeEnabled} />

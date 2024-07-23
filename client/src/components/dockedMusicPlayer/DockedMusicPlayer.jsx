@@ -36,9 +36,6 @@ function MusicPlayer(props) {
             handleFetchAudio(byURL, identfier).then(res => {    // res = [Audio object, song metadata] 
                 props.setAudioObject(res[0]);
                 props.setCurrentSong(res[1]);
-                // res[0].addEventListener('canplay', () => {
-                //     res[0].play();
-                // }, { once: true })
                 res[0].play();
                 setPpIcon(faPause);
             }).catch(err => {
@@ -307,9 +304,9 @@ function MusicPlayer(props) {
                     <DockedUpNext showUpNextBox={showUpNextBox} upNext={props.musicRequest[1]} playlistQueueIndex={props.playlistQueueIndex} />
                 </div>}
 
-                <div onClick={() => props.togglePlayerType(false)} onMouseEnter={changeUpColor} onMouseLeave={changeUpColor}>
+                {/* <div onClick={() => props.togglePlayerType(false)} onMouseEnter={changeUpColor} onMouseLeave={changeUpColor}>
                     <FontAwesomeIcon icon={faArrowUp} style={{ ...upStyle, fontSize: "1.15rem" }} />
-                </div>
+                </div> */}
                 <div onClick={closeMusicPlayer} onMouseEnter={changeXStyling} onMouseLeave={changeXStyling}>
                     <FontAwesomeIcon icon={faX} style={{ ...xStyling, fontSize: "1rem" }} />
                 </div>
