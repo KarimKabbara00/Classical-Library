@@ -202,6 +202,7 @@ const createPlaylistQueue = async (req, res) => {
     try {
         const userID = req.userID;
         const { playlistName, shuffle } = req.query;
+        var shufflePlaylist = shuffle === "true";
 
         // grab work ids from selected playlist
         const { data, error } = await supabase.from("playlists").select("playlist_work_ids").match({
@@ -237,7 +238,7 @@ const createPlaylistQueue = async (req, res) => {
         if (error)
             throw error
 
-        works = shuffle ? shuffleWorks(works) : works;
+        works = shufflePlaylist ? shuffleWorks(works) : works;
 
         res.status(200).send(works);
     }

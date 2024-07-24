@@ -16,7 +16,7 @@ function Header(props) {
     // signed in if we have access token
     const [signedIn, setSignedIn] = useState(false)
     useEffect(() => {
-        setSignedIn(props.accessToken !== null);
+        setSignedIn(props.username !== null);
     }, [props.accessToken])
 
     // programatic media queries

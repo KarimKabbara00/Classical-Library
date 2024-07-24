@@ -20,6 +20,8 @@ import EditPlaylist from "./components/playlists/Playlists/EditPlaylist";
 import Profile from "./pages/Profile";
 import Trivia from "./pages/Trivia";
 import TriviaQuiz from "./components/trivia/TriviaQuiz";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
 
@@ -114,6 +116,8 @@ function App() {
           {/* Profile Routes */}
           <Route path="/signIn" element={<SignIn setAccessToken={setAccessToken} setUsername={setUsername} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/signUp" element={<SignUp darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/forgotPassword" element={<ForgotPassword darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/forgotPassword/reset" element={<ResetPassword setAccessToken={setAccessToken} accessToken={accessToken} setUsername={setUsername} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile" element={<Profile accessToken={accessToken} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile/playlists" element={<Playlists accessToken={accessToken} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist accessToken={accessToken} darkModeEnabled={darkModeEnabled} />} />

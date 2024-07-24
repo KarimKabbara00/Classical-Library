@@ -52,7 +52,12 @@ function SignIn(props) {
 
     // sign up
     function goToSignUp() {
-        navigate("/signUp")
+        navigate("/signUp");
+    }
+
+    // forgot password
+    function goToForgotPassword() {
+        navigate("/forgotPassword");
     }
 
     // Google OAuth
@@ -80,7 +85,7 @@ function SignIn(props) {
 
     return (
 
-        <div className={styles.signInParent}>
+        <div className={styles.signInParent} style={darkMode}>
             <h1>Sign In</h1>
             <div className={styles.noAccount}>
                 Don't have an account? <a className={styles.signUpHyperlink} onClick={goToSignUp}>Sign Up</a>
@@ -103,7 +108,7 @@ function SignIn(props) {
                         <input type="checkbox" />
                         <span>Remember me</span>
                     </span>
-                    <span className={styles.forgot}>Forgot your password?</span>
+                    <span onClick={goToForgotPassword} className={styles.forgot}>Forgot your password?</span>
                 </div>
                 <button className={styles.signInButton} type="submit">Sign In</button>
             </form>

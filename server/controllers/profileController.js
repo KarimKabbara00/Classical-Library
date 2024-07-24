@@ -48,6 +48,63 @@ const signUp = async (req, res) => {
 
 };
 
+const forgotPassword = async (req, res) => {
+    // for redirecting to /forgotPassword/reset#accessToken=...
+    try {
+        const { userEmail } = req.body;
+
+        const { data, error } = await supabase.auth.resetPasswordForEmail(userEmail, {
+            redirectTo: 'http://localhost:3000/forgotPassword/reset',
+        })
+
+        if (error)
+            throw error;
+
+        res.status(200).send({});
+    }
+    catch (e) {
+        console.log(e);
+        res.status(400).send(e);
+    }
+}
+
+const resetPassword = async (req, res) => {
+    // for resetting the password using the session
+    try {
+        const { password, confirmPassword } = req.body;
+        const access_token = req.headers.accesstoken.split("Bearer ")[1];
+        const refresh_token = req.headers.refreshtoken;
+
+        if (password !== confirmPassword)
+            throw ("PASSWORD ERROR");
+
+        // set the session -- REQUIRED FOR updateUser()
+        const response = await supabase.auth.setSession({
+            access_token,
+            refresh_token
+        });
+
+        if (response.error)
+            throw response.error;
+
+        // change the password
+        const { data, error } = await supabase.auth.updateUser({
+            password: password,
+        })
+
+        if (error) {
+            let err = error.code === "same_password" ? "The new password must be different from the old password." : error.code;
+            throw err;
+        }
+
+        res.status(200).send({});
+    }
+    catch (e) {
+        console.log(e);
+        res.status(400).send(e);
+    }
+}
+
 const googleAuth = async (req, res) => {
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -93,5 +150,5 @@ const callback = async (req, res) => {
     res.redirect(303, "http://localhost:3000/")
 }
 
-export { signIn, signUp, googleAuth, callback }
+export { signIn, signUp, forgotPassword, resetPassword, googleAuth, callback }
 

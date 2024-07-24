@@ -9,15 +9,18 @@ import arrowRight from "../../../images/arrow-right.svg"
 import arrowDown from "../../../images/arrow-down.svg"
 import playBrown from "../../../images/playlists/play-brown.svg"
 import playBlack from "../../../images/playlists/play-black.svg"
+import playWhite from "../../../images/playlists/play-white.svg"
+import shuffleBrown from "../../../images/shuffle-brown.svg"
+import shuffleBlack from "../../../images/shuffle-black.svg"
+import shuffleWhite from "../../../images/shuffle-white.svg"
 import editBrown from "../../../images/playlists/edit-brown.svg"
 import editBlack from "../../../images/playlists/edit-black.svg"
+import editWhite from "../../../images/playlists/edit-white.svg"
 import deleteBrown from "../../../images/playlists/delete-brown.svg"
 import deleteBlack from "../../../images/playlists/delete-black.svg"
-import playWhite from "../../../images/playlists/play-white.svg"
-import editWhite from "../../../images/playlists/edit-white.svg"
 import deleteWhite from "../../../images/playlists/delete-white.svg"
 import Prompt from "../../shared/Prompt";
-import { faShuffle, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function PlaylistItem(props) {
@@ -40,13 +43,17 @@ function PlaylistItem(props) {
             hovered ? setPlaySVG(playBrown) : setPlaySVG(playBlack);
     }
 
-    const [shuffleSVG, setShuffleSVG] = useState(faShuffle);
-    const [shuffleHovered, setShuffleHovered] = useState(false);
+    const [shuffleSVG, setShuffleSVG] = useState(shuffleBlack);
+    function onShuffleHoverEvent(hovered) {
+        props.darkModeEnabled ?
+            hovered ? setShuffleSVG(shuffleBrown) : setShuffleSVG(shuffleWhite) :
+            hovered ? setShuffleSVG(shuffleBrown) : setShuffleSVG(shuffleBlack);
+    }
 
     useEffect(() => {
         if (props.audioObject !== null) {
             onPlayHoverEvent(false);
-            setShuffleSVG(faShuffle);
+            setShuffleSVG(shuffleBlack);
         }
     }, [props.audioObject])
 
@@ -100,7 +107,7 @@ function PlaylistItem(props) {
         onPlayHoverEvent(false);
         onEditHoverEvent(false);
         onDeleteHoverEvent(false);
-        setShuffleSVG(faShuffle);
+        onShuffleHoverEvent(false);
     }, [props.darkModeEnabled])
 
     // ---------- Delete ---------- //
@@ -150,17 +157,15 @@ function PlaylistItem(props) {
                     </div>
                     <div className={styles.playlistActionsParent}>
                         {playSVG === faSpinner ?
-                            <FontAwesomeIcon icon={playSVG} className="fa-spin" style={{ fontSize: "1.1rem", marginRight: "0.1rem" }} />
+                            <FontAwesomeIcon icon={playSVG} className="fa-spin" style={{ fontSize: "1.1rem" }} />
                             :
-                            <img src={playSVG} id="play" onClick={(e) => playPlaylist(e, false)} onMouseEnter={() => onPlayHoverEvent(true)} onMouseLeave={() => onPlayHoverEvent(false)} width="20px" alt="playIcon" />
+                            <img src={playSVG} id="play" onClick={(e) => playPlaylist(e, false)} onMouseEnter={() => onPlayHoverEvent(true)} onMouseLeave={() => onPlayHoverEvent(false)} width="21px" alt="play Icon" />
                         }
 
                         {shuffleSVG === faSpinner ?
-                            <FontAwesomeIcon icon={shuffleSVG} className="fa-spin" style={{ fontSize: "1.1rem", marginRight: "0.1rem" }} />
+                            <FontAwesomeIcon icon={shuffleSVG} className="fa-spin" style={{ fontSize: "1.1rem" }} />
                             :
-                            <div onClick={(e) => playPlaylist(e, true)} onMouseEnter={() => setShuffleHovered(true)} onMouseLeave={() => setShuffleHovered(false)} >
-                                <FontAwesomeIcon id="shuffle" icon={shuffleSVG} style={{ fontSize: "1.1rem", marginRight: "0.1rem", paddingTop: "0.1rem", color: shuffleHovered ? "brown" : "black" }} />
-                            </div>
+                            <img src={shuffleSVG} id="shuffle" onClick={(e) => playPlaylist(e, true)} onMouseEnter={() => onShuffleHoverEvent(true)} onMouseLeave={() => onShuffleHoverEvent(false)} width="21px" alt="shuffle Icon" />
                         }
 
                         <img src={editSVG} onClick={editPlaylist} onMouseEnter={() => onEditHoverEvent(true)} onMouseLeave={() => onEditHoverEvent(false)} width="20px" alt="editIcon" />

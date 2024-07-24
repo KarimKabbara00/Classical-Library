@@ -6,7 +6,7 @@ function DockedProgressBar(props) {
   const [mouseClicked, setMouseClicked] = useState(false);
   const progressBarFillStyle = {
     background: `linear-gradient(90deg, brown ${props.progressPercentage}%, ${props.darkModeEnabled ? "#e8e6e3" : "white"} 0%)`,
-    width: props.is1280Px ? "20vw" : "37vw",
+    width: props.is1280Px ? "23vw" : "37vw",
     height: "1vh"
   };
 

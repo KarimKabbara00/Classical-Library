@@ -76,17 +76,35 @@ function MusicPlayer(props) {
 
     // receive from child volumeBox
     const [volume, setVolume] = useState(50); // volume in top level to keep state on unrender
+    const [lastVolume, setLastVolume] = useState(50); // save volume for toggle function
     function changeVolume(newVolume) {
         setVolume(newVolume);
+        setLastVolume(newVolume)
+        setMuteToggled(false);
         changeVolumeIcon(newVolume);
         props.audioObject.volume = newVolume / 100;
+    }
+
+    const [muteToggled, setMuteToggled] = useState(false);
+    function toggleMute() {
+        setMuteToggled(prev => !prev);
+        if (muteToggled) { // from mute to unmute
+            setVolume(lastVolume);
+            changeVolumeIcon(lastVolume);
+            props.audioObject.volume = lastVolume / 100;
+        }
+        else {  // from unmute to mute
+            setVolume(0);
+            changeVolumeIcon(0);
+            props.audioObject.volume = 0 / 100;
+        }
     }
 
     // set volume on play
     useEffect(() => {
         if (props.audioObject)
             props.audioObject.volume = volume / 100;
-    }, [props.audioObject])
+    }, [props.audioObject, volume])
 
     const [volumeIcon, setVolumeIcon] = useState(faVolumeLow);
     function changeVolumeIcon(newVolume) {
@@ -127,14 +145,21 @@ function MusicPlayer(props) {
         setForwardStyle(defaultStyle);
         setPpStyle(defaultStyle);
         setXStyling(unhoveredX);
-        setUpStyle(defaultStyle);
+        // setUpStyle(defaultStyle);
     }, [props.darkModeEnabled])
 
     const [ppIcon, setPpIcon] = useState(faPause);
     function togglePlayPause() {
         if (props.audioObject.paused) {
-            props.audioObject.play();
-            setPpIcon(faPause);
+            // if play button is pressed at the end of the playlist
+            if (props.audioObject.ended && props.playlistQueueIndex === props.queueLength - 1) {
+                setReadyForNext(true);
+                props.setPlaylistQueueIndex(0);
+            }
+            else {
+                props.audioObject.play();
+                setPpIcon(faPause);
+            }
         }
         else if (!props.audioObject.paused) {
             props.audioObject.pause();
@@ -151,12 +176,12 @@ function MusicPlayer(props) {
         !isXHovered ? setXStyling(hoveredX) : setXStyling(unhoveredX);
     }
 
-    const [upHovered, setUpHovered] = useState(false);
-    const [upStyle, setUpStyle] = useState(defaultStyle);
-    function changeUpColor() {
-        setUpHovered((prev) => !prev);
-        !upHovered ? setUpStyle(hoveredStyle) : setUpStyle(defaultStyle);
-    }
+    // const [upHovered, setUpHovered] = useState(false);
+    // const [upStyle, setUpStyle] = useState(defaultStyle);
+    // function changeUpColor() {
+    //     setUpHovered((prev) => !prev);
+    //     !upHovered ? setUpStyle(hoveredStyle) : setUpStyle(defaultStyle);
+    // }
     /* ---------------------- FontAwesome Icon Control ---------------------- */
 
     /* ---------------------- Time Control ---------------------- */
@@ -220,14 +245,21 @@ function MusicPlayer(props) {
 
     /* ---------------------- Playlist Control ---------------------- */
     // go to next song when timer is up
+    const [readyForNext, setReadyForNext] = useState(false);
     useEffect(() => {
+
         const ready = props.audioObject && props.audioObject.duration && remainingTime;
         if (ready && remainingTime.toString() === "00:00") {
-            if (props.playlistQueueIndex !== props.queueLength - 1) {
-                props.setPlaylistQueueIndex(prev => prev + 1);
+            if (readyForNext) {
+                setReadyForNext(false);  // cleared here, set when play button is pressed, or automatically on next song
             }
+            else if (props.playlistQueueIndex !== props.queueLength - 1 && !readyForNext) { // readyForNext indicates there is no request to move to next song
+                props.setPlaylistQueueIndex(prev => prev + 1);
+                setReadyForNext(true);  // move to next song
+            }
+
         }
-    }, [remainingTime, props.playlistQueueIndex, props.queueLength])
+    }, [remainingTime, props.playlistQueueIndex])
 
     const [showUpNextBox, setShowUpNextBox] = useState(false);
     function showUpNext(show) {
@@ -267,7 +299,7 @@ function MusicPlayer(props) {
     return (
         <animated.div style={{ ...dockedMusicPlayerAnim, ...musicPlayerDarkMode }} className={styles.dockedPlayerParent} >
             <div className={styles.songMetaData}>
-                <img className={styles.portrait} src={props.currentSong.portrait} width="45px" />
+                <img className={styles.portrait} src={props.currentSong.portrait} width="45px" alt="composer portrait" />
 
                 <div className={styles.songTitle} style={{ justifyContent: animateTitle ? "flex-start" : "center" }}>
                     <div className={animateTitle ? styles.songTitleAnim : styles.songTitleNoAnim}>
@@ -287,21 +319,22 @@ function MusicPlayer(props) {
                 <DockedProgressBar progressPercentage={progressPercentage} setProgressPercentage={setProgressPercentage} updateTime={updateTime} docked={true} is1280Px={is1280Px} darkModeEnabled={props.darkModeEnabled} />
                 <div className={styles.time}>{remainingTime}</div>
             </div>
+
             <div className={styles.controls}>
                 <FontAwesomeIcon onMouseEnter={changeRewindColor} onMouseLeave={changeRewindColor} onClick={prevSong} icon={faBackward} style={rewindStyle} />
                 <FontAwesomeIcon onMouseEnter={changePpColor} onMouseLeave={changePpColor} onClick={togglePlayPause} icon={ppIcon} style={ppStyle} className="fa-fw" />
                 <FontAwesomeIcon onMouseEnter={changeForwardColor} onMouseLeave={changeForwardColor} onClick={nextSong} icon={faForward} style={forwardStyle} />
 
                 <div className={styles.volumeParent} onMouseLeave={() => toggleVolBoxShown(false)}>
-                    <div className={styles.volIcon} onMouseEnter={() => toggleVolBoxShown(true)}><FontAwesomeIcon icon={volumeIcon} className="fa-fw" /></div>
-                    {volBoxShown && <div className={styles.hoverArea}></div>}
+                    <div className={styles.volIcon} onMouseEnter={() => toggleVolBoxShown(true)} onClick={toggleMute}><FontAwesomeIcon icon={volumeIcon} className="fa-fw" /></div>
+                    {volBoxShown && <div className={styles.volumeHoverArea}></div>}
                     <DockedVolumeBox volBoxShown={volBoxShown} volume={volume} volumeIcon={volumeIcon} changeVolume={changeVolume} darkModeEnabled={props.darkModeEnabled} />
                 </div>
 
                 {props.queueLength > 1 && <div className={styles.upNextParent} onMouseLeave={() => showUpNext(false)}>
                     <div className={styles.upNextIcon} onMouseEnter={() => showUpNext(true)}><FontAwesomeIcon icon={faList} style={{ color: showUpNextBox ? "brown" : "" }} /></div>
                     {showUpNextBox && <div className={styles.upNextHoverArea}></div>}
-                    <DockedUpNext showUpNextBox={showUpNextBox} upNext={props.musicRequest[1]} playlistQueueIndex={props.playlistQueueIndex} />
+                    <DockedUpNext showUpNextBox={showUpNextBox} upNext={props.musicRequest[1]} playlistQueueIndex={props.playlistQueueIndex} darkModeEnabled={props.darkModeEnabled} />
                 </div>}
 
                 {/* <div onClick={() => props.togglePlayerType(false)} onMouseEnter={changeUpColor} onMouseLeave={changeUpColor}>
@@ -311,7 +344,7 @@ function MusicPlayer(props) {
                     <FontAwesomeIcon icon={faX} style={{ ...xStyling, fontSize: "1rem" }} />
                 </div>
             </div>
-        </animated.div >
+        </animated.div>
     );
 }
 
