@@ -17,7 +17,7 @@ function Header(props) {
     const [signedIn, setSignedIn] = useState(false)
     useEffect(() => {
         setSignedIn(props.username !== null);
-    }, [props.accessToken])
+    }, [props.username])
 
     // programatic media queries
     const is1280Px = useMediaQuery("only screen and (max-width : 1280px)");

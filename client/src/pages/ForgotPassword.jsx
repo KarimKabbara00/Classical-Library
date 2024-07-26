@@ -1,34 +1,35 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "../css/signIn.module.css";
 import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 
 function ForgotPassword(props) {
 
-    const navigate = useNavigate();
     const [userEmail, setUserEmail] = useState("");
     function updateUserEmail(event) {
         const { value } = event.target;
         setUserEmail(value);
-        console.log(value)
     }
 
     const [showCheckEmail, setShowCheckEmail] = useState(false);
     const [showSpinny, setShowSpinny] = useState(false);
+
+    const [key, setKey] = useState(0);  // used to rerender circle timer countdown
+    const [timerExpired, setTimerExpired] = useState(false);
     function forgotPassword(event) {
         event.preventDefault();
 
-        if (showCheckEmail)
-            return;
-
         if (userEmail.length < 1) {
-            toast.error("Please enter an email.");
+            toast.error("Please enter an email address.");
             return;
         }
         setShowSpinny(true);
+        setTimerExpired(false);
+        setKey(prev => prev + 1);
+
         axios.post("http://localhost:3001/api/forgotPassword", { userEmail: userEmail }, {
             headers: {
                 'Content-Type': 'application/json',
@@ -38,7 +39,9 @@ function ForgotPassword(props) {
             setShowCheckEmail(true);
             setShowSpinny(false);
         }).catch(err => {
-            toast.error("Error making request.")
+            let errMsg = err.response.data.code === "validation_failed" ? "Please enter a valid email address." : "Error making request.";
+            toast.error(errMsg);
+            setShowSpinny(false);
         });
     }
 
@@ -53,13 +56,28 @@ function ForgotPassword(props) {
 
         <div className={styles.signInParent}>
             <h1>Forgot Password</h1>
-            <form className={styles.signInBox} autoComplete="off" onSubmit={forgotPassword} noValidate>
+            <form className={styles.signInBox} autoComplete="off" noValidate onSubmit={forgotPassword}>
                 <div className={styles.signInField}>
                     <label className={styles.inputLabel} htmlFor="email">Email</label>
                     <input className={styles.signInInput} id="email" name="email" onInput={updateUserEmail} type="email" placeholder="Your Email" required value={userEmail} />
                 </div>
-                <button disabled={showCheckEmail} className={styles.signInButton} type="submit">Send Reset Link</button>
-            </form>
+                <div className={styles.buttonAndCircleTimer}>
+                    <button disabled={showCheckEmail && !timerExpired} className={styles.signInButton} type="submit">Send Reset Link</button>
+                    {showCheckEmail && !timerExpired && <div className={styles.circleTimer}>
+                        <CountdownCircleTimer
+                            key={key}
+                            isPlaying
+                            duration={30}
+                            size={25}
+                            strokeWidth={4}
+                            colors={["#a52a2a"]}
+                            colorsTime={[10]}
+                            onComplete={() => setTimerExpired(true)}
+                        />
+                    </div>}
+                </div>
+            </form >
+
             <div className={styles.afterSubmit}>
                 {showSpinny && <FontAwesomeIcon icon={faSpinner} className="fa-spin" style={{ fontSize: "1.5rem" }} />}
                 {showCheckEmail && <div style={{ fontSize: "1.1rem" }}>
@@ -69,7 +87,7 @@ function ForgotPassword(props) {
             </div>
 
 
-        </div>
+        </div >
 
     )
 }

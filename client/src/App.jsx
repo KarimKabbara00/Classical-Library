@@ -101,7 +101,7 @@ function App() {
         <Header accessToken={accessToken} username={username} logout={logout} toggleDarkMode={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
         <Routes>
           {/* Nav Bar Routes */}
-          <Route path="/" element={<Home firstLoad={firstLoad} darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} />} />
+          <Route path="/" element={<Home firstLoad={firstLoad} darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} setAccessToken={setAccessToken} setUsername={setUsername} />} />
           <Route path="/allComposers" element={<AllComposers darkModeEnabled={darkModeEnabled} />} />
           <Route path="/allWorks" element={<AllWorks darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} />} />
           <Route path="/viewComposer" element={<ViewComposer darkModeEnabled={darkModeEnabled} />} />

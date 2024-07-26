@@ -190,3 +190,16 @@
     justify-content: center;
     margin-top: 1rem
 }
+
+.buttonAndCircleTimer {
+    width: 100%;
+    display: flex;
+    position: relative;
+}
+
+.circleTimer {
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+}

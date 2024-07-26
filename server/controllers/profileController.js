@@ -31,7 +31,8 @@ const signUp = async (req, res) => {
             options: {
                 data: {
                     displayName: displayName,
-                }
+                },
+                emailRedirectTo: "http://localhost:3000/"
             }
         }).then(result => {
             res.status(201).send(result.data.user.email);
@@ -121,34 +122,24 @@ const googleAuth = async (req, res) => {
     }
 }
 
-const callback = async (req, res) => {
-    console.log("here")
-    const code = req.query.code
-    const next = req.query.next ?? "/"
-
-    console.log(code, next)
-
-    if (code) {
-        console.log("in here")
-        const supabase = createServerClient(
-            process.env.SUPABASE_URL,
-            process.env.SUPABASE_ANON_KEY, {
-            cookies: {
-                getAll() {
-                    return parseCookieHeader(context.req.headers.cookie ?? '')
-                },
-                setAll(cookiesToSet) {
-                    cookiesToSet.forEach(({ name, value, options }) =>
-                        context.res.appendHeader('Set-Cookie', serializeCookieHeader(name, value, options))
-                    )
-                },
-            },
-        })
-        await supabase.auth.exchangeCodeForSession(code)
-    }
-
+const googleAuthCallback = async (req, res) => {
     res.redirect(303, "http://localhost:3000/")
 }
 
-export { signIn, signUp, forgotPassword, resetPassword, googleAuth, callback }
+const googleAuthSignIn = async (req, res) => {
+
+    try {
+        // get the display name
+        const access_token = req.headers.accesstoken.split("Bearer ")[1];
+        const { data: { user } } = await supabase.auth.getUser(access_token)
+        res.status(200).send(user.user_metadata.displayName);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(400).send(e);
+    }
+
+}
+
+export { signIn, signUp, forgotPassword, resetPassword, googleAuth, googleAuthCallback, googleAuthSignIn }
 

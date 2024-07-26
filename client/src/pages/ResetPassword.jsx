@@ -17,7 +17,7 @@ function ResetPassword(props) {
         setRefreshToken(refreshToken);
         let newUrl = "http://localhost:3000/forgotPassword/reset"
         window.history.pushState({ path: newUrl }, '', newUrl);
-    }, [])
+    }, []);
 
     const navigate = useNavigate();
     const [passwordReqSatisfied, setPasswordReqsSatisfied] = useState(false);

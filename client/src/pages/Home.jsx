@@ -4,8 +4,38 @@ import styles from "../css/homepage.module.css";
 import Intro from "../components/home/Intro";
 import BirthdayCarousel from "../components/home/BirthdayCarousel";
 import QOTD from "../components/home/QOTD";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function Home(props) {
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    try {
+      let accessToken = window.location.href.split("/#access_token=")[1].split("&expires_at")[0];
+      let refreshToken = window.location.href.split("&refresh_token=")[1].split("&token_type")[0];
+      let newUrl = "http://localhost:3000/"
+      window.history.pushState({ path: newUrl }, '', newUrl);
+
+      props.setAccessToken(accessToken);
+      axios.post("http://localhost:3001/api/auth/googleAuthSignIn", {}, {
+        headers: {
+          'Content-Type': 'application/json',
+          'accessToken': `Bearer ${accessToken}`,
+          'refreshToken': refreshToken
+        },
+      }).then(res => {
+        props.setUsername(res.data);
+        toast.success("Signed in with Google.");
+        navigate("/");
+      }).catch(err => {
+        console.log(err);
+        toast.error("Error Signing in with Google.");
+      });
+    }
+    catch { }
+  }, []);
 
   const fadeCarouselAnim = useSpring({
     from: { opacity: props.firstLoad ? 0 : 1 },
