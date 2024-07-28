@@ -1,8 +1,9 @@
 .signInParent {
-    max-width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    padding-top: 3rem;
+    padding-left: 36rem;
+    padding-right: 36rem;
 }
 
 .noAccount {
@@ -35,6 +36,10 @@
     gap: 0.75rem 0rem;
     width: 40vw;
     margin-top: 0.75rem;
+}
+
+.postSignUpScreen>div {
+    text-align: start;
 }
 
 .signInField {
@@ -123,7 +128,6 @@
 
 .separator {
     display: flex;
-    width: 100%;
     justify-content: space-between;
     align-items: center;
     margin-top: 0.75rem;

@@ -222,12 +222,42 @@
 .promptButton {
     color: black;
     font-weight: bold;
+    background-color: white;
+    border: none;
+    font-size: 1rem;
 }
 
 .promptButton:hover {
     color: brown;
     text-decoration: underline;
     cursor: pointer;
+}
+
+.promptButton:disabled {
+    color: darkgray;
+}
+
+.promptButton:disabled:hover {
+    text-decoration: none;
+    cursor: not-allowed;
+}
+
+.confirmCheck {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    gap: 0.5rem;
+}
+
+.confirmPhraseInput {
+    border: none;
+    border-bottom: 1px solid black;
+    font-size: 0.9rem;
+}
+
+.confirmPhraseInput:focus {
+    outline: none;
+    border-bottom: 2px solid brown;
 }
 
 /* Prompt Styling */

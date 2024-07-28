@@ -48,18 +48,22 @@ function ForgotPassword(props) {
     // -------------------- Dark Mode -------------------- //
     const darkMode = {
         backgroundColor: props.darkModeEnabled ? "#242728" : "",
+        color: props.darkModeEnabled ? "#e8e6e3" : "",
         height: "94.5vh"
+    }
+    const inputDarkmode = {
+        backgroundColor: props.darkModeEnabled ? "#e8e6e3" : "",
     }
     // -------------------- Dark Mode -------------------- //
 
     return (
 
-        <div className={styles.signInParent}>
+        <div className={styles.signInParent} style={darkMode}>
             <h1>Forgot Password</h1>
             <form className={styles.signInBox} autoComplete="off" noValidate onSubmit={forgotPassword}>
                 <div className={styles.signInField}>
                     <label className={styles.inputLabel} htmlFor="email">Email</label>
-                    <input className={styles.signInInput} id="email" name="email" onInput={updateUserEmail} type="email" placeholder="Your Email" required value={userEmail} />
+                    <input className={styles.signInInput} id="email" name="email" onInput={updateUserEmail} type="email" placeholder="Your Email" required value={userEmail} style={inputDarkmode} />
                 </div>
                 <div className={styles.buttonAndCircleTimer}>
                     <button disabled={showCheckEmail && !timerExpired} className={styles.signInButton} type="submit">Send Reset Link</button>

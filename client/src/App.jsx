@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import toast, { Toaster } from 'react-hot-toast';
-import Cookies from 'js-cookie';
+import { Toaster } from "react-hot-toast";
 import Header from "./components/navigation/Header";
 import Home from "./pages/Home";
 import Map from "./pages/Map";
@@ -22,42 +21,24 @@ import Trivia from "./pages/Trivia";
 import TriviaQuiz from "./components/trivia/TriviaQuiz";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import { logout, setSession } from "./sessionHandler";
 
 function App() {
 
   /* -------------------------------- User Session -------------------------------- */
-  const [accessToken, setAccessToken] = useState(null)
+  const [accessToken, setAccessToken] = useState(null);
+  const [refreshToken, setRefreshToken] = useState(null);
   const [username, setUsername] = useState(null);
-  function logout() {
-    try {
-      Cookies.remove('accessToken');
-      Cookies.remove('username');
-      setAccessToken(null);
-      setUsername(null);
-      toast.success("Logged out")
-    }
-    catch (err) {
-      console.log(err)
-      toast.error("Error logging out")
-    }
+  const [email, setEmail] = useState(null);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [isGoogleAuth, setIsGoogleAuth] = useState(false);
+
+  function handleLogout(message) {
+    logout(message, setAccessToken, setRefreshToken, setUsername, setEmail, setRememberMe, setIsGoogleAuth);
   }
   useEffect(() => {
-    let aT, un;
-    if (accessToken) {
-      Cookies.set("accessToken", accessToken, { expires: 1 }); // 1 day (matches supabase conf)
-    }
-    else if (aT = Cookies.get("accessToken")) {
-      setAccessToken(aT);
-    }
-
-    if (username) {
-      Cookies.set("username", username, { expires: 1 }); // 1 day (matches supabase conf)
-    }
-    else if (un = Cookies.get("username")) {
-      setUsername(un);
-    }
-  }, [accessToken, username]);
-
+    setSession(accessToken, refreshToken, email, username, rememberMe, setAccessToken, setRefreshToken, setUsername, setEmail);
+  }, [accessToken, refreshToken, email, username, rememberMe]);
   /* -------------------------------- User Session -------------------------------- */
 
   /* -------------------------------- Music Player -------------------------------- */
@@ -98,10 +79,10 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        <Header accessToken={accessToken} username={username} logout={logout} toggleDarkMode={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
+        <Header accessToken={accessToken} username={username} logout={handleLogout} toggleDarkMode={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
         <Routes>
           {/* Nav Bar Routes */}
-          <Route path="/" element={<Home firstLoad={firstLoad} darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} setAccessToken={setAccessToken} setUsername={setUsername} />} />
+          <Route path="/" element={<Home firstLoad={firstLoad} darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} setUsername={setUsername} setEmail={setEmail} setIsGoogleAuth={setIsGoogleAuth} />} />
           <Route path="/allComposers" element={<AllComposers darkModeEnabled={darkModeEnabled} />} />
           <Route path="/allWorks" element={<AllWorks darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} />} />
           <Route path="/viewComposer" element={<ViewComposer darkModeEnabled={darkModeEnabled} />} />
@@ -114,11 +95,11 @@ function App() {
           <Route path="/trivia/quiz" element={<TriviaQuiz darkModeEnabled={darkModeEnabled} />} />
 
           {/* Profile Routes */}
-          <Route path="/signIn" element={<SignIn setAccessToken={setAccessToken} setUsername={setUsername} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/signIn" element={<SignIn setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} setUsername={setUsername} setEmail={setEmail} rememberMe={rememberMe} setRememberMe={setRememberMe} setIsGoogleAuth={setIsGoogleAuth} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/signUp" element={<SignUp darkModeEnabled={darkModeEnabled} />} />
           <Route path="/forgotPassword" element={<ForgotPassword darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/forgotPassword/reset" element={<ResetPassword setAccessToken={setAccessToken} accessToken={accessToken} setUsername={setUsername} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile" element={<Profile accessToken={accessToken} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/forgotPassword/reset" element={<ResetPassword setAccessToken={setAccessToken} accessToken={accessToken} setRefreshToken={setRefreshToken} refreshToken={refreshToken} setUsername={setUsername} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/profile" element={<Profile username={username} accessToken={accessToken} refreshToken={refreshToken} email={email} isGoogleAuth={isGoogleAuth} logout={handleLogout} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile/playlists" element={<Playlists accessToken={accessToken} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist accessToken={accessToken} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/profile/playlists/editPlaylist" element={<EditPlaylist accessToken={accessToken} darkModeEnabled={darkModeEnabled} />} />

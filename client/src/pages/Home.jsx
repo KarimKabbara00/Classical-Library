@@ -12,29 +12,49 @@ function Home(props) {
 
   const navigate = useNavigate();
   useEffect(() => {
+    // This useEffect is used for post Google OAuth authentication landing.
+
+    const url = new URL(window.location.href);  // current url
+    const from = url.searchParams.get("from");  // from OAuth or email
+    const newUrl = "http://localhost:3000/"     // finally, set to this
+
+    if (!from)
+      return;
+
     try {
-      let accessToken = window.location.href.split("/#access_token=")[1].split("&expires_at")[0];
-      let refreshToken = window.location.href.split("&refresh_token=")[1].split("&token_type")[0];
-      let newUrl = "http://localhost:3000/"
+      const hash = url.hash; // get after #
+      const accessToken = hash.split("#access_token=")[1].split("&expires_at")[0];
+      const refreshToken = hash.split("&refresh_token=")[1].split("&token_type")[0];
       window.history.pushState({ path: newUrl }, '', newUrl);
 
-      props.setAccessToken(accessToken);
-      axios.post("http://localhost:3001/api/auth/googleAuthSignIn", {}, {
+      if (!accessToken || !refreshToken || !from)
+        throw "ERROR WITH ACCESS TOKEN OR REFRESH TOKEN OR FROM"
+
+      axios.post("http://localhost:3001/api/postAuthAutoSignIn", { from: from }, {
         headers: {
           'Content-Type': 'application/json',
           'accessToken': `Bearer ${accessToken}`,
           'refreshToken': refreshToken
         },
       }).then(res => {
-        props.setUsername(res.data);
-        toast.success("Signed in with Google.");
+        props.setAccessToken(accessToken);
+        props.setRefreshToken(refreshToken);
+        props.setUsername(res.data.name);
+        props.setEmail(res.data.email);
+        props.setIsGoogleAuth(from === "google");
+        const stateText = from === "google" ? " with Google." : "."
+        toast.success(`Signed in${stateText}`);
         navigate("/");
       }).catch(err => {
         console.log(err);
-        toast.error("Error Signing in with Google.");
+        const stateText = from === "google" ? " with Google." : "."
+        toast.error(`Error signing in${stateText}`);
       });
     }
-    catch { }
+    catch (e) {
+      console.log(e)
+      window.history.pushState({ path: newUrl }, '', newUrl);
+    }
   }, []);
 
   const fadeCarouselAnim = useSpring({

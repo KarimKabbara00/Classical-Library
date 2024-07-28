@@ -1,9 +1,9 @@
-import { supabase } from "../utils/clients.js";
+import { supabase, supabaseAdmin } from "../utils/clients.js";
 
 const signIn = async (req, res) => {
-    const { email, password } = req.body;
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     try {
+        const { email, password } = req.body;
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) {
             throw error;
         }
@@ -20,26 +20,32 @@ const signUp = async (req, res) => {
     try {
         const { displayName, email, password, confirmPassword } = req.body;
 
-        const { data, error } = await supabase.from('users').select('*').eq("email", email);
+        // check if user already exists
+        var userCheckResponse = await supabase.from('users').select('*').eq("email", email);
 
-        if (data.length !== 0 || error || password !== confirmPassword)
+        if (userCheckResponse.error)
+            throw error;
+
+        if (userCheckResponse.data.length !== 0)
+            throw "Email address already in use.";
+
+        if (password !== confirmPassword)
             throw "Error creating account";
 
-        supabase.auth.signUp({
-            email,
-            password,
-            options: {
+        // sign up user
+        const { data, error } = await supabase.auth.signUp({
+            email, password, options: {
                 data: {
                     displayName: displayName,
                 },
-                emailRedirectTo: "http://localhost:3000/"
+                emailRedirectTo: "http://localhost:3000?from=email"
             }
-        }).then(result => {
-            res.status(201).send(result.data.user.email);
-        }).catch(err => {
-            console.log(err);
-            res.status(400).send(err);
-        });
+        })
+
+        if (error)
+            throw error;
+
+        res.status(200).send({});
 
     }
     catch (e) {
@@ -106,6 +112,34 @@ const resetPassword = async (req, res) => {
     }
 }
 
+const deleteAccount = async (req, res) => {
+    try {
+        const userID = req.userID;
+
+        // delete all playlist entries
+        var { data, error } = await supabase.from("playlists").delete().eq("associated_uid", userID);
+        if (error)
+            throw error;
+
+        // delete from users table
+        var { data, error } = await supabase.from("users").delete().eq("id", userID);
+        if (error)
+            throw error;
+
+        // delete from supabase Auth
+        var { data, error } = await supabaseAdmin.auth.admin.deleteUser(userID);
+        if (error)
+            throw error;
+
+        res.status(200).send({});
+    }
+    catch (e) {
+        console.log(e);
+        res.status(400).send(e);
+    }
+
+}
+
 const googleAuth = async (req, res) => {
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -123,16 +157,23 @@ const googleAuth = async (req, res) => {
 }
 
 const googleAuthCallback = async (req, res) => {
-    res.redirect(303, "http://localhost:3000/")
+    res.redirect(303, "http://localhost:3000?from=google")
 }
 
-const googleAuthSignIn = async (req, res) => {
-
+const postAuthAutoSignIn = async (req, res) => {
+    // after verifying email from sign up, or google auth auto sign in
     try {
+        const { from } = req.body;
+        const key = from === "google" ? "full_name" : "displayName";
+
         // get the display name
         const access_token = req.headers.accesstoken.split("Bearer ")[1];
         const { data: { user } } = await supabase.auth.getUser(access_token)
-        res.status(200).send(user.user_metadata.displayName);
+
+        res.status(200).send({
+            name: user.user_metadata[key],
+            email: user.user_metadata.email
+        });
     }
     catch (e) {
         console.log(e);
@@ -141,5 +182,5 @@ const googleAuthSignIn = async (req, res) => {
 
 }
 
-export { signIn, signUp, forgotPassword, resetPassword, googleAuth, googleAuthCallback, googleAuthSignIn }
+export { signIn, signUp, forgotPassword, resetPassword, deleteAccount, googleAuth, googleAuthCallback, postAuthAutoSignIn }
 

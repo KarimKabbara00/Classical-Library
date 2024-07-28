@@ -11,14 +11,14 @@ const jwtAuth = async (req, res, next) => {
         const accessToken = req.headers.accesstoken.split(' ')[1];
 
         if (!accessToken)
-            throw "No Access Token"
+            throw "No Access Token";
 
-        const { data: { user }, error } = await supabase.auth.getUser(accessToken)
+        const { data: { user }, error } = await supabase.auth.getUser(accessToken);
 
         if (error)
             throw error;
 
-        req.userID = user.id
+        req.userID = user.id;
 
         next();
     }

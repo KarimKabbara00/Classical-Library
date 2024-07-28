@@ -13,6 +13,9 @@ const openAI = new OpenAI({
 // Supabase
 const supabaseURL = process.env.SUPABASE_DB;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseURL, supabaseAnonKey);
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 
-export { openAI, supabase };
+const supabase = createClient(supabaseURL, supabaseAnonKey);
+const supabaseAdmin = createClient(supabaseURL, supabaseServiceKey);
+
+export { openAI, supabase, supabaseAdmin };

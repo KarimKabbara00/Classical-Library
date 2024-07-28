@@ -16,7 +16,7 @@ function ProfileBox(props) {
     }
 
     function logout() {
-        props.logout();
+        props.logout("Signed out.");
         if (window.location.href.includes("profile"))
             navigate("/")
     }

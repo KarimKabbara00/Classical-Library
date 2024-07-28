@@ -46,8 +46,14 @@ function PasswordReq(props) {
 
     }, [props.currentPass, props.currentConfPass])
 
+    const darkMode = {
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
+        color: props.darkModeEnabled ? "#e8e6e3" : "",
+        border: "1px solid #e8e6e3"
+    }
+
     return (
-        <div className={styles.passwordRequirements}>
+        <div className={styles.passwordRequirements} style={darkMode}>
             <div className={styles.passwordReqTitle}>Password must:</div>
             <div className={styles.passwordReq}><img src={charLengthCheck ? check : x} width="13px" />Contain 8 to 30 characters</div>
             <div className={styles.passwordReq}><img src={charCaseCheck ? check : x} width="13px" />Contain both uppercase and lowercase letters</div>

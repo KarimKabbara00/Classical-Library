@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "../css/signIn.module.css";
@@ -6,9 +6,21 @@ import googleLogo from "../images/google.svg";
 import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import Cookies from "js-cookie";
 
 function SignIn(props) {
+
     const navigate = useNavigate();
+    useEffect(() => {
+        if (Cookies.get("accessToken")) {
+            navigate("/profile");
+            return;
+        }
+
+        var newUrl = "http://localhost:3000/signIn"
+        window.history.pushState({ path: newUrl }, '', newUrl);
+    }, [])
+
     const [userInfo, setUserInfo] = useState({
         email: "",
         password: "",
@@ -41,8 +53,11 @@ function SignIn(props) {
                 'Content-Type': 'application/json',
             },
         }).then(res => {
-            props.setUsername(res.data.user.user_metadata.displayName)
+            props.setUsername(res.data.user.user_metadata.displayName);
+            props.setEmail(res.data.user.email)
             props.setAccessToken(res.data.access_token);
+            props.setRefreshToken(res.data.refresh_token);
+            props.setIsGoogleAuth(false);
             toast.success("Signed in");
             navigate("/");
         }).catch(err => {
@@ -79,7 +94,11 @@ function SignIn(props) {
     // -------------------- Dark Mode -------------------- //
     const darkMode = {
         backgroundColor: props.darkModeEnabled ? "#242728" : "",
+        color: props.darkModeEnabled ? "#e8e6e3" : "",
         height: "94.5vh"
+    }
+    const inputDarkmode = {
+        backgroundColor: props.darkModeEnabled ? "#e8e6e3" : "",
     }
     // -------------------- Dark Mode -------------------- //
 
@@ -95,18 +114,18 @@ function SignIn(props) {
 
                 <div className={styles.signInField}>
                     <label className={styles.inputLabel} htmlFor="email">Email</label>
-                    <input className={styles.signInInput} id="email" name="email" onInput={updateUserInfo} type="email" placeholder="Your Email" required value={userInfo.email} />
+                    <input className={styles.signInInput} id="email" name="email" onInput={updateUserInfo} type="email" placeholder="Your Email" required value={userInfo.email} style={inputDarkmode} />
                 </div>
                 <div className={styles.signInField}>
                     <label className={styles.inputLabel} htmlFor="email">Password</label>
-                    <input className={styles.signInInput} name="password" onInput={updateUserInfo} type={showPassword ? "text" : "password"} placeholder="Your Password" required value={userInfo.password} />
+                    <input className={styles.signInInput} name="password" onInput={updateUserInfo} type={showPassword ? "text" : "password"} placeholder="Your Password" required value={userInfo.password} style={inputDarkmode} />
                     {userInfo.password.length > 0 && <div className={styles.peekPassword} onClick={peekPassword}><FontAwesomeIcon icon={peekSVG} /></div>}
                 </div>
 
                 <div className={styles.rememberForgot}>
                     <span className={styles.remember}>
-                        <input type="checkbox" />
-                        <span>Remember me</span>
+                        <input id="rememberMe" type="checkbox" checked={props.rememberMe} onChange={(e) => props.setRememberMe(e.target.checked)} />
+                        <label htmlFor="rememberMe">Remember me</label>
                     </span>
                     <span onClick={goToForgotPassword} className={styles.forgot}>Forgot your password?</span>
                 </div>
@@ -120,7 +139,7 @@ function SignIn(props) {
             </div>
             <div onClick={continueWithGoogle} className={styles.continueWithGoogle}>
                 <img src={googleLogo} alt="Google Logo" width="20px" />
-                <span>Continue with Google</span>
+                <span style={{ color: "black" }}>Continue with Google</span>
             </div>
         </div>
 

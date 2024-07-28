@@ -9,17 +9,24 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 function ResetPassword(props) {
 
-    const [refreshToken, setRefreshToken] = useState(null);
+    const navigate = useNavigate();
+
     useEffect(() => {
-        let accessToken = window.location.href.split("/reset#access_token=")[1].split("&expires_at")[0];
-        let refreshToken = window.location.href.split("&refresh_token=")[1].split("&token_type")[0];
-        props.setAccessToken(accessToken);
-        setRefreshToken(refreshToken);
-        let newUrl = "http://localhost:3000/forgotPassword/reset"
-        window.history.pushState({ path: newUrl }, '', newUrl);
+        try {
+            let accessToken = window.location.href.split("/reset#access_token=")[1].split("&expires_at")[0];
+            let refreshToken = window.location.href.split("&refresh_token=")[1].split("&token_type")[0];
+            props.setAccessToken(accessToken);
+            props.setRefreshToken(refreshToken);
+            let newUrl = "http://localhost:3000/forgotPassword/reset"
+            window.history.pushState({ path: newUrl }, '', newUrl);
+        }
+        catch (e) {
+            console.log(e);
+            navigate("/")
+        }
+
     }, []);
 
-    const navigate = useNavigate();
     const [passwordReqSatisfied, setPasswordReqsSatisfied] = useState(false);
     const [userInfo, setUserInfo] = useState({
         password: "",
@@ -51,10 +58,10 @@ function ResetPassword(props) {
             headers: {
                 'Content-Type': 'application/json',
                 'accessToken': `Bearer ${props.accessToken}`,
-                'refreshToken': refreshToken
+                'refreshToken': props.refreshToken
             },
         }).then(res => {
-            toast.success("Password Reset. Sign in with your new password.");
+            toast.success("Password changed.");
             navigate("/");
         }).catch(err => {
             console.log(err.response.data);
@@ -72,24 +79,28 @@ function ResetPassword(props) {
     // -------------------- Dark Mode -------------------- //
     const darkMode = {
         backgroundColor: props.darkModeEnabled ? "#242728" : "",
+        color: props.darkModeEnabled ? "#e8e6e3" : "",
         height: "94.5vh"
+    }
+    const inputDarkmode = {
+        backgroundColor: props.darkModeEnabled ? "#e8e6e3" : "",
     }
     // -------------------- Dark Mode -------------------- //
 
     return (
 
-        <div className={styles.signInParent}>
+        <div className={styles.signInParent} style={darkMode}>
             <h1>Reset Password</h1>
             <form className={styles.signUpBox} autoComplete="off" onSubmit={resetPassword} noValidate>
 
                 <div className={styles.signInField}>
-                    <label className={styles.inputLabel} htmlFor="password">Password</label>
-                    <input className={styles.signInInput} id="password" name="password" onInput={updateUserInfo} type={showPassword ? "text" : "password"} placeholder="Your Password" required value={userInfo.password} />
+                    <label className={styles.inputLabel} htmlFor="password">New Password</label>
+                    <input className={styles.signInInput} id="password" name="password" onInput={updateUserInfo} type={showPassword ? "text" : "password"} placeholder="Your New Password" required value={userInfo.password} style={inputDarkmode} />
                     {userInfo.password.length > 0 && <div className={styles.peekPassword} onClick={peekPassword}><FontAwesomeIcon icon={peekSVG} /></div>}
                 </div>
                 <div className={styles.signInField}>
-                    <label className={styles.inputLabel} htmlFor="confirmPassword">Confirm Password</label>
-                    <input className={styles.signInInput} id="confirmPassword" name="confirmPassword" onInput={updateUserInfo} type="password" placeholder="Confirm Password" required value={userInfo.confirmPassword} />
+                    <label className={styles.inputLabel} htmlFor="confirmPassword">Confirm New Password</label>
+                    <input className={styles.signInInput} id="confirmPassword" name="confirmPassword" onInput={updateUserInfo} type="password" placeholder="Confirm New Password" required value={userInfo.confirmPassword} style={inputDarkmode} />
                 </div>
                 <PasswordReq currentPass={userInfo.password} currentConfPass={userInfo.confirmPassword} passwordReqSatisfied={passwordReqSatisfied} setPasswordReqsSatisfied={setPasswordReqsSatisfied} darkModeEnabled={props.darkModeEnabled} />
 
