@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "../css/signIn.module.css";
@@ -6,8 +6,17 @@ import PasswordReq from "../components/signIn/PasswordReq.jsx";
 import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import Cookies from "js-cookie"
 
 function SignIn(props) {
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (Cookies.get("accessToken")) {
+            navigate("/profile");
+            return;
+        }
+    }, [])
 
     const [passwordReqSatisfied, setPasswordReqsSatisfied] = useState(false);
     const [userInfo, setUserInfo] = useState({

@@ -179,8 +179,39 @@ const postAuthAutoSignIn = async (req, res) => {
         console.log(e);
         res.status(400).send(e);
     }
+}
+
+const refreshSession = async (req, res) => {
+
+    try {
+        const access_token = req.headers.accesstoken;
+        const refresh_token = req.headers.refreshtoken;
+
+        const response = await supabase.auth.setSession({
+            access_token,
+            refresh_token
+        });
+
+        if (response.error)
+            throw response.error;
+
+        const { data, error } = await supabase.auth.refreshSession({ refresh_token });
+        const { session, user } = data;
+
+        if (error)
+            throw error
+
+        res.status(200).send({
+            accessToken: session.access_token,
+            refreshToken: session.refresh_token
+        })
+    }
+    catch (e) {
+        console.log(e);
+        res.status(400).send(e);
+    }
 
 }
 
-export { signIn, signUp, forgotPassword, resetPassword, deleteAccount, googleAuth, googleAuthCallback, postAuthAutoSignIn }
+export { signIn, signUp, forgotPassword, resetPassword, deleteAccount, googleAuth, googleAuthCallback, postAuthAutoSignIn, refreshSession }
 

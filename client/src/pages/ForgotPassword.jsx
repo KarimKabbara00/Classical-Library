@@ -5,8 +5,21 @@ import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function ForgotPassword(props) {
+
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (Cookies.get("accessToken")) {
+            navigate("/profile");
+            return;
+        }
+        var newUrl = "http://localhost:3000/signIn"
+        window.history.pushState({ path: newUrl }, '', newUrl);
+    }, [])
 
     const [userEmail, setUserEmail] = useState("");
     function updateUserEmail(event) {

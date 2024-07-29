@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Header from "./components/navigation/Header";
 import Home from "./pages/Home";
@@ -8,7 +8,7 @@ import About from "./pages/About";
 import AllComposers from "./pages/AllComposers";
 import AllWorks from "./pages/AllWorks";
 import ViewComposer from "./pages/ViewComposer";
-import MusicPlayer from "./components/musicPlayer/MusicPlayer";
+// import MusicPlayer from "./components/musicPlayer/MusicPlayer";
 import DockedMusicPlayer from "./components/dockedMusicPlayer/DockedMusicPlayer";
 import ViewWorks from "./pages/ViewWorks";
 import SignIn from "./pages/SignIn";
@@ -32,13 +32,14 @@ function App() {
   const [email, setEmail] = useState(null);
   const [rememberMe, setRememberMe] = useState(false);
   const [isGoogleAuth, setIsGoogleAuth] = useState(false);
+  const [wasSignedIn, setWasSignedIn] = useState(false);
 
   function handleLogout(message) {
-    logout(message, setAccessToken, setRefreshToken, setUsername, setEmail, setRememberMe, setIsGoogleAuth);
+    logout(message, setAccessToken, setRefreshToken, setUsername, setEmail, setRememberMe);
   }
   useEffect(() => {
-    setSession(accessToken, refreshToken, email, username, rememberMe, setAccessToken, setRefreshToken, setUsername, setEmail);
-  }, [accessToken, refreshToken, email, username, rememberMe]);
+    setSession(accessToken, refreshToken, email, username, rememberMe, isGoogleAuth, setAccessToken, setRefreshToken, setUsername, setEmail);
+  }, [accessToken, refreshToken, email, username, rememberMe, isGoogleAuth]);
   /* -------------------------------- User Session -------------------------------- */
 
   /* -------------------------------- Music Player -------------------------------- */
@@ -95,14 +96,17 @@ function App() {
           <Route path="/trivia/quiz" element={<TriviaQuiz darkModeEnabled={darkModeEnabled} />} />
 
           {/* Profile Routes */}
-          <Route path="/signIn" element={<SignIn setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} setUsername={setUsername} setEmail={setEmail} rememberMe={rememberMe} setRememberMe={setRememberMe} setIsGoogleAuth={setIsGoogleAuth} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/signIn" element={<SignIn setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} setUsername={setUsername} setEmail={setEmail} rememberMe={rememberMe} setRememberMe={setRememberMe} setIsGoogleAuth={setIsGoogleAuth} setWasSignedIn={setWasSignedIn} darkModeEnabled={darkModeEnabled} />} />
           <Route path="/signUp" element={<SignUp darkModeEnabled={darkModeEnabled} />} />
           <Route path="/forgotPassword" element={<ForgotPassword darkModeEnabled={darkModeEnabled} />} />
           <Route path="/forgotPassword/reset" element={<ResetPassword setAccessToken={setAccessToken} accessToken={accessToken} setRefreshToken={setRefreshToken} refreshToken={refreshToken} setUsername={setUsername} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile" element={<Profile username={username} accessToken={accessToken} refreshToken={refreshToken} email={email} isGoogleAuth={isGoogleAuth} logout={handleLogout} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile/playlists" element={<Playlists accessToken={accessToken} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist accessToken={accessToken} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile/playlists/editPlaylist" element={<EditPlaylist accessToken={accessToken} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/profile" element={<Profile username={username} accessToken={accessToken} refreshToken={refreshToken} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} email={email} isGoogleAuth={isGoogleAuth} wasSignedIn={wasSignedIn} logout={handleLogout} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/profile/playlists" element={<Playlists accessToken={accessToken} refreshToken={refreshToken} wasSignedIn={wasSignedIn} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist accessToken={accessToken} refreshToken={refreshToken} wasSignedIn={wasSignedIn} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} darkModeEnabled={darkModeEnabled} />} />
+          <Route path="/profile/playlists/editPlaylist" element={<EditPlaylist accessToken={accessToken} refreshToken={refreshToken} wasSignedIn={wasSignedIn} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} darkModeEnabled={darkModeEnabled} />} />
+
+          {/* Catch All */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
 

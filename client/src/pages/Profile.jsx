@@ -7,19 +7,25 @@ import toast from "react-hot-toast";
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faCheck } from "@fortawesome/free-solid-svg-icons";
+import Cookies from "js-cookie";
+import { refreshSession } from "../sessionHandler";
 
 function Profile(props) {
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!props.accessToken) {
-            navigate("/signIn")
+        if (!Cookies.get("accessToken") && !props.wasSignedIn) {
+            navigate("/signIn");
+            return;
+        }
+        else if (!Cookies.get("accessToken") && props.wasSignedIn) {
+            refreshSession(props.accessToken, props.refreshToken, props.setAccessToken, props.setRefreshToken);
         }
     }, []);
 
     // Change password
-    const [showChangePassword, setShowChangePassword] = useState(true);
+    const [showChangePassword, setShowChangePassword] = useState(true && !props.isGoogleAuth);
     function handlePasswordClick() {
         setShowChangePassword(true);
         setShowDeleteAccount(false);
@@ -54,7 +60,7 @@ function Profile(props) {
     }
 
     // Delete
-    const [showDeleteAccount, setShowDeleteAccount] = useState(false);
+    const [showDeleteAccount, setShowDeleteAccount] = useState(false || props.isGoogleAuth);
     const [showPromptDelete, setShowPromptDelete] = useState(false);
     function handleDeleteClick() {
         setShowChangePassword(false);

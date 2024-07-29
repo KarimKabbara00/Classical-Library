@@ -1,7 +1,8 @@
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
+import axios from "axios";
 
-export const logout = (message, setAccessToken, setRefreshToken, setUsername, setEmail, setRememberMe, setIsGoogleAuth) => {
+export const logout = (message, setAccessToken, setRefreshToken, setUsername, setEmail, setRememberMe) => {
     try {
         Cookies.remove("accessToken");
         Cookies.remove("refreshToken");
@@ -21,8 +22,8 @@ export const logout = (message, setAccessToken, setRefreshToken, setUsername, se
     }
 }
 
-export const setSession = (accessToken, refreshToken, email, username, rememberMe, setAccessToken, setRefreshToken, setUsername, setEmail) => {
-    const cookieDuration = rememberMe ? 7 : 1; //days
+export const setSession = (accessToken, refreshToken, email, username, rememberMe, isGoogleAuth, setAccessToken, setRefreshToken, setUsername, setEmail) => {
+    const cookieDuration = rememberMe || isGoogleAuth ? 7 : 1 / 12; // 7 days or 2 hours
     let aT, rT, em, un;
     if (accessToken) {
         Cookies.set("accessToken", accessToken, { expires: cookieDuration });
@@ -51,4 +52,21 @@ export const setSession = (accessToken, refreshToken, email, username, rememberM
     else if (un = Cookies.get("username")) {
         setUsername(un);
     }
+}
+
+export const refreshSession = async (accessToken, refreshToken, setAccessToken, setRefreshToken) => {
+    // the access token expired, request a new one
+    axios.get("http://localhost:3001/api/refreshSession", {
+        headers: {
+            'Content-Type': 'application/json',
+            "accessToken": accessToken,
+            "refreshToken": refreshToken
+        },
+    }).then(res => {
+        setAccessToken(res.data.accessToken);
+        setRefreshToken(res.data.refreshToken);
+        return [res.data.accessToken, res.data.refreshToken]; // if needed to use aT and rT right away
+    }).catch(err => {
+        console.log(err);
+    })
 }

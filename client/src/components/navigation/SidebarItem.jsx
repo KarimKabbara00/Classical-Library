@@ -84,7 +84,7 @@ function SidebarItem(props) {
                     style={sidebarItemStyling}>
                     {props.text}
                 </div>
-                <div className={styles.darkModeSwitch}><Switch onChange={toggleChecked} checked={checked} onColor="#a52a2a" uncheckedIcon={null} checkedIcon={null} handleDiameter={is1280Px ? 12 : 26} height={is1280Px ? 14 : 28} width={is1280Px ? 28 : 56} /></div>
+                <div className={styles.darkModeSwitch}><Switch tabIndex="-1" onChange={toggleChecked} checked={checked} onColor="#a52a2a" uncheckedIcon={null} checkedIcon={null} handleDiameter={is1280Px ? 12 : 26} height={is1280Px ? 14 : 28} width={is1280Px ? 28 : 56} /></div>
             </div>}
         </div>
 

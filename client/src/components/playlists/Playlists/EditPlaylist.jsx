@@ -9,6 +9,8 @@ import styles from "../../../css/playlists.module.css";
 import loadingStyles from "../../../css/loading.module.css";
 import classNames from "classnames";
 import matchQueryToTitle from "../../../components/shared/helperFunctions";
+import Cookies from "js-cookie";
+import { refreshSession } from "../../../sessionHandler";
 
 function NewPlaylist(props) {
 
@@ -26,11 +28,33 @@ function NewPlaylist(props) {
             return [...prev, work]
         })
     }
+    const [ready, setReady] = useState(false);
+    useEffect(() => {
+        // check if the access token is valid
+        const checkToken = async () => {
+            if (!Cookies.get("accessToken") && !props.wasSignedIn) {
+                navigate("/signIn");
+                return;
+            }
+            else if (!Cookies.get("accessToken") && props.wasSignedIn) {
+                // needs to be async
+                await refreshSession(props.accessToken, props.refreshToken, props.setAccessToken, props.setRefreshToken);
+                setReady(true);
+            }
+            else {
+                setReady(true); // token hasn't expired
+            }
+        }
+        checkToken();
+    }, [])
 
     // grab all works
     const [allWorks, setAllWorks] = useState([]);
     const [showLoading, setShowLoading] = useState(true);
     useEffect(() => {
+
+        if (!ready)
+            return;
 
         if (location.state) {
             setOldPlaylistName(location.state.playlistData.playlistName);
@@ -38,7 +62,7 @@ function NewPlaylist(props) {
             setWorksToAdd(location.state.playlistData.works);
         }
         else { // cant come here via url
-            if (props.accessToken)
+            if (Cookies.get("accessToken"))
                 navigate("/profile/playlists");
             else
                 navigate("/signIn");
@@ -51,7 +75,7 @@ function NewPlaylist(props) {
             setShowLoading(false);
             console.log(err);
         })
-    }, []);
+    }, [ready]);
 
     function removeWork(workObj) {
         const updatedWorksToAdd = worksToAdd.filter(work => work.workID !== workObj.workID);
@@ -81,6 +105,7 @@ function NewPlaylist(props) {
             }, {
                 headers: {
                     accessToken: `Bearer ${props.accessToken}`,
+                    refreshToken: props.refreshToken
                 },
             })
             toast.success("Playlist edited");

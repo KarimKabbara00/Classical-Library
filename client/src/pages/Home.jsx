@@ -89,7 +89,7 @@ function Home(props) {
         <Intro firstLoad={props.firstLoad} darkModeEnabled={props.darkModeEnabled} />
       </div>
 
-      <animated.div style={secondRowStyling} className={styles.secondRow}>
+      <animated.div className={styles.secondRow} style={secondRowDarkMode}> {/* style={secondRowStyling} */}
         <BirthdayCarousel darkModeEnabled={props.darkModeEnabled} fetchAudio={props.fetchAudio} audioObject={props.audioObject} setAnotherRequest={props.setAnotherRequest} />
         <QOTD darkModeEnabled={props.darkModeEnabled} />
       </animated.div>

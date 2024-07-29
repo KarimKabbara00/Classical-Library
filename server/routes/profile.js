@@ -1,5 +1,5 @@
 import express from "express";
-import { signIn, signUp, forgotPassword, resetPassword, deleteAccount, googleAuth, googleAuthCallback, postAuthAutoSignIn } from "../controllers/profileController.js";
+import { signIn, signUp, forgotPassword, resetPassword, deleteAccount, googleAuth, googleAuthCallback, postAuthAutoSignIn, refreshSession } from "../controllers/profileController.js";
 import { jwtAuth } from "../utils/authMiddlware.js";
 
 const router = express.Router();
@@ -12,5 +12,6 @@ router.post("/deleteAccount", jwtAuth, deleteAccount);
 router.post("/auth/google", googleAuth);
 router.get("/auth/callback", googleAuthCallback);
 router.post("/postAuthAutoSignIn", postAuthAutoSignIn);
+router.get("/refreshSession", refreshSession)
 
 export default router;

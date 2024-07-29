@@ -9,34 +9,54 @@ import loadingStyles from "../css/loading.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Cookies from 'js-cookie';
+import { refreshSession } from "../sessionHandler";
 
 function Playlists(props) {
 
     const navigate = useNavigate();
     const [state, forceUpdate] = useReducer(x => x + 1, 0); // increment state when a playlist is delete
-
+    const [ready, setReady] = useState(false);
     const [playlists, setPlaylists] = useState([]);
     const [showLoading, setShowLoading] = useState(true);
+
+    useEffect(() => {
+        // check if the access token is valid
+        const checkToken = async () => {
+            if (!Cookies.get("accessToken") && !props.wasSignedIn) {
+                navigate("/signIn");
+                return;
+            }
+            else if (!Cookies.get("accessToken") && props.wasSignedIn) {
+                // needs to be async
+                await refreshSession(props.accessToken, props.refreshToken, props.setAccessToken, props.setRefreshToken);
+                setReady(true);
+            }
+            else {
+                setReady(true); // token hasn't expired
+            }
+        }
+        checkToken();
+    }, [])
+
     useEffect(() => {
 
-        if (!Cookies.get("accessToken")) {
-            navigate("/signIn");
-        }
-        else {
-            setShowLoading(true); // when state change is forced, show loading
-            axios.get("http://localhost:3001/api/viewPlaylists", {
-                headers: {
-                    accessToken: `Bearer ${Cookies.get("accessToken")}`
-                }
-            }).then(res => {
-                setPlaylists(res.data)
-                setShowLoading(false);
-            }).catch(err => {
-                console.log(err);
-                setShowLoading(false);
-            });
-        }
-    }, [state, props.accessToken])
+        // when access token is checked, fetch playlist
+        if (!ready)
+            return;
+
+        setShowLoading(true); // when state change is forced, show loading
+        axios.get("http://localhost:3001/api/viewPlaylists", {
+            headers: {
+                accessToken: `Bearer ${props.accessToken}`,
+            }
+        }).then(res => {
+            setPlaylists(res.data)
+            setShowLoading(false);
+        }).catch(err => {
+            console.log(err);
+            setShowLoading(false);
+        });
+    }, [state, ready])
 
     function newPlaylist() {
         navigate("/profile/playlists/newPlaylist");

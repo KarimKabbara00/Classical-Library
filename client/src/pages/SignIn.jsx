@@ -58,6 +58,7 @@ function SignIn(props) {
             props.setAccessToken(res.data.access_token);
             props.setRefreshToken(res.data.refresh_token);
             props.setIsGoogleAuth(false);
+            props.setWasSignedIn(true);
             toast.success("Signed in");
             navigate("/");
         }).catch(err => {
