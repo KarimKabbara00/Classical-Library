@@ -104,43 +104,44 @@ function SignIn(props) {
     // -------------------- Dark Mode -------------------- //
 
     return (
-
-        <div className={styles.signInParent} style={darkMode}>
-            <h1>Sign In</h1>
-            <div className={styles.noAccount}>
-                Don't have an account? <a className={styles.signUpHyperlink} onClick={goToSignUp}>Sign Up</a>
-            </div>
-            <form className={styles.signInBox} autoComplete="off" onSubmit={signIn} noValidate>
-                {/* <input name="displayName" onInput={updateUserInfo} style={showSignUpElements} type="text" placeholder="Username" required={showSignUp} value={userInfo.displayName} /> */}
-
-                <div className={styles.signInField}>
-                    <label className={styles.inputLabel} htmlFor="email">Email</label>
-                    <input className={styles.signInInput} id="email" name="email" onInput={updateUserInfo} type="email" placeholder="Your Email" required value={userInfo.email} style={inputDarkmode} />
+        <div className={styles.mainParent} style={darkMode}>
+            <div className={styles.signInParent}>
+                <h1 className={styles.title}>Sign In</h1>
+                <div className={styles.noAccount}>
+                    Don't have an account? <a className={styles.signUpHyperlink} onClick={goToSignUp}>Sign Up</a>
                 </div>
-                <div className={styles.signInField}>
-                    <label className={styles.inputLabel} htmlFor="email">Password</label>
-                    <input className={styles.signInInput} name="password" onInput={updateUserInfo} type={showPassword ? "text" : "password"} placeholder="Your Password" required value={userInfo.password} style={inputDarkmode} />
-                    {userInfo.password.length > 0 && <div className={styles.peekPassword} onClick={peekPassword}><FontAwesomeIcon icon={peekSVG} /></div>}
-                </div>
+                <form className={styles.signInBox} autoComplete="off" onSubmit={signIn} noValidate>
+                    {/* <input name="displayName" onInput={updateUserInfo} style={showSignUpElements} type="text" placeholder="Username" required={showSignUp} value={userInfo.displayName} /> */}
 
-                <div className={styles.rememberForgot}>
-                    <span className={styles.remember}>
-                        <input id="rememberMe" type="checkbox" checked={props.rememberMe} onChange={(e) => props.setRememberMe(e.target.checked)} />
-                        <label htmlFor="rememberMe">Remember me</label>
-                    </span>
-                    <span onClick={goToForgotPassword} className={styles.forgot}>Forgot your password?</span>
-                </div>
-                <button className={styles.signInButton} type="submit">Sign In</button>
-            </form>
+                    <div className={styles.signInField}>
+                        <label className={styles.inputLabel} htmlFor="email">Email</label>
+                        <input className={styles.signInInput} id="email" name="email" onInput={updateUserInfo} type="email" placeholder="Your Email" required value={userInfo.email} style={inputDarkmode} />
+                    </div>
+                    <div className={styles.signInField}>
+                        <label className={styles.inputLabel} htmlFor="email">Password</label>
+                        <input className={styles.signInInput} name="password" onInput={updateUserInfo} type={showPassword ? "text" : "password"} placeholder="Your Password" required value={userInfo.password} style={inputDarkmode} />
+                        {userInfo.password.length > 0 && <div className={styles.peekPassword} onClick={peekPassword}><FontAwesomeIcon icon={peekSVG} /></div>}
+                    </div>
 
-            <div className={styles.separator}>
-                <div className={styles.bar}></div>
-                <div>or</div>
-                <div className={styles.bar}></div>
-            </div>
-            <div onClick={continueWithGoogle} className={styles.continueWithGoogle}>
-                <img src={googleLogo} alt="Google Logo" width="20px" />
-                <span style={{ color: "black" }}>Continue with Google</span>
+                    <div className={styles.rememberForgot}>
+                        <span className={styles.remember}>
+                            <input id="rememberMe" type="checkbox" checked={props.rememberMe} onChange={(e) => props.setRememberMe(e.target.checked)} />
+                            <label htmlFor="rememberMe">Remember me</label>
+                        </span>
+                        <span onClick={goToForgotPassword} className={styles.forgot}>Forgot your password?</span>
+                    </div>
+                    <button className={styles.signInButton} type="submit">Sign In</button>
+                </form>
+
+                <div className={styles.separator}>
+                    <div className={styles.bar}></div>
+                    <div>or</div>
+                    <div className={styles.bar}></div>
+                </div>
+                <div onClick={continueWithGoogle} className={styles.continueWithGoogle}>
+                    <img src={googleLogo} alt="Google Logo" width="20px" />
+                    <span style={{ color: "black" }}>Continue with Google</span>
+                </div>
             </div>
         </div>
 

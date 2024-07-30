@@ -1,21 +1,19 @@
 .homeBody {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    gap: 4rem 0rem;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
-    height: 94.5vh;
+    justify-content: space-between; */
+    display: grid;
+    grid-gap: 6rem 0rem;
     overflow-y: scroll;
-    justify-content: space-between;
+    height: 94.5vh;
 }
 
 .firstRow {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     padding-top: 5rem;
-    width: 100%;
-    padding-left: 12rem;
+    padding-left: 10rem;
+    height: fit-content;
 }
 
 .title {
@@ -51,13 +49,10 @@
 
 .secondRow {
     display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 100%;
-    height: 55%;
     background-color: whitesmoke;
+    padding-top: 4rem;
     padding-bottom: 4rem;
-    opacity: 1;
+    padding-left: 10rem;
 }
 
 .birthdayCarouselParent {
@@ -67,6 +62,7 @@
     justify-content: flex-start;
     width: 40%;
     height: fit-content;
+    margin-right: 15%;
 }
 
 .birthdayCarousel {
@@ -155,7 +151,6 @@
     font-size: 1.1rem;
     padding-left: 1px;
     text-overflow: clip;
-    /* max-height: 2rem; */
 }
 
 .recommendedWorks>span {
@@ -166,38 +161,8 @@
     cursor: pointer;
 }
 
-@media (max-width: 1280px) {
-
-    .homeBody {
-        gap: 2rem 0rem;
-    }
-
-    .firstRow {
-        padding-top: 4rem;
-    }
-
-    .title {
-        font-size: 1.5rem;
-        text-align: center;
-    }
-
-    .websiteDesc {
-        gap: 0.5rem 0rem;
-        font-size: 1.2rem;
-        line-height: 1.75rem;
-    }
-
-    .birthdayCarouselParent {
-        width: 45%;
-    }
-
-    .recommendedWorks {
-        font-size: 0.9rem;
-    }
-}
-
 .qotdParent {
-    width: 30%;
+    width: 35%;
 }
 
 .qotdContent {
@@ -225,4 +190,63 @@
 .separator {
     border: 1px solid gray;
     border-radius: 10px;
+}
+
+@media (max-width: 1280px) {
+
+    .homeBody {
+        /* gap: 1rem 0rem; */
+        max-height: 94.5vh;
+    }
+
+    .firstRow {
+        padding-top: 4rem;
+        padding-left: 7rem;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .websiteDesc {
+        gap: 0.5rem 0rem;
+        font-size: 1.2rem;
+        max-width: 75%;
+    }
+
+    .birthdayCarouselParent {
+        margin-right: 7rem;
+    }
+
+    .portraitAndWorks>img {
+        width: 175px;
+    }
+
+    .recommendedWorksParent {
+        gap: 0.5rem 0rem;
+    }
+
+    .recommendedWorks {
+        font-size: 0.9rem;
+    }
+
+    .secondRow {
+        padding-left: 7rem;
+    }
+
+    .qotdParent {
+        width: 35%;
+    }
+
+    .qotdQuote {
+        font-size: 0.9rem;
+    }
+
+    .qotdItem {
+        margin-bottom: 0.25rem;
+    }
+
+    .qotdAuthor {
+        font-size: 0.9rem;
+    }
 }

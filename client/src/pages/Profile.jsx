@@ -98,6 +98,7 @@ function Profile(props) {
     return (
         <div className={styles.profileParent} style={darkMode}>
             <div className={styles.contentParent}>
+                <h1 className={styles.headerStyle}>Account</h1>
                 <div className={styles.content}>
                     <div className={styles.sidebar}>
                         {!props.isGoogleAuth && <span style={{ borderBottom: showChangePassword ? "2px solid brown" : "" }} onClick={handlePasswordClick}>
@@ -108,7 +109,6 @@ function Profile(props) {
                         </span>
                     </div>
                     <div style={{ width: "100%", position: "relative" }}>
-                        <h1 className={styles.headerStyle}>Account</h1>
                         {/* Change password */}
                         {showChangePassword && <div className={styles.contentItem}>
                             <h3>Change your Password</h3>

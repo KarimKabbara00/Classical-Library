@@ -17,7 +17,7 @@ function ProfileButton(props) {
         props.text === "Profile" ? setIcon(accountBrown) : void (0);
         props.text === "Playlists" ? setIcon(playlistBrown) : void (0);
         props.text === "Contribute" ? setIcon(contributeBrown) : void (0);
-        props.text === "Logout" ? setIcon(signOutBrown) : void (0);
+        props.text === "Sign Out" ? setIcon(signOutBrown) : void (0);
     }, [props.text]);
 
     const [isHovered, setIsHovered] = useState(false);
@@ -26,7 +26,7 @@ function ProfileButton(props) {
         props.text === "Profile" ? (!isHovered ? setIcon(accountWhite) : setIcon(accountBrown)) : void (0);
         props.text === "Playlists" ? (!isHovered ? setIcon(playlistWhite) : setIcon(playlistBrown)) : void (0);
         props.text === "Contribute" ? (!isHovered ? setIcon(contributeWhite) : setIcon(contributeBrown)) : void (0);
-        props.text === "Logout" ? (!isHovered ? setIcon(signOutWhite) : setIcon(signOutBrown)) : void (0);
+        props.text === "Sign Out" ? (!isHovered ? setIcon(signOutWhite) : setIcon(signOutBrown)) : void (0);
     }
 
     return (

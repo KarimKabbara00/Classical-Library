@@ -1,14 +1,25 @@
+.mainParent {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
 .signInParent {
     display: flex;
     flex-direction: column;
     padding-top: 3rem;
-    padding-left: 36rem;
-    padding-right: 36rem;
+    align-items: center;
+    width: fit-content;
+}
+
+.title {
+    align-self: flex-start;
 }
 
 .noAccount {
     margin-top: 0.5rem;
     font-size: 0.9rem;
+    align-self: flex-start;
 }
 
 .signUpHyperlink {
@@ -131,6 +142,7 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 0.75rem;
+    width: 100%;
 }
 
 .or {
@@ -161,6 +173,7 @@
     padding: 0.5rem 1rem 0.5rem 1rem;
     margin-top: 0.75rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .continueWithGoogle:hover {

@@ -26,6 +26,7 @@
 .allCompTitle {
   margin-top: 3rem;
   font-size: 2.5rem;
+  padding-left: 2rem;
 }
 
 .query {
@@ -40,6 +41,7 @@
   margin-top: 2rem;
   padding-bottom: 3rem;
   min-width: 82.5vw;
+  padding-left: 2rem;
 }
 
 .allComposersHeader {
@@ -138,6 +140,10 @@
 }
 
 @media (max-width: 1280px) {
+
+  .allCompMainBody {
+    max-height: 94.5vh;
+  }
 
   .allCompBody {
     min-width: 82.5vw;

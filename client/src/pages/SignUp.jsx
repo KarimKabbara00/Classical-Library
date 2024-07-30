@@ -98,46 +98,48 @@ function SignIn(props) {
 
     return (
         <>
-            {!showCheckEmail && <div className={styles.signInParent} style={darkMode}>
-                <h1>Sign Up</h1>
-                <form className={styles.signUpBox} autoComplete="off" onSubmit={signUp} noValidate>
+            <div className={styles.mainParent} style={darkMode}>
+                {!showCheckEmail && <div className={styles.signInParent} >
+                    <h1 className={styles.title}>Sign Up</h1>
+                    <form className={styles.signUpBox} autoComplete="off" onSubmit={signUp} noValidate>
 
-                    <div className={styles.signInField}>
-                        <label className={styles.inputLabel} htmlFor="displayName">Username</label>
-                        <input className={styles.signInInput} id="displayName" name="displayName" onInput={updateUserInfo} type="text" placeholder="Username" required value={userInfo.displayName} style={inputDarkmode} />
+                        <div className={styles.signInField}>
+                            <label className={styles.inputLabel} htmlFor="displayName">Username</label>
+                            <input className={styles.signInInput} id="displayName" name="displayName" onInput={updateUserInfo} type="text" placeholder="Username" required value={userInfo.displayName} style={inputDarkmode} />
+                        </div>
+
+                        <div className={styles.signInField}>
+                            <label className={styles.inputLabel} htmlFor="email">Email</label>
+                            <input className={styles.signInInput} id="email" name="email" onInput={updateUserInfo} type="email" placeholder="Your Email" required value={userInfo.email} style={inputDarkmode} />
+                        </div>
+                        <div className={styles.signInField}>
+                            <label className={styles.inputLabel} htmlFor="password">Password</label>
+                            <input className={styles.signInInput} id="password" name="password" onInput={updateUserInfo} type={showPassword ? "text" : "password"} placeholder="Your Password" required value={userInfo.password} style={inputDarkmode} />
+                            {userInfo.password.length > 0 && <div className={styles.peekPassword} onClick={peekPassword}><FontAwesomeIcon icon={peekSVG} /></div>}
+                        </div>
+                        <div className={styles.signInField}>
+                            <label className={styles.inputLabel} htmlFor="confirmPassword">Confirm Password</label>
+                            <input className={styles.signInInput} id="confirmPassword" name="confirmPassword" onInput={updateUserInfo} type="password" placeholder="Confirm Password" required value={userInfo.confirmPassword} style={inputDarkmode} />
+                        </div>
+                        <PasswordReq currentPass={userInfo.password} currentConfPass={userInfo.confirmPassword} passwordReqSatisfied={passwordReqSatisfied} setPasswordReqsSatisfied={setPasswordReqsSatisfied} darkModeEnabled={props.darkModeEnabled} />
+
+                        <button className={styles.signInButton} type="submit">Sign Up</button>
+                        {buttonClicked && <FontAwesomeIcon icon={faSpinner} className="fa-spin" style={{ fontSize: "1.75rem", alignSelf: "center", marginTop: "0.5rem" }} />}
+                    </form>
+                </div>}
+
+                {showCheckEmail && <div className={styles.signInParent} style={{ alignItems: "center", ...darkMode }}>
+                    <div style={{ position: "relative" }}>
+                        <div style={{ position: "absolute", left: "-2rem", top: "50%", transform: "translateY(-50%)" }}>
+                            <FontAwesomeIcon icon={faCheck} style={{ fontSize: "1.5rem" }} color="green" />
+                        </div>
+                        <h1>Thank you for signing up!</h1>
                     </div>
 
-                    <div className={styles.signInField}>
-                        <label className={styles.inputLabel} htmlFor="email">Email</label>
-                        <input className={styles.signInInput} id="email" name="email" onInput={updateUserInfo} type="email" placeholder="Your Email" required value={userInfo.email} style={inputDarkmode} />
-                    </div>
-                    <div className={styles.signInField}>
-                        <label className={styles.inputLabel} htmlFor="password">Password</label>
-                        <input className={styles.signInInput} id="password" name="password" onInput={updateUserInfo} type={showPassword ? "text" : "password"} placeholder="Your Password" required value={userInfo.password} style={inputDarkmode} />
-                        {userInfo.password.length > 0 && <div className={styles.peekPassword} onClick={peekPassword}><FontAwesomeIcon icon={peekSVG} /></div>}
-                    </div>
-                    <div className={styles.signInField}>
-                        <label className={styles.inputLabel} htmlFor="confirmPassword">Confirm Password</label>
-                        <input className={styles.signInInput} id="confirmPassword" name="confirmPassword" onInput={updateUserInfo} type="password" placeholder="Confirm Password" required value={userInfo.confirmPassword} style={inputDarkmode} />
-                    </div>
-                    <PasswordReq currentPass={userInfo.password} currentConfPass={userInfo.confirmPassword} passwordReqSatisfied={passwordReqSatisfied} setPasswordReqsSatisfied={setPasswordReqsSatisfied} darkModeEnabled={props.darkModeEnabled} />
-
-                    <button className={styles.signInButton} type="submit">Sign Up</button>
-                    {buttonClicked && <FontAwesomeIcon icon={faSpinner} className="fa-spin" style={{ fontSize: "1.75rem", alignSelf: "center", marginTop: "0.5rem" }} />}
-                </form>
-            </div>}
-
-            {showCheckEmail && <div className={styles.signInParent} style={{ alignItems: "center", ...darkMode }}>
-                <div style={{ position: "relative" }}>
-                    <div style={{ position: "absolute", left: "-2rem", top: "50%", transform: "translateY(-50%)" }}>
-                        <FontAwesomeIcon icon={faCheck} style={{ fontSize: "1.5rem" }} color="green" />
-                    </div>
-                    <h1>Thank you for signing up!</h1>
-                </div>
-
-                <div style={{ fontSize: "1.1rem", paddingTop: "1rem", paddingBottom: "0.25rem" }}>A confirmation email has been sent to your inbox.</div>
-                <div style={{ fontSize: "1.1rem" }}>You must verify your email before signing in.</div>
-            </div >}
+                    <div style={{ fontSize: "1.1rem", paddingTop: "1rem", paddingBottom: "0.25rem" }}>A confirmation email has been sent to your inbox.</div>
+                    <div style={{ fontSize: "1.1rem" }}>You must verify your email before signing in.</div>
+                </div >}
+            </div>
         </>
     )
 }

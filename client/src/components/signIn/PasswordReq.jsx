@@ -49,7 +49,7 @@ function PasswordReq(props) {
     const darkMode = {
         backgroundColor: props.darkModeEnabled ? "#242728" : "",
         color: props.darkModeEnabled ? "#e8e6e3" : "",
-        border: "1px solid #e8e6e3"
+        border: props.darkModeEnabled ? "1px solid #e8e6e3" : ""
     }
 
     return (

@@ -35,7 +35,7 @@ function ProfileBox(props) {
             <div style={profileBoxDarkMode} className={styles.profileBox}>
                 <div onClick={goToProfile}><ProfileButton text={"Profile"} /></div>
                 <div onClick={goToPlaylists}><ProfileButton text={"Playlists"} /></div>
-                <div onClick={logout}><ProfileButton text={"Logout"} /></div>
+                <div onClick={logout}><ProfileButton text={"Sign Out"} /></div>
             </div>
         </div>
     )

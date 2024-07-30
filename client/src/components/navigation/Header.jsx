@@ -41,7 +41,7 @@ function Header(props) {
 
         // go from smallest to largest
         if (is1280Px) {
-            sidebarHeight = "92vh"
+            sidebarHeight = "94.5vh"
             collapsedWidth = "3.25rem";
             expandedWidth = "12rem";
             iconSize = "30rem";

@@ -149,10 +149,10 @@ function PlaylistItem(props) {
 
     return (
         <div>
-            <div className={styles.playlistItem}>
+            <div>
                 <div className={styles.playlistTitleParent}>
                     <div onClick={onArrowClick} className={styles.playlistTitleAndArrow}>
-                        <h2>{props.playlist.playlistName}</h2>
+                        <h2 className={styles.playlistTitle}>{props.playlist.playlistName}</h2>
                         <img src={arrowSVG} width="25px" alt="arrowRightDownIcon" />
                     </div>
                     <div className={styles.playlistActionsParent}>

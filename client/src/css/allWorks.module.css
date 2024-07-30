@@ -15,7 +15,6 @@
 .allWorksMainBody {
     display: flex;
     justify-content: center;
-    min-height: 94.5vh;
     max-height: 94.5vh;
     overflow-y: auto;
     padding-left: 1rem;
@@ -91,4 +90,10 @@
 
 .noResults {
     font-size: 1.25rem;
+}
+
+@media (max-width: 1280px) {
+    .allWorksMainBody {
+        max-height: 94.5vh;
+    }
 }
