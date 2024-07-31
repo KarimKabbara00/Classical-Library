@@ -41,7 +41,7 @@ const viewComposer = async (req, res) => {
                 // await sleep(2000);
                 res.status(200).send({
                     composerData: compResponse.data.composer,
-                    genreData: compResponse.data.genres,
+                    genreData: ["All", ...compResponse.data.genres],
                     description: description,
                     born: dob,
                     died: dod,

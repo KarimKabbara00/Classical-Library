@@ -35,6 +35,7 @@
     z-index: 1;
     transform: translateY(-300%);
     overflow-y: hidden;
+    height: 30%;
 }
 
 .loading {
@@ -42,6 +43,7 @@
     flex-direction: column;
     align-items: center;
     gap: 2rem 0rem;
+    height: 100%;
 }
 
 .loadingTitle {
@@ -51,4 +53,5 @@
 
 .loadingGraphic {
     display: flex;
+    height: 29%;
 }

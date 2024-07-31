@@ -1,7 +1,1 @@
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
-<svg width="800px" height="800px" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="SVGRepo_bgCarrier" stroke-width="0"/>
-<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
-<g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M6.75 3.80989C6.75 3.29386 7.14265 2.86257 7.65642 2.81428L16.6564 1.96832C17.2431 1.91318 17.75 2.37468 17.75 2.96393V5.14519C17.75 5.65923 17.3603 6.08955 16.8487 6.1403L7.84873 7.03323C7.26031 7.09161 6.75 6.62943 6.75 6.03812V3.80989Z" fill="#FFFFFF"/> <ellipse cx="14.75" cy="15" rx="3" ry="2.5" fill="#FFFFFF"/> <ellipse cx="5.75" cy="16" rx="3" ry="2.5" fill="#FFFFFF"/> <path fill-rule="evenodd" clip-rule="evenodd" d="M15.75 5H17.75V15H15.75V5Z" fill="#FFFFFF"/> <path fill-rule="evenodd" clip-rule="evenodd" d="M6.75 6H8.75V16H6.75V6Z" fill="#FFFFFF"/> </g>
-</svg>
+<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 19C9 20.1046 7.65685 21 6 21C4.34315 21 3 20.1046 3 19C3 17.8954 4.34315 17 6 17C7.65685 17 9 17.8954 9 19ZM9 19V5L21 3V17M21 17C21 18.1046 19.6569 19 18 19C16.3431 19 15 18.1046 15 17C15 15.8954 16.3431 15 18 15C19.6569 15 21 15.8954 21 17ZM9 9L21 7" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>

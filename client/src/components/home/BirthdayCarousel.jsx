@@ -33,7 +33,7 @@ function BirthdayCarousel(props) {
 
     return (
         <div className={styles.birthdayCarouselParent}>
-            <h1>Upcoming Birthdays</h1>
+            <h1 className={styles.secondRowTitle}>Upcoming Birthdays</h1>
             {!showError && <div>
                 <div id="birthdayCarousel" style={birthdayCarouselDarkMode} className={styles.birthdayCarousel}>
                     {composerInfo.map((composer, index) => {

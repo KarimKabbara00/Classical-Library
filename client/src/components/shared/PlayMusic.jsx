@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "../../css/viewWorks.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay, faSpinner, faCircleStop } from "@fortawesome/free-solid-svg-icons";
+import classNames from "classnames";
 
 function PlayMusic(props) {
 
@@ -28,12 +29,18 @@ function PlayMusic(props) {
         else if (props.audioObject === null && svgIcon === faCircleStop) {
             setSvgIcon(faCirclePlay);
         }
-    }, [props.audioObject])
+    }, [props.audioObject]);
+
+    const test = classNames({
+        ["fa-spin"]: svgIcon === faSpinner,
+        [styles.playButtonIcon]: true,
+
+    })
 
     return (
         // byUrl is a boolean
         <div onClick={() => playSong(props.byUrl, props.urlOrID)} className={styles.playButton}>
-            <FontAwesomeIcon icon={svgIcon} className={svgIcon === faSpinner ? "fa-spin" : ""} style={{ color: "#a52a2a", fontSize: "2rem" }} />
+            <FontAwesomeIcon icon={svgIcon} className={test} style={{ color: "#a52a2a", }} />
         </div>
     )
 }

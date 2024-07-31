@@ -25,7 +25,7 @@ function QOTD(props) {
 
     return (
         <div className={styles.qotdParent}>
-            <h1> Quotes of the Day </h1>
+            <h1 className={styles.secondRowTitle}> Quotes of the Day </h1>
             {!showError && <div className={styles.qotdContent}>
                 <QuoteItem author={quoteOne[0]} quote={quoteOne[1]} />
                 <div className={styles.separator}></div>

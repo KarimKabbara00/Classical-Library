@@ -13,7 +13,8 @@ import mapBrown from "../../images/sidebar/map-brown.svg";
 import mapWhite from "../../images/sidebar/map-white.svg";
 import aboutBrown from "../../images/sidebar/about-brown.svg";
 import aboutWhite from "../../images/sidebar/about-white.svg";
-import moon from "../../images/sidebar/moon.svg";
+import moonEmpty from "../../images/sidebar/moon-empty.svg";
+import moonFull from "../../images/sidebar/moon-full.svg";
 import Switch from "react-switch";
 
 function SidebarItem(props) {
@@ -37,12 +38,13 @@ function SidebarItem(props) {
         props.text === "Trivia" ? setIcon(triviaBrown) : void (0);
         props.text === "Map" ? setIcon(mapBrown) : void (0);
         props.text === "About" ? setIcon(aboutBrown) : void (0);
-        props.text === "Dark Mode" ? setIcon(moon) : void (0);
+        props.text === "Dark Mode" ? setIcon(moonEmpty) : void (0);
     }, [props.text])
 
     const [checked, setChecked] = useState(false);
     function toggleChecked() {
         let newState = !checked;
+        checked ? setIcon(moonEmpty) : setIcon(moonFull);
         setChecked(newState);
         props.toggleDarkMode(newState);
     }
@@ -52,6 +54,7 @@ function SidebarItem(props) {
         if (props.text === "Dark Mode") {
             let darkModeEnabled = JSON.parse(localStorage.getItem("darkModeEnabled"));
             setChecked(darkModeEnabled);
+            !darkModeEnabled ? setIcon(moonEmpty) : setIcon(moonFull);
             props.toggleDarkMode(darkModeEnabled);
         }
     }, [props.text])

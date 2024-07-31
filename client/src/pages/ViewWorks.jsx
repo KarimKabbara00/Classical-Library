@@ -47,7 +47,7 @@ function ViewWorks(props) {
 
       // if coming directly to this page, grab the ID from the url
       compID = !compID ? window.location.href.split("id=")[1].split("&")[0] : compID;
-      genre = !genre ? window.location.href.split("genre=")[1].split("&")[0] : genre
+      genre = !genre ? window.location.href.split("genre=")[1] : genre
 
       axios
         .get(`http://localhost:3001/api/viewWorks?id=${compID}&genre=${genre}`)
@@ -60,7 +60,7 @@ function ViewWorks(props) {
           // genre states
           setCurrentGenre(genre);
           setAllGenres(res.data.allGenres);
-          setShowLoading(false);
+          setShowLoading(false);  
         })
         .catch(function (err) {
           console.log(err);
@@ -77,6 +77,10 @@ function ViewWorks(props) {
 
   // for the buttons next to the filter input bar
   function filterWorksByGenre(works, genre) {
+
+    if (genre === "All")
+      return works;
+
     var filteredWorks = works.filter(work => {
       if (genre === "Popular") {
         return work.popular === "1";
@@ -106,7 +110,7 @@ function ViewWorks(props) {
       setShownWorks(allWorks);
     } else {
       // filter works based on input
-      let filteredWorks = allWorks.filter((work) => {
+      let filteredWorks = shownWorks.filter((work) => {
         // create modified titles to relax constraint on matching query to title
         return matchQueryToTitle(work.title, filter.toLocaleLowerCase());
       });
@@ -123,7 +127,6 @@ function ViewWorks(props) {
         let b_split = b[column].split(":");
         let a_ms = ((parseInt(a_split[0]) * 3600) + (parseInt(a_split[1]) * 60) + (parseInt(a_split[2]))) * 1000;
         let b_ms = ((parseInt(b_split[0]) * 3600) + (parseInt(b_split[1]) * 60) + (parseInt(b_split[2]))) * 1000;
-        console.log(a_ms, b_ms);
         return ascending * b_ms - a_ms;
       }
       else {

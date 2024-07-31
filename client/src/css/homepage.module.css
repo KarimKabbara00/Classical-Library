@@ -1,13 +1,9 @@
 .homeBody {
-    /* display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    justify-content: space-between; */
     display: grid;
     grid-gap: 6rem 0rem;
     overflow-y: scroll;
     height: 94.5vh;
+    overflow-x: hidden;
 }
 
 .firstRow {
@@ -19,7 +15,6 @@
 .title {
     font-size: 2rem;
 }
-
 
 .websiteDesc {
     display: flex;
@@ -68,6 +63,7 @@
 .birthdayCarousel {
     display: flex;
     overflow-x: scroll;
+    overflow-y: hidden;
     /* Internet Explorer 10+ */
     -ms-overflow-style: none;
     /* Firefox */
@@ -192,11 +188,10 @@
     border-radius: 10px;
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1400px) {
 
     .homeBody {
-        /* gap: 1rem 0rem; */
-        max-height: 94.5vh;
+        max-height: 92vh;
     }
 
     .firstRow {
@@ -215,7 +210,7 @@
     }
 
     .birthdayCarouselParent {
-        margin-right: 7rem;
+        /* margin-right: 7rem; */
     }
 
     .portraitAndWorks>img {
@@ -250,3 +245,164 @@
         font-size: 0.9rem;
     }
 }
+
+@media (max-width: 1200px) {
+    .homeBody {
+        grid-gap: 2rem 0rem;
+    }
+
+    .firstRow {
+        padding-top: 4rem;
+        padding-left: 8rem;
+    }
+
+    .secondRow {
+        display: flex;
+        flex-direction: column;
+        gap: 5rem 0rem;
+        padding-left: 8rem;
+    }
+
+    .birthdayCarouselParent {
+        width: 70%;
+    }
+
+    .birthdayCardComposerName {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .recommendedWorksParent {
+        gap: 1rem 0rem;
+    }
+
+    .recommendedWorks>span {
+        font-size: 1.2rem;
+    }
+
+    .portraitAndWorks>img {
+        width: 200px;
+    }
+
+    .qotdParent {
+        width: 70%;
+    }
+
+    .qotdQuote {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width:1000px) {
+
+    .firstRow {
+        padding-top: 3rem;
+        padding-left: 7rem;
+        width: 85%;
+    }
+
+    .secondRow {
+        padding-left: 7rem;
+    }
+
+    .birthdayCarouselParent {
+        width: 60%;
+    }
+
+    .birthdayCarousel {
+        height: 90%;
+    }
+
+    .portraitAndWorks>img {
+        width: 190px;
+    }
+
+    .recommendedWorks>span {
+        font-size: 1.1rem;
+    }
+
+    .qotdParent {
+        width: 60%;
+    }
+}
+
+@media (max-width: 860px) {
+
+    .title {
+        font-size: 1.25rem;
+    }
+
+    .websiteDesc {
+        font-size: 1.1rem;
+        margin-top: 1rem;
+        max-width: 65%;
+    }
+
+    .birthdayCarouselParent {
+        width: 55%;
+    }
+
+    .birthdayCarousel {
+        height: 89%;
+    }
+
+    .recommendedWorks>span {
+        font-size: 1.15rem;
+    }
+
+    .qotdParent {
+        width: 55%;
+    }
+}
+
+@media (max-width: 760px) {
+
+    .firstRow {
+        padding-left: 6rem;
+    }
+
+    .title {
+        font-size: 1.1rem;
+    }
+
+    .websiteDesc {
+        font-size: 1rem;
+        max-width: 50%;
+    }
+
+    .secondRow {
+        padding-left: 6rem;
+    }
+
+    .secondRowTitle {
+        font-size: 1.6rem;
+    }
+
+    .birthdayCarouselParent {
+        width: 45%;
+    }
+
+    .birthdayCarousel {
+        height: 80%;
+    }
+
+    .portraitAndWorks>img {
+        width: 190px;
+    }
+
+    .recommendedWorks>span {
+        font-size: 0.95rem;
+    }
+
+    .qotdParent {
+        width: 45%;
+    }
+
+    .qotdQuote {
+        font-size: 1rem;
+    }
+}
+
+/* @media (max-width: 625px) {
+
+} */

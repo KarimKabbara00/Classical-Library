@@ -32,8 +32,7 @@ function ViewComposer(props) {
       // if coming directly to this page, grab the ID from the url
       compID = !compID ? window.location.href.split("id=")[1] : compID;
 
-      axios
-        .get(`http://localhost:3001/api/viewComposer?id=${compID}`)
+      axios.get(`http://localhost:3001/api/viewComposer?id=${compID}`)
         .then(function (res) {
           setAllData({
             composerData: res.data.composerData,

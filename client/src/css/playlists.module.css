@@ -316,10 +316,10 @@
 
 @media (max-width: 1280px) {
     .playlistBody {
-        max-height: 94.5vh;
+        max-height: 92vh;
     }
 
     .newPlaylistBody {
-        max-height: 94.5vh;
+        max-height: 92vh;
     }
 }
