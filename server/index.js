@@ -2,7 +2,6 @@ import express from "express";
 import bodyParser from "body-parser";
 import path from 'path';
 import { fileURLToPath } from 'url';
-import cors from "cors"
 
 // routes
 import home from "./routes/home.js"
@@ -17,10 +16,9 @@ import profile from "./routes/profile.js";
 import music from "./routes/music.js";
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = parseInt(process.env.PORT) || 8080;
 
 /* ---- Middleware ---- */
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use((req, res, next) => { // logs every request received
@@ -28,8 +26,7 @@ app.use((req, res, next) => { // logs every request received
   next();
 });
 
-// app.use(cors({ origin: "http://localhost:3000" })); // allow cors from frontend
-
+/* ---- Static Routes ---- */
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'build')));
@@ -46,6 +43,7 @@ app.use("/api", profile);
 app.use("/api", playlists);
 app.use("/api", music)
 
+/* ---- Catch All ---- */
 app.get('/api/*', (req, res) => {
   res.status(404).send('Route not found');
 });
