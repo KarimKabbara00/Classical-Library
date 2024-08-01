@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.84a142a8.css",
-    "main.js": "/static/js/main.f222bbce.js",
+    "main.js": "/static/js/main.4d6ff6cd.js",
     "static/media/treble.svg": "/static/media/treble.7e41244870446a699012a1f1c407d0ab.svg",
     "static/media/trivia-brown.svg": "/static/media/trivia-brown.fdf76d3674c05d61adfb236e7bf176b0.svg",
     "static/media/trivia-white.svg": "/static/media/trivia-white.c2188ccbb7099bca3930442bb686452e.svg",
@@ -60,10 +60,10 @@
     "static/media/contribute-brown.svg": "/static/media/contribute-brown.6477a0aefde06992c4a80411023b4af7.svg",
     "static/media/contribute-white.svg": "/static/media/contribute-white.275815f1b77cb5db93bf07dd6dd96b36.svg",
     "main.84a142a8.css.map": "/static/css/main.84a142a8.css.map",
-    "main.f222bbce.js.map": "/static/js/main.f222bbce.js.map"
+    "main.4d6ff6cd.js.map": "/static/js/main.4d6ff6cd.js.map"
   },
   "entrypoints": [
     "static/css/main.84a142a8.css",
-    "static/js/main.f222bbce.js"
+    "static/js/main.4d6ff6cd.js"
   ]
 }
