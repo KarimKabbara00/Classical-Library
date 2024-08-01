@@ -8,7 +8,7 @@ function PlaylistItem(props) {
                 <span style={{ fontWeight: "bold" }}>{props.index}. </span>
                 <span>{props.title}</span>
             </span>
-            <span>{props.compName}</span>
+            <span style={{ textAlign: "end" }}>{props.compName}</span>
         </div>
     )
 }

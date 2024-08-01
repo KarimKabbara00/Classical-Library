@@ -209,10 +209,6 @@
         max-width: 75%;
     }
 
-    .birthdayCarouselParent {
-        /* margin-right: 7rem; */
-    }
-
     .portraitAndWorks>img {
         width: 175px;
     }
@@ -402,7 +398,3 @@
         font-size: 1rem;
     }
 }
-
-/* @media (max-width: 625px) {
-
-} */

@@ -32,6 +32,8 @@ function AddWorkToPlaylist(props) {
     }
 
     function addWork(workID, title, complete_name) {
+        if (workID === -1)
+            return;
         props.addWork({
             workID: workID,
             title: title,

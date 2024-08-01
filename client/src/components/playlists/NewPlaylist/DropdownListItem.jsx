@@ -57,7 +57,7 @@ function WorkDropdownList(props) {
             className={styles.dropdownListItem}>
             <div className={styles.workTitleAndIcon}>
                 <span>{props.work.workTitle}</span>
-                <span>
+                <span style={{ textAlign: "end" }}>
                     {props.work.workID !== -1 && <span style={{ marginRight: "0.75rem" }}>by {props.work.complete_name}</span>}
                     {disabled && props.work.workID !== -1 && <FontAwesomeIcon color={hovered ? "white" : "green"} icon={faCheck} />}
                 </span>

@@ -13,18 +13,14 @@
 }
 
 .mapPage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem 0rem;
     opacity: 0;
+    overflow: hidden;
 }
 
 .mapBody {
     height: 94.5vh;
-    width: 97vw;
-    overflow: hidden;
-    margin-left: 3vw;
+    width: 96vw;
+    margin-left: 4rem;
 }
 
 .mapHeader {
@@ -39,8 +35,8 @@
     height: 2.5rem;
     position: absolute;
     z-index: 10;
-    left: 10%;
-    top: 1.2%;
+    left: 0.85vw;
+    top: 10vh;
     background-color: white;
     border-radius: 2px;
     display: flex;
@@ -84,12 +80,20 @@
 }
 
 @media (max-width: 1280px) {
-    .infoParent {
-        left: 15%;
-        top: 1.9%;
+
+    .mapBody {
+        height: 92.5vh;
+        margin-left: 3.25rem;
     }
 
     .infoWords {
         padding: 0.45rem 0.2rem 1.9rem 0.7rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .infoParent {
+        left: 1.41vw;
+
     }
 }

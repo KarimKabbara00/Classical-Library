@@ -30,10 +30,18 @@ function Prompt(props) {
         backgroundColor: props.darkModeEnabled ? "#242728" : "",
         border: props.darkModeEnabled ? "1px solid #e8e6e3" : "",
     }
-    const buttonDarkMode = {
+    const cancelButtonDarkMode = {
         color: props.darkModeEnabled ? "#e8e6e3" : "",
         backgroundColor: props.darkModeEnabled ? "#242728" : "",
     }
+    const confirmButtonDarkMode = {
+        color: props.confirmCheck && !confirmCheckPassed ?
+            props.darkModeEnabled ? "gray" : "" :
+            props.darkModeEnabled ? "#e8e6e3" : "",
+        backgroundColor: props.darkModeEnabled ? "#242728" : "",
+
+    }
+
     // -------------------- Dark Mode -------------------- //
 
     return (
@@ -50,8 +58,8 @@ function Prompt(props) {
 
 
                 <div className={styles.promptButtonsParent}>
-                    <button style={buttonDarkMode} onClick={confirm} className={styles.promptButton} type="button" disabled={props.confirmCheck && !confirmCheckPassed}>{props.confirm}</button>
-                    <button style={buttonDarkMode} onClick={cancel} className={styles.promptButton} type="button">{props.cancel}</button>
+                    <button style={confirmButtonDarkMode} onClick={confirm} className={styles.promptButton} type="button" disabled={props.confirmCheck && !confirmCheckPassed}>{props.confirm}</button>
+                    <button style={cancelButtonDarkMode} onClick={cancel} className={styles.promptButton} type="button">{props.cancel}</button>
                 </div>
             </div>
         </animated.div>

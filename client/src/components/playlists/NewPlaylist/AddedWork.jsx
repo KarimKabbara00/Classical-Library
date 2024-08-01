@@ -26,7 +26,7 @@ function AddedWork(props) {
         <div>
             <div style={addedWorkDarkMode} className={styles.addedWork}>
                 <span>{title}</span>
-                <span>{completeName}</span>
+                <span style={{textAlign: "end"}}>{completeName}</span>
                 <span className={styles.deleteButton} onClick={() => removeWork(props.workID)} onMouseEnter={() => setXHovered(true)} onMouseLeave={() => setXHovered(false)}>
                     <FontAwesomeIcon icon={faX} color={xHovered ? "red" : props.darkModeEnabled ? "#e8e6e3" : "black"} fontSize="15px" />
                 </span>

@@ -2,6 +2,8 @@
     display: flex;
     justify-content: center;
     width: 100%;
+    overflow-y: scroll;
+    max-height: 94vh;
 }
 
 .signInParent {
@@ -9,7 +11,7 @@
     flex-direction: column;
     padding-top: 3rem;
     align-items: center;
-    width: fit-content;
+    max-height: 94vh;
 }
 
 .title {
@@ -219,4 +221,45 @@
     right: -2rem;
     top: 50%;
     transform: translateY(-50%);
+}
+
+@media (max-width: 800px) {
+
+    .signInParent{
+        padding-bottom: 25rem;
+    }
+
+    .title {
+        font-size: 1.75rem;
+    }
+
+    .inputLabel {
+        font-size: 0.8rem;
+    }
+
+    .signInInput {
+        font-size: 1rem;
+    }
+
+    .signInBox {
+        width: 60vw;
+    }
+
+    .signUpBox {
+        width: 60vw;
+        padding-bottom: 5rem;
+    }
+
+    .signInButton {
+        font-size: 0.9rem;
+    }
+
+    .continueWithGoogle {
+        font-size: 0.9rem;
+        padding: 0.4rem 1rem 0.4rem 1rem;
+    }
+
+    .passwordReq {
+        font-size: 0.9rem;
+    }
 }

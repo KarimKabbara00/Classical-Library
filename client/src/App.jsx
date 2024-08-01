@@ -22,8 +22,25 @@ import TriviaQuiz from "./components/trivia/TriviaQuiz";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import { logout, setSession } from "./sessionHandler";
+import { useMediaQuery } from "@uidotdev/usehooks";
+import IsPortrait from "./detectOrientation";
+import BlockAccess from "./pages/BlockAccess";
 
 function App() {
+
+  /* -------------------------- Portrait Mode Detection ------------------------ */
+  const [blockAccess, setBlockAccess] = useState(false);
+  const is625Px = useMediaQuery("only screen and (max-width : 625px)");
+  const isPortrait = IsPortrait();
+  useEffect(() => {
+    if (isPortrait && is625Px) {
+      setBlockAccess(true);
+    }
+    else {
+      setBlockAccess(false);
+    }
+  }, [IsPortrait])
+  /* -------------------------- Portrait Mode Detection ------------------------ */
 
   /* -------------------------------- User Session -------------------------------- */
   const [accessToken, setAccessToken] = useState(null);
@@ -79,7 +96,7 @@ function App() {
 
   return (
     <div>
-      <BrowserRouter>
+      {!blockAccess && <BrowserRouter>
         <Header accessToken={accessToken} username={username} logout={handleLogout} toggleDarkMode={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
         <Routes>
           {/* Nav Bar Routes */}
@@ -108,13 +125,16 @@ function App() {
           {/* Catch All */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter>}
 
       {/* <MusicPlayer musicRequest={musicRequest} audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} anotherRequest={anotherRequest} playlistQueueIndex={playlistQueueIndex} setPlaylistQueueIndex={setPlaylistQueueIndex} queueLength={queueLength} setQueueLength={setQueueLength} togglePlayerType={togglePlayerType} playerDocked={playerDocked} darkModeEnabled={darkModeEnabled} /> */}
       <DockedMusicPlayer musicRequest={musicRequest} audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} anotherRequest={anotherRequest} playlistQueueIndex={playlistQueueIndex} setPlaylistQueueIndex={setPlaylistQueueIndex} queueLength={queueLength} setQueueLength={setQueueLength} togglePlayerType={togglePlayerType} playerDocked={playerDocked} darkModeEnabled={darkModeEnabled} />
       <div>
         <Toaster position="top-left" reverseOrder={false} containerStyle={{ position: "absolute", top: 80, left: 80, bottom: 20, right: 20, }} />
       </div>
+      {blockAccess && <div>
+        <BlockAccess />
+      </div>}
     </div>
   );
 }

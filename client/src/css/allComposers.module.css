@@ -17,6 +17,7 @@
   justify-content: center;
   max-height: 94.5vh;
   overflow-y: scroll;
+  padding-left: 3rem;
 }
 
 .allCompParent {
@@ -26,7 +27,6 @@
 .allCompTitle {
   margin-top: 3rem;
   font-size: 2.5rem;
-  padding-left: 2rem;
 }
 
 .query {
@@ -40,8 +40,6 @@
   flex-direction: column;
   margin-top: 2rem;
   padding-bottom: 3rem;
-  min-width: 82.5vw;
-  padding-left: 2rem;
 }
 
 .allComposersHeader {
@@ -71,7 +69,6 @@
   justify-content: space-between;
   gap: 0rem 4rem;
   grid-template-columns: repeat(4, 1fr);
-  min-width: 80%;
   margin-top: 0.25rem;
 }
 
@@ -139,21 +136,74 @@
   color: white;
 }
 
-@media (max-width: 1280px) {
-
-  .allCompMainBody {
-    max-height: 92vh;
+@media (max-width: 1750px) {
+  .allCompItem {
+    width: 20rem;
   }
+}
 
-  .allCompBody {
-    min-width: 82.5vw;
-  }
+@media (max-width: 1625px) {
 
   .allCompGrid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 0rem 6rem;
+  }
+
+  .allCompItem {
+    width: 22rem;
+  }
+
+}
+
+@media (max-width: 1350px) {
+
+  .allCompGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0rem 2rem;
   }
 
   .allCompItem {
     width: 20rem;
+  }
+}
+
+@media (max-width: 1150px) {
+
+  .allCompGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0rem 4rem;
+  }
+
+  .allCompItem {
+    width: 23rem;
+  }
+}
+
+@media (max-width: 875px) {
+
+  .allCompGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0rem 2rem;
+  }
+
+  .allCompItem {
+    width: 20rem;
+  }
+}
+
+@media (max-width: 765px) {
+
+  .allComposersHeader {
+    flex-direction: column;
+    gap: 0.5rem 0rem;
+    align-items: flex-start;
+  }
+
+  .allCompGrid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .allCompItem {
+    width: 24rem;
   }
 }

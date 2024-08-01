@@ -74,8 +74,6 @@
     margin-top: 2rem;
     width: 100%;
     max-height: 94.5vh;
-    /* padding-left: 15rem; */
-    /* padding-right: 15rem; */
     overflow-y: auto;
     gap: 1.75rem 0rem;
 }
@@ -321,5 +319,24 @@
 
     .newPlaylistBody {
         max-height: 92vh;
+    }
+}
+
+@media (max-width: 850px) {
+    .playlistBody {
+        width: 75vw;
+    }
+
+    .playlistWork {
+        font-size: 1rem;
+    }
+
+    .addedWork {
+        font-size: 1.15rem;
+    }
+
+    .newPlaylistBody {
+        padding-left: 6rem;
+        padding-right: 6rem;
     }
 }

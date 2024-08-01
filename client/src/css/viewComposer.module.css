@@ -249,11 +249,9 @@
   }
 
   .exploreGenres {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem 1rem;
     margin: 1rem 0rem 1rem 0rem;
-    overflow: hidden;
   }
 
   .genreCard {
@@ -274,5 +272,63 @@
   .timeLineWords {
     grid-template-rows: 8.8rem 8.8rem 8.8rem 8.8rem;
     font-size: 1rem;
+  }
+}
+
+@media (max-width: 1000px) {
+
+  .viewComposerMainBody {
+    padding-top: 2rem;
+    gap: 0rem 4rem;
+    flex-direction: column;
+  }
+
+  .left {
+    padding-left: 3rem;
+    gap: 0.5rem 0rem;
+    max-width: 90%;
+  }
+
+  .composerImage {
+    width: 200px;
+  }
+
+  .exploreGenres {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .right {
+    margin-top: 1rem;
+    min-width: 90%;
+    padding-left: 3rem;
+    padding-bottom: 4rem;
+  }
+
+  .timeLine {
+    gap: 0rem 1rem;
+    width: 85vw;
+  }
+
+  .timeLineWords {
+    grid-template-rows: 8.8rem 8.8rem 8.8rem 8.8rem;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 845px) {
+  .exploreGenres {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem 2rem;
+  }
+
+  .timeLine {
+    width: 75vw;
+  }
+}
+
+@media (max-width: 725px) {
+  .exploreGenres {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem 3rem;
   }
 }

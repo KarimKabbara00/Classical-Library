@@ -2,7 +2,6 @@
 
 .workFilter {
     position: relative;
-    align-self: flex-end;
     display: flex;
 }
 

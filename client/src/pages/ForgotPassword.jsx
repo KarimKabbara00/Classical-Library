@@ -72,8 +72,8 @@ function ForgotPassword(props) {
     return (
 
         <div className={styles.signInParent} style={darkMode}>
-            <h1>Forgot Password</h1>
             <form className={styles.signInBox} autoComplete="off" noValidate onSubmit={forgotPassword}>
+            <h1>Forgot Password</h1>
                 <div className={styles.signInField}>
                     <label className={styles.inputLabel} htmlFor="email">Email</label>
                     <input className={styles.signInInput} id="email" name="email" onInput={updateUserEmail} type="email" placeholder="Your Email" required value={userEmail} style={inputDarkmode} />

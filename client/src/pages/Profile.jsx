@@ -159,6 +159,7 @@ function Profile(props) {
                 callback={deleteAccount}
                 confirmCheck={true}
                 confirmCheckPhrase={"Delete my account forever"}
+                darkModeEnabled={props.darkModeEnabled}
             />}
         </div>
     )

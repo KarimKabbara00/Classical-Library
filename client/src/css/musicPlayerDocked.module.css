@@ -95,7 +95,7 @@
     padding-right: 1rem;
 }
 
-.controls > * {
+.controls>* {
     padding-left: 1rem;
     padding-right: 1rem;
 }
@@ -192,4 +192,17 @@
     margin-top: 1rem;
     border-bottom: 1px solid gray;
     padding-bottom: 0.25rem;
+}
+
+@media (max-width: 1550px) {
+    .songTitle {
+        /* min-width: 60%; */
+        /* max-width: 60%; */
+        font-size: 1.1rem;
+    }
+
+    .songMetaData {
+        width: 30%;
+        padding-right: 1rem;
+    }
 }

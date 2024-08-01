@@ -4,7 +4,9 @@
     align-items: center;
     padding-top: 4rem;
     gap: 4rem 0rem;
-    max-height: 94vw;
+    max-height: 94vh;
+    min-height: 94vh;
+    overflow-y: scroll;
 }
 
 .sectionGroup {
@@ -37,6 +39,7 @@ ul {
     display: flex;
     flex-direction: column;
     gap: 0.5rem 0rem;
+    padding-bottom: 5rem;
 }
 
 ol {
@@ -59,5 +62,20 @@ ol>li::marker {
 
     .sectionDesc {
         font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 1015px) {
+    .mainBody {
+        gap: 3rem 0rem;
+        padding-top: 2rem;
+    }
+
+    .sectionTitle {
+        font-size: 1.5rem;
+    }
+
+    .sectionDesc {
+        font-size: 1rem;
     }
 }
