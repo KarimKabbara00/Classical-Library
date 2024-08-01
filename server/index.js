@@ -16,7 +16,7 @@ import profile from "./routes/profile.js";
 import music from "./routes/music.js";
 
 const app = express();
-const port = parseInt(process.env.PORT) || 8080;
+const port = parseInt(process.env.PORT) || 3000;
 
 /* ---- Middleware ---- */
 app.use(bodyParser.urlencoded({ extended: true }));
