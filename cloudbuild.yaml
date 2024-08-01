@@ -1,0 +1,8 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  dir: 'server' # Change to the directory where your Dockerfile is located
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/my-server-image', '.']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['run', 'deploy', 'my-service', '--image', 'gcr.io/$PROJECT_ID/my-server-image', '--platform', 'managed', '--region', 'us-central1']
+images:
+- 'gcr.io/$PROJECT_ID/my-server-image'
