@@ -16,7 +16,7 @@ function Home(props) {
 
     const url = new URL(window.location.href);  // current url
     const from = url.searchParams.get("from");  // from OAuth or email
-    const newUrl = "http://localhost:3000/"     // finally, set to this
+    const newUrl = "http://localhost:3001/"     // finally, set to this
 
     if (!from)
       return;

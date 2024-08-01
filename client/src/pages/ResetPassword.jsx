@@ -11,13 +11,15 @@ function ResetPassword(props) {
 
     const navigate = useNavigate();
 
+    const [accessToken, setAccessToken] = useState(null);
+    const [refreshToken, setRefreshToken] = useState(null);
     useEffect(() => {
         try {
             let accessToken = window.location.href.split("/reset#access_token=")[1].split("&expires_at")[0];
             let refreshToken = window.location.href.split("&refresh_token=")[1].split("&token_type")[0];
-            props.setAccessToken(accessToken);
-            props.setRefreshToken(refreshToken);
-            let newUrl = "http://localhost:3000/forgotPassword/reset"
+            setAccessToken(accessToken);
+            setRefreshToken(refreshToken);
+            let newUrl = "http://localhost:3001/forgotPassword/reset"
             window.history.pushState({ path: newUrl }, '', newUrl);
         }
         catch (e) {
@@ -57,8 +59,8 @@ function ResetPassword(props) {
         axios.post("http://localhost:3001/api/resetPassword", userInfo, {
             headers: {
                 'Content-Type': 'application/json',
-                'accessToken': `Bearer ${props.accessToken}`,
-                'refreshToken': props.refreshToken
+                'accessToken': `Bearer ${accessToken}`,
+                'refreshToken': refreshToken
             },
         }).then(res => {
             toast.success("Password changed.");

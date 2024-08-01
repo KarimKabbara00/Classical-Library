@@ -38,7 +38,7 @@ const signUp = async (req, res) => {
                 data: {
                     displayName: displayName,
                 },
-                emailRedirectTo: "http://localhost:3000?from=email"
+                emailRedirectTo: "http://localhost:3001?from=email"
             }
         })
 
@@ -61,7 +61,7 @@ const forgotPassword = async (req, res) => {
         const { userEmail } = req.body;
 
         const { data, error } = await supabase.auth.resetPasswordForEmail(userEmail, {
-            redirectTo: 'http://localhost:3000/forgotPassword/reset',
+            redirectTo: 'http://localhost:3001/forgotPassword/reset',
         })
 
         if (error)
@@ -157,7 +157,7 @@ const googleAuth = async (req, res) => {
 }
 
 const googleAuthCallback = async (req, res) => {
-    res.redirect(303, "http://localhost:3000?from=google")
+    res.redirect(303, "http://localhost:3001?from=google")
 }
 
 const postAuthAutoSignIn = async (req, res) => {

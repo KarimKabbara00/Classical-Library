@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.6fcf6e3f.css",
-    "main.js": "/static/js/main.b639c9a4.js",
+    "main.css": "/static/css/main.d6d9e864.css",
+    "main.js": "/static/js/main.743dd1a4.js",
     "static/media/treble.svg": "/static/media/treble.7e41244870446a699012a1f1c407d0ab.svg",
     "static/media/trivia-brown.svg": "/static/media/trivia-brown.fdf76d3674c05d61adfb236e7bf176b0.svg",
     "static/media/trivia-white.svg": "/static/media/trivia-white.c2188ccbb7099bca3930442bb686452e.svg",
@@ -59,11 +59,11 @@
     "static/media/searchWhite.svg": "/static/media/searchWhite.c2f3707faa9c8349e197ce4c09891c61.svg",
     "static/media/contribute-brown.svg": "/static/media/contribute-brown.6477a0aefde06992c4a80411023b4af7.svg",
     "static/media/contribute-white.svg": "/static/media/contribute-white.275815f1b77cb5db93bf07dd6dd96b36.svg",
-    "main.6fcf6e3f.css.map": "/static/css/main.6fcf6e3f.css.map",
-    "main.b639c9a4.js.map": "/static/js/main.b639c9a4.js.map"
+    "main.d6d9e864.css.map": "/static/css/main.d6d9e864.css.map",
+    "main.743dd1a4.js.map": "/static/js/main.743dd1a4.js.map"
   },
   "entrypoints": [
-    "static/css/main.6fcf6e3f.css",
-    "static/js/main.b639c9a4.js"
+    "static/css/main.d6d9e864.css",
+    "static/js/main.743dd1a4.js"
   ]
 }

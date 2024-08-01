@@ -1,6 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
-import cors from "cors";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import cors from "cors"
 
 // routes
 import home from "./routes/home.js"
@@ -18,14 +20,19 @@ const app = express();
 const port = 3001;
 
 /* ---- Middleware ---- */
-app.use(express.static("public"));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors({ origin: "http://localhost:3000" })); // allow cors from frontend
 app.use((req, res, next) => { // logs every request received
   console.log("Received request at", req.url);
   next();
 });
+
+// app.use(cors({ origin: "http://localhost:3000" })); // allow cors from frontend
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, 'build')));
 
 /* ---- Routes ---- */
 app.use("/api", home);
@@ -38,6 +45,15 @@ app.use("/api", map);
 app.use("/api", profile);
 app.use("/api", playlists);
 app.use("/api", music)
+
+app.get('/api/*', (req, res) => {
+  res.status(404).send('Route not found');
+});
+
+// Handles any other requests by serving the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
