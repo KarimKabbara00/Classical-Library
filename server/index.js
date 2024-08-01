@@ -17,7 +17,7 @@ import profile from "./routes/profile.js";
 import music from "./routes/music.js";
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 /* ---- Middleware ---- */
 
