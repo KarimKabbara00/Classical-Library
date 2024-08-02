@@ -24,7 +24,7 @@ function sleep(ms) {
     });
 }
 
-function formatDate(date) {
+function formatDate(date, birthYear) {
     // change date obj to format: July 1, 1926
 
     const months = {
@@ -44,9 +44,9 @@ function formatDate(date) {
 
     const day = (parseInt(date.getDate()) + 1).toString(); // for some reason its off by 1
     const month = months[date.getMonth()];
-    const year = date.getFullYear();
+    // const year = date.getFullYear();
 
-    return `${month} ${day}, ${year}`
+    return `${month} ${day}, ${birthYear}`
 }
 
 async function fetchFourWorks(composerId) {

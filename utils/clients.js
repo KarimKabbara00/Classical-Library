@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import * as dotenv from "dotenv";
 
 // import .env module and grab kv pairs
-// dotenv.config();
+dotenv.config();
 
 // chatGPT
 const openAI = new OpenAI({

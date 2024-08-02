@@ -38,7 +38,7 @@ const signUp = async (req, res) => {
                 data: {
                     displayName: displayName,
                 },
-                emailRedirectTo: "https://classical-library.com?from=email"
+                emailRedirectTo: "http://localhost:3001?from=email"
             }
         })
 
@@ -61,7 +61,7 @@ const forgotPassword = async (req, res) => {
         const { userEmail } = req.body;
 
         const { data, error } = await supabase.auth.resetPasswordForEmail(userEmail, {
-            redirectTo: 'https://classical-library.com/forgotPassword/reset',
+            redirectTo: 'http://localhost:3001/forgotPassword/reset',
         })
 
         if (error)
@@ -144,7 +144,7 @@ const googleAuth = async (req, res) => {
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-            redirectTo: 'https://classical-library.com/api/auth/callback',
+            redirectTo: 'http://localhost:3001/api/auth/callback',
         },
     })
 
@@ -157,7 +157,7 @@ const googleAuth = async (req, res) => {
 }
 
 const googleAuthCallback = async (req, res) => {
-    res.redirect(303, "https://classical-library.com?from=google")
+    res.redirect(303, "http://localhost:3001?from=google")
 }
 
 const postAuthAutoSignIn = async (req, res) => {

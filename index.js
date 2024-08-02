@@ -15,6 +15,8 @@ import playlists from './routes/playlists.js';
 import profile from "./routes/profile.js";
 import music from "./routes/music.js";
 
+import cors from "cors"
+
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -25,6 +27,7 @@ app.use((req, res, next) => { // logs every request received
   console.log("Received request at", req.url);
   next();
 });
+app.use(cors({origin: "http://localhost:3000"}))
 
 /* ---- Static Routes ---- */
 const __filename = fileURLToPath(import.meta.url);
