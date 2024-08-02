@@ -8,8 +8,8 @@ function BlockAccess() {
         alignItems: "center",
         fontSize: "1.75rem",
         height: "100vh",
-        border: "1px solid brown",
         textAlign: "center",
+        backgroundColor: "white"
     }
     const brown = {
         color: "brown",

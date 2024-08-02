@@ -20,6 +20,7 @@ function Header(props) {
     }, [props.username])
 
     // programatic media queries
+    const is1000Px = useMediaQuery("only screen and (max-width : 1000px)");
     const is1280Px = useMediaQuery("only screen and (max-width : 1280px)");
     const [styling, setStyling] = useState({
         sidebarHeight: "0rem",
@@ -40,7 +41,15 @@ function Header(props) {
         let profileIconSize = "";
 
         // go from smallest to largest
-        if (is1280Px) {
+        if (is1000Px) {
+            sidebarHeight = "90vh"
+            collapsedWidth = "3.25rem";
+            expandedWidth = "12rem";
+            iconSize = "27rem";
+            fontSize = "1.1rem";
+            profileIconSize = "lg";
+        }
+        else if (is1280Px) {
             sidebarHeight = "92.5vh"
             collapsedWidth = "3.25rem";
             expandedWidth = "12rem";

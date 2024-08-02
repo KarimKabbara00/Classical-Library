@@ -12,6 +12,8 @@ import matchQueryToTitle from "../../../components/shared/helperFunctions";
 import Cookies from "js-cookie";
 import { refreshSession } from "../../../sessionHandler";
 
+const baseURL = process.env.REACT_APP_BASE_URL;
+
 function NewPlaylist(props) {
 
     const [playlistName, setPlaylistName] = useState("New playlist");
@@ -56,7 +58,7 @@ function NewPlaylist(props) {
         if (!ready)
             return;
 
-        axios.get("http://localhost:3001/api/allWorksNewPlaylist").then(res => {
+        axios.get(`${baseURL}/api/allWorksNewPlaylist`).then(res => {
             setAllWorks(res.data);
             setShowLoading(false);
         }).catch(err => {
@@ -85,7 +87,7 @@ function NewPlaylist(props) {
 
         try {
             // make request to see if playlist name already exists
-            const checkResponse = await axios.post("http://localhost:3001/api/checkPlaylistRecord", {
+            const checkResponse = await axios.post(`${baseURL}/api/checkPlaylistRecord`, {
                 newPlaylistName: playlistName,
             }, {
                 headers: {
@@ -99,7 +101,7 @@ function NewPlaylist(props) {
             }
             else {
 
-                await axios.post("http://localhost:3001/api/createPlaylist", {
+                await axios.post(`${baseURL}/api/createPlaylist`, {
                     playlistName: playlistName,
                     playlistData: worksToAdd
                 }, {

@@ -13,6 +13,7 @@ import BackToTop from "../components/shared/BackToTop";
 import GenreButton from "../components/viewWorks/GenreButton";
 import Error from "../components/shared/Error";
 import matchQueryToTitle from "../components/shared/helperFunctions";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function ViewWorks(props) {
   const location = useLocation();
@@ -50,7 +51,8 @@ function ViewWorks(props) {
       genre = !genre ? window.location.href.split("genre=")[1] : genre
 
       axios
-        .get(`http://localhost:3001/api/viewWorks?id=${compID}&genre=${genre}`)
+        .get(`${baseURL}/api/viewWorks?id=${compID}&genre=${genre}`)
+        // .get(`${baseURL}/api/viewWorks?id=${compID}&genre=${genre}`)
         .then(function (res) {
           setAllWorks(res.data.works);
           setShownWorks(filterWorksByGenre(res.data.works, genre));
@@ -60,7 +62,7 @@ function ViewWorks(props) {
           // genre states
           setCurrentGenre(genre);
           setAllGenres(res.data.allGenres);
-          setShowLoading(false);  
+          setShowLoading(false);
         })
         .catch(function (err) {
           console.log(err);
@@ -172,7 +174,9 @@ function ViewWorks(props) {
       {!showLoading && !showError && <div className={contentStyling}>
         <BackToTop elementId={"worksBody"} triggerAtY={300} />
         <div className={styles.workTitle} style={textDarkMode}>
-          {currentGenre} works by <span style={{ color: "brown" }}>&nbsp;{composer}</span>
+          <span>
+            {currentGenre}&nbsp;works&nbsp;by <span style={{ color: "brown" }}>{composer}</span>
+          </span>
         </div>
 
         <div className={styles.filterWorksHeader}>

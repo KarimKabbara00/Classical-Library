@@ -47,9 +47,9 @@ function Loading(props) {
         {props.loadingText}
       </span>
       <div className={styles.loadingGraphic}>
-        <animated.img style={{ ...anims[0] }} id="note1" src={SVG} width="50px" />
-        <animated.img style={{ ...anims[1] }} id="note2" src={SVG} width="50px" />
-        <animated.img style={{ ...anims[2] }} id="note3" src={SVG} width="50px" />
+        <animated.img style={{ ...anims[0] }} id="note1" src={SVG} width="50px" height="50px" />
+        <animated.img style={{ ...anims[1] }} id="note2" src={SVG} width="50px" height="50px"/>
+        <animated.img style={{ ...anims[2] }} id="note3" src={SVG} width="50px" height="50px"/>
       </div>
     </div>
   );

@@ -206,3 +206,17 @@
 .triviaQuizAnswerFinal {
     width: 105%;
 }
+
+@media (max-width: 1000px) {
+    .triviaQuizQAParent {
+        width: 80%;
+    }
+
+    .triviaQuizHeader {
+        width: 80%;
+    }
+
+    .triviaQuizBar {
+        width: 50vw;
+    }
+}

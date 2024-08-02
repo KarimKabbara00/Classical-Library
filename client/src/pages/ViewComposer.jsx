@@ -13,6 +13,7 @@ import Error from "../components/shared/Error";
 import styles from "../css/viewComposer.module.css";
 import sharedStyles from "../css/shared.module.css";
 import loadingStyles from "../css/loading.module.css";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function ViewComposer(props) {
   const location = useLocation();
@@ -32,7 +33,7 @@ function ViewComposer(props) {
       // if coming directly to this page, grab the ID from the url
       compID = !compID ? window.location.href.split("id=")[1] : compID;
 
-      axios.get(`http://localhost:3001/api/viewComposer?id=${compID}`)
+      axios.get(`${baseURL}/api/viewComposer?id=${compID}`)
         .then(function (res) {
           setAllData({
             composerData: res.data.composerData,

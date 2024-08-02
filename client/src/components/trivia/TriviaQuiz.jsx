@@ -13,6 +13,7 @@ import BackToTop from "../../components/shared/BackToTop";
 import arrowLeftBlack from "../../images/arrow-left-black.svg"
 import arrowLeftBrown from "../../images/arrow-left-brown.svg"
 import arrowLeftWhite from "../../images/arrow-left-white.svg" // dark mode
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function countScore(selectedAnswersObject, correctAnswers, originalQnA) {
     var score = 0;
@@ -67,7 +68,7 @@ function Trivia(props) {
     const [timeElapsed, setTimeElapsed] = useState(0);
     useEffect(() => {
 
-        axios.get("http://localhost:3001/api/trivia").then(res => {
+        axios.get(`${baseURL}/api/trivia`).then(res => {
             // grab answers
             let answers = res.data.map(question => {
                 console.log(question.answers[0]);
@@ -135,7 +136,7 @@ function Trivia(props) {
     // take quiz again
     const navigate = useNavigate()
     function restartQuiz() {
-        navigate(0);
+        navigate("/trivia");
     }
 
     // timer

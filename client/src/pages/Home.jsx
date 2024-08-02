@@ -7,6 +7,7 @@ import QOTD from "../components/home/QOTD";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function Home(props) {
 
@@ -16,7 +17,7 @@ function Home(props) {
 
     const url = new URL(window.location.href);  // current url
     const from = url.searchParams.get("from");  // from OAuth or email
-    const newUrl = "http://localhost:3001/"     // finally, set to this
+    const newUrl = `${baseURL}`                 // finally, set to this
 
     if (!from)
       return;
@@ -30,7 +31,7 @@ function Home(props) {
       if (!accessToken || !refreshToken || !from)
         throw "ERROR WITH ACCESS TOKEN OR REFRESH TOKEN OR FROM"
 
-      axios.post("http://localhost:3001/api/postAuthAutoSignIn", { from: from }, {
+      axios.post(`${baseURL}/api/postAuthAutoSignIn`, { from: from }, {
         headers: {
           'Content-Type': 'application/json',
           'accessToken': `Bearer ${accessToken}`,

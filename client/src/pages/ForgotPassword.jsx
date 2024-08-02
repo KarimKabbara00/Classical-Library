@@ -7,6 +7,7 @@ import { faCheck, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function ForgotPassword(props) {
 
@@ -17,7 +18,7 @@ function ForgotPassword(props) {
             navigate("/profile");
             return;
         }
-        var newUrl = "http://localhost:3001/signIn"
+        var newUrl = `${baseURL}/signIn`
         window.history.pushState({ path: newUrl }, '', newUrl);
     }, [])
 
@@ -43,7 +44,7 @@ function ForgotPassword(props) {
         setTimerExpired(false);
         setKey(prev => prev + 1);
 
-        axios.post("http://localhost:3001/api/forgotPassword", { userEmail: userEmail }, {
+        axios.post(`${baseURL}/api/forgotPassword`, { userEmail: userEmail }, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -73,7 +74,7 @@ function ForgotPassword(props) {
 
         <div className={styles.signInParent} style={darkMode}>
             <form className={styles.signInBox} autoComplete="off" noValidate onSubmit={forgotPassword}>
-            <h1>Forgot Password</h1>
+                <h1>Forgot Password</h1>
                 <div className={styles.signInField}>
                     <label className={styles.inputLabel} htmlFor="email">Email</label>
                     <input className={styles.signInInput} id="email" name="email" onInput={updateUserEmail} type="email" placeholder="Your Email" required value={userEmail} style={inputDarkmode} />

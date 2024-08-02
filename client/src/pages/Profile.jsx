@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faCheck } from "@fortawesome/free-solid-svg-icons";
 import Cookies from "js-cookie";
 import { refreshSession } from "../sessionHandler";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function Profile(props) {
 
@@ -44,7 +45,7 @@ function Profile(props) {
         setShowCheckEmail(false);
         setKey(prev => prev + 1);
 
-        axios.post("http://localhost:3001/api/forgotPassword", { userEmail: props.email }, {
+        axios.post(`${baseURL}/api/forgotPassword`, { userEmail: props.email }, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -74,7 +75,7 @@ function Profile(props) {
             setShowPromptDelete(false);
             return;
         }
-        axios.post("http://localhost:3001/api/deleteAccount", {}, {
+        axios.post(`${baseURL}/api/deleteAccount`, {}, {
             headers: {
                 'Content-Type': 'application/json',
                 'accessToken': `Bearer ${props.accessToken}`,

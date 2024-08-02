@@ -6,6 +6,7 @@ import PasswordReq from "../components/signIn/PasswordReq.jsx";
 import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function ResetPassword(props) {
 
@@ -19,7 +20,7 @@ function ResetPassword(props) {
             let refreshToken = window.location.href.split("&refresh_token=")[1].split("&token_type")[0];
             setAccessToken(accessToken);
             setRefreshToken(refreshToken);
-            let newUrl = "http://localhost:3001/forgotPassword/reset"
+            let newUrl = `${baseURL}/forgotPassword/reset`
             window.history.pushState({ path: newUrl }, '', newUrl);
         }
         catch (e) {
@@ -56,7 +57,7 @@ function ResetPassword(props) {
             toast.error("Password requirements not met.");
             return;
         }
-        axios.post("http://localhost:3001/api/resetPassword", userInfo, {
+        axios.post(`${baseURL}/api/resetPassword`, userInfo, {
             headers: {
                 'Content-Type': 'application/json',
                 'accessToken': `Bearer ${accessToken}`,

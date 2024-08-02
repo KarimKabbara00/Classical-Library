@@ -9,7 +9,7 @@ import Error from "../components/shared/Error";
 import sharedStyles from "../css/shared.module.css";
 import loadingStyles from "../css/loading.module.css";
 import styles from "../css/map.module.css"
-import { head } from "lodash";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function Map(props) {
     const mapStyles = {
@@ -27,7 +27,7 @@ function Map(props) {
     const [showError, setShowError] = useState(false);
 
     useEffect(() => {
-        axios.get("http://localhost:3001/api/map")
+        axios.get(`${baseURL}/api/map`)
             .then(res => {
                 setPinData(res.data);
                 setShowLoading(false);

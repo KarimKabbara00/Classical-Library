@@ -22,25 +22,37 @@ import TriviaQuiz from "./components/trivia/TriviaQuiz";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import { logout, setSession } from "./sessionHandler";
-import { useMediaQuery } from "@uidotdev/usehooks";
-import IsPortrait from "./detectOrientation";
 import BlockAccess from "./pages/BlockAccess";
 
 function App() {
 
-  /* -------------------------- Portrait Mode Detection ------------------------ */
-  const [blockAccess, setBlockAccess] = useState(false);
-  const is625Px = useMediaQuery("only screen and (max-width : 625px)");
-  const isPortrait = IsPortrait();
+  /* -------------------------- Screen Orientation ------------------------ */
+  // State to store screen dimensions
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight);
+
+  // Effect to handle resize events
   useEffect(() => {
-    if (isPortrait && is625Px) {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+      setScreenHeight(window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const [blockAccess, setBlockAccess] = useState(false);
+  useEffect(() => {
+    if (screenHeight > screenWidth && screenWidth < 625) {
       setBlockAccess(true);
     }
     else {
       setBlockAccess(false);
     }
-  }, [IsPortrait])
-  /* -------------------------- Portrait Mode Detection ------------------------ */
+  }, [screenWidth, screenHeight])
+  /* -------------------------- Screen Orientation ------------------------ */
 
   /* -------------------------------- User Session -------------------------------- */
   const [accessToken, setAccessToken] = useState(null);
@@ -95,47 +107,49 @@ function App() {
   /* --------------------------------- Dark Mode --------------------------------- */
 
   return (
-    <div>
-      {!blockAccess && <BrowserRouter>
-        <Header accessToken={accessToken} username={username} logout={handleLogout} toggleDarkMode={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
-        <Routes>
-          {/* Nav Bar Routes */}
-          <Route path="/" element={<Home firstLoad={firstLoad} darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} setUsername={setUsername} setEmail={setEmail} setIsGoogleAuth={setIsGoogleAuth} />} />
-          <Route path="/allComposers" element={<AllComposers darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/allWorks" element={<AllWorks darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} />} />
-          <Route path="/viewComposer" element={<ViewComposer darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/viewWorks" element={<ViewWorks darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} />} />
-          <Route path="/map" element={<Map darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/about" element={<About darkModeEnabled={darkModeEnabled} />} />
+    <>
+      <div style={{ display: blockAccess ? "none" : "block" }}>
+        <BrowserRouter>
+          <Header accessToken={accessToken} username={username} logout={handleLogout} toggleDarkMode={toggleDarkMode} darkModeEnabled={darkModeEnabled} />
+          <Routes>
+            {/* Nav Bar Routes */}
+            <Route path="/" element={<Home firstLoad={firstLoad} darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} setUsername={setUsername} setEmail={setEmail} setIsGoogleAuth={setIsGoogleAuth} />} />
+            <Route path="/allComposers" element={<AllComposers darkModeEnabled={darkModeEnabled} />} />
+            <Route path="/allWorks" element={<AllWorks darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} />} />
+            <Route path="/viewComposer" element={<ViewComposer darkModeEnabled={darkModeEnabled} />} />
+            <Route path="/viewWorks" element={<ViewWorks darkModeEnabled={darkModeEnabled} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} />} />
+            <Route path="/map" element={<Map darkModeEnabled={darkModeEnabled} />} />
+            <Route path="/about" element={<About darkModeEnabled={darkModeEnabled} />} />
 
-          {/* Trivia Routes */}
-          <Route path="/trivia" element={<Trivia darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/trivia/quiz" element={<TriviaQuiz darkModeEnabled={darkModeEnabled} />} />
+            {/* Trivia Routes */}
+            <Route path="/trivia" element={<Trivia darkModeEnabled={darkModeEnabled} />} />
+            <Route path="/trivia/quiz" element={<TriviaQuiz darkModeEnabled={darkModeEnabled} />} />
 
-          {/* Profile Routes */}
-          <Route path="/signIn" element={<SignIn setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} setUsername={setUsername} setEmail={setEmail} rememberMe={rememberMe} setRememberMe={setRememberMe} setIsGoogleAuth={setIsGoogleAuth} setWasSignedIn={setWasSignedIn} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/signUp" element={<SignUp darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/forgotPassword" element={<ForgotPassword darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/forgotPassword/reset" element={<ResetPassword setAccessToken={setAccessToken} accessToken={accessToken} setRefreshToken={setRefreshToken} refreshToken={refreshToken} setUsername={setUsername} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile" element={<Profile username={username} accessToken={accessToken} refreshToken={refreshToken} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} email={email} isGoogleAuth={isGoogleAuth} wasSignedIn={wasSignedIn} logout={handleLogout} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile/playlists" element={<Playlists accessToken={accessToken} refreshToken={refreshToken} wasSignedIn={wasSignedIn} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist accessToken={accessToken} refreshToken={refreshToken} wasSignedIn={wasSignedIn} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} darkModeEnabled={darkModeEnabled} />} />
-          <Route path="/profile/playlists/editPlaylist" element={<EditPlaylist accessToken={accessToken} refreshToken={refreshToken} wasSignedIn={wasSignedIn} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} darkModeEnabled={darkModeEnabled} />} />
+            {/* Profile Routes */}
+            <Route path="/signIn" element={<SignIn setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} setUsername={setUsername} setEmail={setEmail} rememberMe={rememberMe} setRememberMe={setRememberMe} setIsGoogleAuth={setIsGoogleAuth} setWasSignedIn={setWasSignedIn} darkModeEnabled={darkModeEnabled} />} />
+            <Route path="/signUp" element={<SignUp darkModeEnabled={darkModeEnabled} />} />
+            <Route path="/forgotPassword" element={<ForgotPassword darkModeEnabled={darkModeEnabled} />} />
+            <Route path="/forgotPassword/reset" element={<ResetPassword setAccessToken={setAccessToken} accessToken={accessToken} setRefreshToken={setRefreshToken} refreshToken={refreshToken} setUsername={setUsername} darkModeEnabled={darkModeEnabled} />} />
+            <Route path="/profile" element={<Profile username={username} accessToken={accessToken} refreshToken={refreshToken} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} email={email} isGoogleAuth={isGoogleAuth} wasSignedIn={wasSignedIn} logout={handleLogout} darkModeEnabled={darkModeEnabled} />} />
+            <Route path="/profile/playlists" element={<Playlists accessToken={accessToken} refreshToken={refreshToken} wasSignedIn={wasSignedIn} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} fetchAudio={fetchAudio} audioObject={audioObject} setAnotherRequest={setAnotherRequest} darkModeEnabled={darkModeEnabled} />} />
+            <Route path="/profile/playlists/newPlaylist" element={<NewPlaylist accessToken={accessToken} refreshToken={refreshToken} wasSignedIn={wasSignedIn} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} darkModeEnabled={darkModeEnabled} />} />
+            <Route path="/profile/playlists/editPlaylist" element={<EditPlaylist accessToken={accessToken} refreshToken={refreshToken} wasSignedIn={wasSignedIn} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} darkModeEnabled={darkModeEnabled} />} />
 
-          {/* Catch All */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </BrowserRouter>}
+            {/* Catch All */}
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </BrowserRouter>
 
-      {/* <MusicPlayer musicRequest={musicRequest} audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} anotherRequest={anotherRequest} playlistQueueIndex={playlistQueueIndex} setPlaylistQueueIndex={setPlaylistQueueIndex} queueLength={queueLength} setQueueLength={setQueueLength} togglePlayerType={togglePlayerType} playerDocked={playerDocked} darkModeEnabled={darkModeEnabled} /> */}
-      <DockedMusicPlayer musicRequest={musicRequest} audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} anotherRequest={anotherRequest} playlistQueueIndex={playlistQueueIndex} setPlaylistQueueIndex={setPlaylistQueueIndex} queueLength={queueLength} setQueueLength={setQueueLength} togglePlayerType={togglePlayerType} playerDocked={playerDocked} darkModeEnabled={darkModeEnabled} />
-      <div>
-        <Toaster position="top-left" reverseOrder={false} containerStyle={{ position: "absolute", top: 80, left: 80, bottom: 20, right: 20, }} />
+        {/* <MusicPlayer musicRequest={musicRequest} audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} anotherRequest={anotherRequest} playlistQueueIndex={playlistQueueIndex} setPlaylistQueueIndex={setPlaylistQueueIndex} queueLength={queueLength} setQueueLength={setQueueLength} togglePlayerType={togglePlayerType} playerDocked={playerDocked} darkModeEnabled={darkModeEnabled} /> */}
+        <DockedMusicPlayer musicRequest={musicRequest} audioObject={audioObject} setAudioObject={setAudioObject} currentSong={currentSong} setCurrentSong={setCurrentSong} anotherRequest={anotherRequest} playlistQueueIndex={playlistQueueIndex} setPlaylistQueueIndex={setPlaylistQueueIndex} queueLength={queueLength} setQueueLength={setQueueLength} togglePlayerType={togglePlayerType} playerDocked={playerDocked} darkModeEnabled={darkModeEnabled} />
+        <div>
+          <Toaster position="top-left" reverseOrder={false} containerStyle={{ position: "absolute", top: 80, left: 80, bottom: 20, right: 20, }} />
+        </div>
       </div>
-      {blockAccess && <div>
+      {blockAccess && <div style={{ zIndex: 10 }}>
         <BlockAccess />
       </div>}
-    </div>
+    </>
   );
 }
 

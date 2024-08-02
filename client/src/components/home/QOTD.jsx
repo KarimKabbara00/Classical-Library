@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "../../css/homepage.module.css";
 import QuoteItem from "./QuoteItem";
 import axios from "axios";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function QOTD(props) {
 
@@ -10,7 +11,7 @@ function QOTD(props) {
     const [quoteThree, setQuoteThree] = useState(["", ""])
     const [showError, setShowError] = useState(false);
     useEffect(() => {
-        axios.get("http://localhost:3001/api/qotd")
+        axios.get(`${baseURL}/api/qotd`)
             .then(res => {
                 let [_, keyOne, keyTwo, keyThree] = Object.keys(res.data);
                 setQuoteOne([keyOne, res.data[keyOne]])

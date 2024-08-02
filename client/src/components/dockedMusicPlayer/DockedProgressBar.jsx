@@ -18,7 +18,7 @@ function DockedProgressBar(props) {
   const progressBarFillStyle = {
     background: `linear-gradient(90deg, brown ${props.progressPercentage}%, ${props.darkModeEnabled ? "#e8e6e3" : "white"} 0%)`,
     width: width,
-    height: "1vh"
+    // height: "1vh"
   };
 
   function calcPercentage(event) {

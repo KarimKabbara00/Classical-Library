@@ -11,6 +11,7 @@ import classNames from "classnames";
 import matchQueryToTitle from "../../../components/shared/helperFunctions";
 import Cookies from "js-cookie";
 import { refreshSession } from "../../../sessionHandler";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function NewPlaylist(props) {
 
@@ -68,7 +69,7 @@ function NewPlaylist(props) {
                 navigate("/signIn");
         }
 
-        axios.get("http://localhost:3001/api/allWorksNewPlaylist").then(res => {
+        axios.get(`${baseURL}/api/allWorksNewPlaylist`).then(res => {
             setAllWorks(res.data);
             setShowLoading(false);
         }).catch(err => {
@@ -98,7 +99,7 @@ function NewPlaylist(props) {
         }
 
         try {
-            await axios.post("http://localhost:3001/api/editPlaylist", {
+            await axios.post(`${baseURL}/api/editPlaylist`, {
                 oldPlaylistName: oldPlaylistName,
                 playlistName: playlistName,
                 playlistData: worksToAdd

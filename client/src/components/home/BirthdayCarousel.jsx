@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "../../css/homepage.module.css";
 import BirthdayCard from "../../components/home/BirthdayComposerCard";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function BirthdayCarousel(props) {
 
     const [composerInfo, setComposerInfo] = useState([])
     const [showError, setShowError] = useState(false);
     useEffect(() => {
-        axios.get("http://localhost:3001/api/birthday")
+        axios.get(`${baseURL}/api/birthday`)
             .then(res => {
                 setComposerInfo(res.data.composerData);
             }).catch(err => {

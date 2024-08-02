@@ -2,6 +2,8 @@ import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import axios from "axios";
 
+const baseURL = process.env.REACT_APP_BASE_URL;
+
 export const logout = (message, setAccessToken, setRefreshToken, setUsername, setEmail, setRememberMe) => {
     try {
         Cookies.remove("accessToken");
@@ -56,7 +58,7 @@ export const setSession = (accessToken, refreshToken, email, username, rememberM
 
 export const refreshSession = async (accessToken, refreshToken, setAccessToken, setRefreshToken) => {
     // the access token expired, request a new one
-    axios.get("http://localhost:3001/api/refreshSession", {
+    axios.get(`${baseURL}/api/refreshSession`, {
         headers: {
             'Content-Type': 'application/json',
             "accessToken": accessToken,

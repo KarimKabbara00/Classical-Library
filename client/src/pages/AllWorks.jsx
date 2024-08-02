@@ -10,6 +10,7 @@ import Error from "../components/shared/Error";
 import Search from "../components/allWorks/Search";
 import WorkItem from "../components/allWorks/WorkItem";
 import matchQueryToTitle from "../components/shared/helperFunctions";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function AllWorks(props) {
 
@@ -17,7 +18,7 @@ function AllWorks(props) {
     const [showError, setShowError] = useState(false);
     const [allWorks, setAllWorks] = useState(false);
     useEffect(() => {
-        axios.get("http://localhost:3001/api/allWorks").then(res => {
+        axios.get(`${baseURL}/api/allWorks`).then(res => {
             setAllWorks(res.data);
             setShowLoading(false);
         }).catch(err => {

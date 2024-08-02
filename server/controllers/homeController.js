@@ -17,7 +17,7 @@ const birthday = async (req, res) => {
     var datesGreaterThanToday = []; // holds all dates after today
     for (let i of data) {
       let noYear = i.composer_dob.slice(4, i.composer_dob.length);
-
+      let birthYear = i.composer_dob.slice(0, 4);
       // unknown exact dob
       if (noYear === "/0/0")
         continue
@@ -26,7 +26,7 @@ const birthday = async (req, res) => {
       let date = new Date(modifiedDate).setUTCHours(0, 0, 0, 0); // the ms of the composer DOB modified to the current year
 
       if (date >= todayMs) {
-        datesGreaterThanToday.push({ compID: i.composer_id, dob: date });
+        datesGreaterThanToday.push({ compID: i.composer_id, dob: date, birthYear: birthYear });
       }
     }
 
@@ -36,7 +36,7 @@ const birthday = async (req, res) => {
     // for three composers, extract necessary information for bday carousel
     for (let i of nextThreeDOBs) {
       const compResponse = await axios.get(`https://api.openopus.org/composer/list/ids/${i.compID}.json`);
-      i.dob = formatDate(new Date(i.dob));
+      i.dob = formatDate(new Date(i.dob), i.birthYear);
       i.complete_name = compResponse.data.composers[0].complete_name;
       i.portrait = compResponse.data.composers[0].portrait;
       i.fourWorks = await fetchFourWorks(i.compID);

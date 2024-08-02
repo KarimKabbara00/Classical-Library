@@ -2,7 +2,6 @@
     display: flex;
     justify-content: center;
     height: 94.5vh;
-    border: 1px solid black;
 }
 
 .contentParent {

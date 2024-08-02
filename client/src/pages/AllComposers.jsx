@@ -12,6 +12,7 @@ import LetterSection from "../components/allComposers/LetterSection";
 import Button from "../components/allComposers/Button";
 import sharedStyles from "../css/shared.module.css";
 import Error from "../components/shared/Error";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function sortWorks(works) {
 
@@ -83,7 +84,7 @@ function AllComposers(props) {
       behavior: "smooth"
     })
 
-    axios.get("http://localhost:3001/api/allComposers").then(function (res) {
+    axios.get(`${baseURL}/api/allComposers`).then(function (res) {
       // sort composers by last name initial
       let sortedResults = sortWorks(res.data.allComposers);
       setAllResults(sortedResults);
@@ -93,7 +94,8 @@ function AllComposers(props) {
       setShowLoading(false);
     }).catch(function (err) {
       console.log(err);
-      setShowError(true);
+      // setShowError(true);
+      // setShowLoading(false)
     });
   }, []);
 

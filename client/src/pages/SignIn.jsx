@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import Cookies from "js-cookie";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function SignIn(props) {
 
@@ -17,7 +18,7 @@ function SignIn(props) {
             return;
         }
 
-        var newUrl = "http://localhost:3001/signIn"
+        var newUrl = `${baseURL}/signIn`
         window.history.pushState({ path: newUrl }, '', newUrl);
     }, [])
 
@@ -48,7 +49,7 @@ function SignIn(props) {
             toast.error("Please enter a password.");
             return;
         }
-        axios.post("http://localhost:3001/api/signIn", userInfo, {
+        axios.post(`${baseURL}/api/signIn`, userInfo, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -78,7 +79,7 @@ function SignIn(props) {
 
     // Google OAuth
     function continueWithGoogle() {
-        axios.post("http://localhost:3001/api/auth/google").then(res => {
+        axios.post(`${baseURL}/api/auth/google`).then(res => {
             window.location.href = res.data;
         }).catch(err => {
             console.log(err);

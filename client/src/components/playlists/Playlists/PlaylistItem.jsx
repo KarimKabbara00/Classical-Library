@@ -22,6 +22,7 @@ import deleteWhite from "../../../images/playlists/delete-white.svg"
 import Prompt from "../../shared/Prompt";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function PlaylistItem(props) {
 
@@ -61,7 +62,7 @@ function PlaylistItem(props) {
         const { id } = event.target;
         id === "play" ? setPlaySVG(faSpinner) : setShuffleSVG(faSpinner)
 
-        axios.get("http://localhost:3001/api/createPlaylistQueue", {
+        axios.get(`${baseURL}/api/createPlaylistQueue`, {
             headers: {
                 accessToken: `Bearer ${props.accessToken}`,
             },
@@ -88,7 +89,7 @@ function PlaylistItem(props) {
 
     const navigate = useNavigate();
     function editPlaylist() {
-        axios.get("http://localhost:3001/api/fetchPlaylist", {
+        axios.get(`${baseURL}/api/fetchPlaylist`, {
             headers: {
                 accessToken: `Bearer ${props.accessToken}`,
             },
@@ -125,7 +126,7 @@ function PlaylistItem(props) {
         if (confirmDelete === false)
             return
 
-        axios.post("http://localhost:3001/api/deletePlaylist", {
+        axios.post(`${baseURL}/api/deletePlaylist`, {
             playlistName: props.playlist.playlistName
         }, {
             headers: {

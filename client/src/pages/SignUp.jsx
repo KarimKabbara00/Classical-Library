@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Cookies from "js-cookie"
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function SignIn(props) {
 
@@ -66,7 +67,7 @@ function SignIn(props) {
         }
 
         setButtonClicked(true);
-        axios.post("http://localhost:3001/api/signUp", userInfo, {
+        axios.post(`${baseURL}/api/signUp`, userInfo, {
             headers: {
                 'Content-Type': 'application/json',
             },

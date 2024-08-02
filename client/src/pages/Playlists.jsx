@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Cookies from 'js-cookie';
 import { refreshSession } from "../sessionHandler";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 function Playlists(props) {
 
@@ -45,7 +46,7 @@ function Playlists(props) {
             return;
 
         setShowLoading(true); // when state change is forced, show loading
-        axios.get("http://localhost:3001/api/viewPlaylists", {
+        axios.get(`${baseURL}/api/viewPlaylists`, {
             headers: {
                 accessToken: `Bearer ${props.accessToken}`,
             }

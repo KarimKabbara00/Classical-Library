@@ -322,6 +322,12 @@
     }
 }
 
+@media (max-width: 1000px) {
+    .newPlaylistForm {
+        padding-bottom: 12rem;
+    }
+}
+
 @media (max-width: 850px) {
     .playlistBody {
         width: 75vw;

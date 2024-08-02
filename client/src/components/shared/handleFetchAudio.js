@@ -1,9 +1,10 @@
 import axios from "axios";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 async function handleFetchAudio(byURL, urlOrID) {
 
     try {
-        const metadataResp = await axios.get(`http://localhost:3001/api/musicMetadata?byURL=${byURL}&urlOrID=${urlOrID}`, {
+        const metadataResp = await axios.get(`${baseURL}/api/musicMetadata?byURL=${byURL}&urlOrID=${urlOrID}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -21,7 +22,7 @@ async function handleFetchAudio(byURL, urlOrID) {
             queryVar = "workID";
         }
 
-        response = await axios.get(`http://localhost:3001/api/${endpoint}?${queryVar}=${encodeURIComponent(urlOrID)}`, {
+        response = await axios.get(`${baseURL}/api/${endpoint}?${queryVar}=${encodeURIComponent(urlOrID)}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -33,7 +34,7 @@ async function handleFetchAudio(byURL, urlOrID) {
         }
 
         var audioObject = new Audio();
-        audioObject.src = `http://localhost:3001/api/${endpoint}?${queryVar}=${encodeURIComponent(urlOrID)}`
+        audioObject.src = `${baseURL}/api/${endpoint}?${queryVar}=${encodeURIComponent(urlOrID)}`
 
         return [audioObject, metadata];
     }
